@@ -133,6 +133,14 @@
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
                         </button>
+                        <button onclick="addToFormula('{')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            {
+                        </button>
+                        <button onclick="addToFormula('}')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            }
+                        </button>
                         <button onclick="clearFormula()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ล้างสูตร
@@ -153,7 +161,7 @@
                                   rows="3"></textarea>
                     </div>
                     <div class="text-sm text-gray-400 mb-4">
-                        <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ) | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, (P→Q)↔R
+                        <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ), {, } | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, {P→Q}↔R
                     </div>
                 </div>
 
@@ -254,6 +262,14 @@
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
                         </button>
+                        <button onclick="addToFormula2('{')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            {
+                        </button>
+                        <button onclick="addToFormula2('}')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            }
+                        </button>
                         <button onclick="clearFormula2()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ล้างสูตร
@@ -274,7 +290,7 @@
                                   rows="3"></textarea>
                     </div>
                     <div class="text-sm text-gray-400 mb-4">
-                        <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ) | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, (P→Q)↔R
+                        <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ), {, } | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, {P→Q}↔R
                     </div>
                 </div>
 
@@ -288,8 +304,19 @@
 
             <!-- Tautology Result Display -->
             <div id="tautologyResultContainer" class="hidden">
+                <!-- Truth Table Display -->
+                <h2 class="text-2xl font-semibold text-white mb-4">ตารางค่าความจริงสำหรับการตรวจสอบสัจนิรันดร์</h2>
+                <div class="overflow-x-auto bg-gray-800 border border-gray-600 rounded-xl shadow-lg mb-6">
+                    <table id="tautologyTable" class="w-full border-collapse">
+                        <thead id="tautologyTableHead" class="bg-black text-white border-b border-gray-600">
+                        </thead>
+                        <tbody id="tautologyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-6">
-                    <h3 class="text-xl font-semibold text-white mb-4">📊 รูปแบบของผลลัพธ์</h3>
+                    <h3 class="text-xl font-semibold text-white mb-4">📊 ผลการวิเคราะห์</h3>
                     <div class="bg-gray-700 rounded-lg p-4 mb-4">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-gray-300 font-medium">ลำดับค่าความจริง:</span>
@@ -303,21 +330,16 @@
                 </div>
 
                 <!-- Analysis Section -->
-                <div id="analysisSection2" class="grid md:grid-cols-3 gap-6 mb-8">
+                <div id="analysisSection2" class="grid md:grid-cols-2 gap-6 mb-8">
                     <div class="bg-gray-800 border-2 border-green-500 rounded-xl p-6">
                         <h3 class="text-lg font-semibold text-green-400 mb-2">🟢 Tautology (สัจนิรันดร์)</h3>
                         <p id="tautologyResult2" class="text-green-300 font-medium"></p>
-                        <p class="text-sm text-green-400 mt-2">สูตรที่เป็นจริงในทุกกรณี</p>
+                        <p class="text-sm text-green-400 mt-2">สูตรที่เป็นจริงในทุกกรณี - ไม่ขึ้นกับค่าของตัวแปร</p>
                     </div>
                     <div class="bg-gray-800 border-2 border-red-500 rounded-xl p-6">
                         <h3 class="text-lg font-semibold text-red-400 mb-2">🔴 Contradiction (ขัดแย้ง)</h3>
                         <p id="contradictionResult2" class="text-red-300 font-medium"></p>
-                        <p class="text-sm text-red-400 mt-2">สูตรที่เป็นเท็จในทุกกรณี</p>
-                    </div>
-                    <div class="bg-gray-800 border-2 border-blue-500 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-blue-400 mb-2">🔵 Contingency (เป็นไปได้)</h3>
-                        <p id="contingencyResult2" class="text-blue-300 font-medium"></p>
-                        <p class="text-sm text-blue-400 mt-2">สูตรที่มีทั้งจริงและเท็จ</p>
+                        <p class="text-sm text-red-400 mt-2">สูตรที่เป็นเท็จในทุกกรณี - ไม่สามารถเป็นจริงได้เลย</p>
                     </div>
                 </div>
             </div>
@@ -413,6 +435,14 @@
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
                         </button>
+                        <button onclick="addToSelectedFormula('{')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            {
+                        </button>
+                        <button onclick="addToSelectedFormula('}')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            }
+                        </button>
                     </div>
                 </div>
 
@@ -468,7 +498,7 @@
                 </div>
 
                 <div class="text-sm text-gray-400 mb-4">
-                    <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ) | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, (P→Q)↔R
+                    <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ), {, } | <strong>ตัวอย่าง:</strong> P∧Q, ¬P∨Q, {P→Q}↔R
                 </div>
 
                 <div class="flex flex-wrap gap-4">
@@ -738,34 +768,185 @@
 
         function evaluateFormula(formula, values) {
             try {
-                // Replace logical symbols with JavaScript equivalents
-                let jsFormula = formula
-                    .replace(/∧/g, '&&')
-                    .replace(/∨/g, '||')
-                    .replace(/¬/g, '!')
-                    .replace(/→/g, '? true :')
-                    .replace(/↔/g, '===')
-                    // Also support Thai text for backward compatibility
-                    .replace(/\bและ\b/g, '&&')
-                    .replace(/\bหรือ\b/g, '||')
-                    .replace(/\bนิเสธ\b/g, '!')
-                    .replace(/\bถ้า\.\.แล้ว\b/g, '? true :')
-                    .replace(/\bก็ต่อเมื่อ\b/g, '===');
-
-                // Handle IMPLIES operator properly
-                jsFormula = jsFormula.replace(/([^?]+)\s*\?\s*true\s*:\s*([^?]+)/g, '(!($1) || ($2))');
-
-                // Replace variables with their values
-                for (const [variable, value] of Object.entries(values)) {
-                    const regex = new RegExp(`\\b${variable}\\b`, 'g');
-                    jsFormula = jsFormula.replace(regex, value.toString());
-                }
-
-                // Evaluate the formula
-                return eval(jsFormula);
+                return evaluateFormulaWithPrecedence(formula, values);
             } catch (error) {
                 throw new Error('สูตรไม่ถูกต้อง: ' + error.message);
             }
+        }
+
+        function evaluateFormulaWithPrecedence(formula, values) {
+            // Replace variables with their values first
+            let expr = formula;
+            for (const [variable, value] of Object.entries(values)) {
+                const regex = new RegExp(`\\b${variable}\\b`, 'g');
+                expr = expr.replace(regex, value ? 'T' : 'F');
+            }
+
+            // Parse and evaluate with proper precedence
+            return parseExpression(expr);
+        }
+
+        function parseExpression(expr) {
+            expr = expr.trim();
+            return parseEquivalence(expr);
+        }
+
+        function parseEquivalence(expr) {
+            const parts = [];
+            let current = '';
+            let depth = 0;
+            
+            for (let i = 0; i < expr.length; i++) {
+                const char = expr[i];
+                if ((char === '(' || char === '{')) depth++;
+                else if ((char === ')' || char === '}')) depth--;
+                else if (char === '↔' && depth === 0) {
+                    parts.push(current.trim());
+                    parts.push('↔');
+                    current = '';
+                    continue;
+                }
+                current += char;
+            }
+            parts.push(current.trim());
+
+            if (parts.length === 1) {
+                return parseImplication(parts[0]);
+            }
+
+            let result = parseImplication(parts[0]);
+            for (let i = 1; i < parts.length; i += 2) {
+                const operator = parts[i];
+                const right = parseImplication(parts[i + 1]);
+                if (operator === '↔') {
+                    result = (result === right);
+                }
+            }
+            return result;
+        }
+
+        function parseImplication(expr) {
+            const parts = [];
+            let current = '';
+            let depth = 0;
+            
+            for (let i = 0; i < expr.length; i++) {
+                const char = expr[i];
+                if ((char === '(' || char === '{')) depth++;
+                else if ((char === ')' || char === '}')) depth--;
+                else if (char === '→' && depth === 0) {
+                    parts.push(current.trim());
+                    parts.push('→');
+                    current = '';
+                    continue;
+                }
+                current += char;
+            }
+            parts.push(current.trim());
+
+            if (parts.length === 1) {
+                return parseDisjunction(parts[0]);
+            }
+
+            // Right associative for implication
+            let result = parseDisjunction(parts[parts.length - 1]);
+            for (let i = parts.length - 3; i >= 0; i -= 2) {
+                const left = parseDisjunction(parts[i]);
+                result = (!left || result);
+            }
+            return result;
+        }
+
+        function parseDisjunction(expr) {
+            const parts = [];
+            let current = '';
+            let depth = 0;
+            
+            for (let i = 0; i < expr.length; i++) {
+                const char = expr[i];
+                if ((char === '(' || char === '{')) depth++;
+                else if ((char === ')' || char === '}')) depth--;
+                else if (char === '∨' && depth === 0) {
+                    parts.push(current.trim());
+                    parts.push('∨');
+                    current = '';
+                    continue;
+                }
+                current += char;
+            }
+            parts.push(current.trim());
+
+            if (parts.length === 1) {
+                return parseConjunction(parts[0]);
+            }
+
+            let result = parseConjunction(parts[0]);
+            for (let i = 1; i < parts.length; i += 2) {
+                const operator = parts[i];
+                const right = parseConjunction(parts[i + 1]);
+                if (operator === '∨') {
+                    result = (result || right);
+                }
+            }
+            return result;
+        }
+
+        function parseConjunction(expr) {
+            const parts = [];
+            let current = '';
+            let depth = 0;
+            
+            for (let i = 0; i < expr.length; i++) {
+                const char = expr[i];
+                if ((char === '(' || char === '{')) depth++;
+                else if ((char === ')' || char === '}')) depth--;
+                else if (char === '∧' && depth === 0) {
+                    parts.push(current.trim());
+                    parts.push('∧');
+                    current = '';
+                    continue;
+                }
+                current += char;
+            }
+            parts.push(current.trim());
+
+            if (parts.length === 1) {
+                return parseNegation(parts[0]);
+            }
+
+            let result = parseNegation(parts[0]);
+            for (let i = 1; i < parts.length; i += 2) {
+                const operator = parts[i];
+                const right = parseNegation(parts[i + 1]);
+                if (operator === '∧') {
+                    result = (result && right);
+                }
+            }
+            return result;
+        }
+
+        function parseNegation(expr) {
+            expr = expr.trim();
+            if (expr.startsWith('¬')) {
+                return !parseAtom(expr.substring(1));
+            }
+            return parseAtom(expr);
+        }
+
+        function parseAtom(expr) {
+            expr = expr.trim();
+            
+            // Handle parentheses and curly braces
+            if ((expr.startsWith('(') && expr.endsWith(')')) || 
+                (expr.startsWith('{') && expr.endsWith('}'))) {
+                return parseExpression(expr.substring(1, expr.length - 1));
+            }
+            
+            // Handle boolean values
+            if (expr === 'T') return true;
+            if (expr === 'F') return false;
+            
+            throw new Error('Invalid expression: ' + expr);
         }
 
         function evaluateSubExpression(expr, values) {
@@ -1145,16 +1326,90 @@
 
             try {
                 const combinations = generateCombinations(variables2);
+                const subExpressions = parseFormulaSteps(currentFormula);
                 let allTrue = true;
                 let allFalse = true;
                 let truthValues = [];
 
-                for (const combination of combinations) {
-                    const result = evaluateFormula(currentFormula, combination);
-                    truthValues.push(result ? 'T' : 'F');
-                    if (!result) allTrue = false;
-                    if (result) allFalse = false;
+                // Create table header
+                const tableHead = document.getElementById('tautologyTableHead');
+                const tableBody = document.getElementById('tautologyTableBody');
+                
+                tableHead.innerHTML = '';
+                tableBody.innerHTML = '';
+
+                const headerRow = document.createElement('tr');
+                
+                // Add variable columns
+                variables2.forEach(variable => {
+                    const th = document.createElement('th');
+                    th.textContent = variable;
+                    th.className = 'px-4 py-3 text-center font-semibold border-r border-gray-600 bg-gray-700';
+                    headerRow.appendChild(th);
+                });
+
+                // Add sub-expression columns
+                subExpressions.forEach((subExpr, index) => {
+                    if (!variables2.includes(subExpr)) {
+                        const th = document.createElement('th');
+                        th.textContent = subExpr;
+                        th.className = 'px-3 py-3 text-center font-semibold border-r border-gray-600 bg-gray-600 text-sm';
+                        headerRow.appendChild(th);
+                    }
+                });
+
+                // Add final formula column
+                const shouldShowFinalColumn = !variables2.includes(currentFormula) && !subExpressions.includes(currentFormula);
+                if (shouldShowFinalColumn) {
+                    const formulaTh = document.createElement('th');
+                    formulaTh.textContent = currentFormula;
+                    formulaTh.className = 'px-4 py-3 text-center font-semibold bg-blue-700 text-sm';
+                    headerRow.appendChild(formulaTh);
                 }
+
+                tableHead.appendChild(headerRow);
+
+                // Generate table rows
+                combinations.forEach((combination, index) => {
+                    const row = document.createElement('tr');
+                    row.className = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+
+                    // Add variable values
+                    variables2.forEach((variable, varIndex) => {
+                        const td = document.createElement('td');
+                        const value = combination[variable];
+                        td.textContent = value ? 'T' : 'F';
+                        td.className = `px-4 py-3 text-center font-medium ${value ? 'text-green-600' : 'text-red-600'} border-r border-gray-200`;
+                        row.appendChild(td);
+                    });
+
+                    // Add sub-expression values
+                    subExpressions.forEach((subExpr, subIndex) => {
+                        if (!variables2.includes(subExpr)) {
+                            const td = document.createElement('td');
+                            const result = evaluateSubExpression(subExpr, combination);
+                            td.textContent = result ? 'T' : 'F';
+                            td.className = `px-3 py-3 text-center font-medium ${result ? 'text-blue-600' : 'text-orange-600'} border-r border-gray-200 bg-gray-50`;
+                            row.appendChild(td);
+                        }
+                    });
+
+                    // Calculate and add final formula result
+                    const finalResult = evaluateFormula(currentFormula, combination);
+                    if (shouldShowFinalColumn) {
+                        const resultTd = document.createElement('td');
+                        resultTd.textContent = finalResult ? 'T' : 'F';
+                        resultTd.className = `px-4 py-3 text-center font-bold text-lg ${finalResult ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'} border-l-2 ${finalResult ? 'border-green-300' : 'border-red-300'}`;
+                        row.appendChild(resultTd);
+                    }
+
+                    tableBody.appendChild(row);
+
+                    // Track for analysis
+                    truthValues.push(finalResult ? 'T' : 'F');
+                    if (!finalResult) allTrue = false;
+                    if (finalResult) allFalse = false;
+                });
 
                 const truthPattern = truthValues.join(' ');
                 document.getElementById('tautologyTruthPattern').innerHTML = truthPattern.split('').map(char => 
@@ -1170,14 +1425,13 @@
                     classificationDiv.textContent = '🔴 สูตรนี้เป็น CONTRADICTION (ขัดแย้ง)';
                     classificationDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-700 text-red-100 border-2 border-red-500';
                 } else {
-                    classificationDiv.textContent = '🔵 สูตรนี้เป็น CONTINGENCY (เป็นไปได้)';
-                    classificationDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-blue-700 text-blue-100 border-2 border-blue-500';
+                    classificationDiv.textContent = '❌ สูตรนี้ไม่ใช่ TAUTOLOGY หรือ CONTRADICTION';
+                    classificationDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-gray-700 text-gray-100 border-2 border-gray-500';
                 }
 
-                // Show analysis in the 3 boxes
-                document.getElementById('tautologyResult2').textContent = allTrue ? 'ใช่ - สูตรนี้เป็นสัจนิรันดร์' : 'ไม่ใช่';
-                document.getElementById('contradictionResult2').textContent = allFalse ? 'ใช่ - สูตรนี้ขัดแย้ง' : 'ไม่ใช่';
-                document.getElementById('contingencyResult2').textContent = (!allTrue && !allFalse) ? 'ใช่ - สูตรนี้เป็นไปได้' : 'ไม่ใช่';
+                // Show analysis in the 2 boxes
+                document.getElementById('tautologyResult2').textContent = allTrue ? 'ใช่ - สูตรนี้เป็นสัจนิรันดร์' : 'ไม่ใช่ - มีกรณีที่เป็นเท็จ';
+                document.getElementById('contradictionResult2').textContent = allFalse ? 'ใช่ - สูตรนี้ขัดแย้ง' : 'ไม่ใช่ - มีกรณีที่เป็นจริง';
 
                 document.getElementById('tautologyResultContainer').classList.remove('hidden');
                 document.getElementById('tautologyResultContainer').scrollIntoView({ behavior: 'smooth' });
@@ -1551,5 +1805,5 @@
             showSection('truthTable'); // Show truth table section by default
         };
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a7abe2476745b8',t:'MTc1NDQxMTM0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b5aef5d34eee5a',t:'MTc1NDU1ODI3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
