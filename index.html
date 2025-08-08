@@ -859,6 +859,23 @@
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
                 <h2 class="text-2xl font-semibold text-white mb-4">สมมูลและนิเสธของประโยค</h2>
                 
+                <!-- Formula Target Selection -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-3">เลือกประโยคที่ต้องการแก้ไข:</h3>
+                    <div class="flex gap-4 mb-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="quantifierTarget" value="main" checked 
+                                   class="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500">
+                            <span class="text-blue-400 font-medium">ประโยคหลัก</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="quantifierTarget" value="comparison" 
+                                   class="mr-2 w-4 h-4 text-green-600 bg-gray-700 border-gray-600 focus:ring-green-500">
+                            <span class="text-green-400 font-medium">ประโยคเปรียบเทียบ</span>
+                        </label>
+                    </div>
+                </div>
+                
                 <!-- Variable Buttons -->
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
@@ -871,11 +888,11 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวบ่งปริมาณ:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToQuantifierFormula('∀')" 
+                        <button onclick="addToSelectedQuantifierFormula('∀')" 
                                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∀ (For All)
                         </button>
-                        <button onclick="addToQuantifierFormula('∃')" 
+                        <button onclick="addToSelectedQuantifierFormula('∃')" 
                                 class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∃ (There Exists)
                         </button>
@@ -886,23 +903,23 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปรและเพรดิเคต:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToQuantifierFormula('x')" 
+                        <button onclick="addToSelectedQuantifierFormula('x')" 
                                 class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             x
                         </button>
-                        <button onclick="addToQuantifierFormula('y')" 
+                        <button onclick="addToSelectedQuantifierFormula('y')" 
                                 class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             y
                         </button>
-                        <button onclick="addToQuantifierFormula('z')" 
+                        <button onclick="addToSelectedQuantifierFormula('z')" 
                                 class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             z
                         </button>
-                        <button onclick="addToQuantifierFormula('(')" 
+                        <button onclick="addToSelectedQuantifierFormula('(')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             (
                         </button>
-                        <button onclick="addToQuantifierFormula(')')" 
+                        <button onclick="addToSelectedQuantifierFormula(')')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
                         </button>
@@ -913,53 +930,85 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวดำเนินการ:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToQuantifierFormula('∧')" 
+                        <button onclick="addToSelectedQuantifierFormula('∧')" 
                                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∧ (และ)
                         </button>
-                        <button onclick="addToQuantifierFormula('∨')" 
+                        <button onclick="addToSelectedQuantifierFormula('∨')" 
                                 class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∨ (หรือ)
                         </button>
-                        <button onclick="addToQuantifierFormula('¬')" 
+                        <button onclick="addToSelectedQuantifierFormula('¬')" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ¬ (นิเสธ)
                         </button>
-                        <button onclick="addToQuantifierFormula('→')" 
+                        <button onclick="addToSelectedQuantifierFormula('→')" 
                                 class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             → (ถ้า..แล้ว)
                         </button>
-                        <button onclick="addToQuantifierFormula('↔')" 
+                        <button onclick="addToSelectedQuantifierFormula('↔')" 
                                 class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ↔ (ก็ต่อเมื่อ)
                         </button>
-                        <button onclick="addToQuantifierFormula('x')" 
+                        <button onclick="addToSelectedQuantifierFormula('x')" 
                                 class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             x
                         </button>
-                        <button onclick="addToQuantifierFormula(' ')" 
+                        <button onclick="addToSelectedQuantifierFormula(' ')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             Space
-                        </button>
-                        <button onclick="clearQuantifierFormula()" 
-                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างสูตร
-                        </button>
-                        <button onclick="undoQuantifierFormula()" 
-                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ย้อนกลับ
                         </button>
                     </div>
                 </div>
 
-                <!-- Formula Input -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคตัวบ่งปริมาณ:</h3>
-                    <div class="mb-2">
-                        <textarea id="quantifierFormulaInput" placeholder="พิมพ์ประโยค เช่น ∀x P(x) หรือ ∃y Q(y) หรือใช้ปุ่มด้านบน" 
-                                  class="w-full px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono resize-none"
-                                  rows="3"></textarea>
+                <!-- Formula Comparison Input -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เปรียบเทียบประโยค:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-4">
+                        <!-- Formula 1 -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคหลัก</label>
+                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P(x)" 
+                                      class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                      rows="2"></textarea>
+                        </div>
+                        
+                        <!-- Equivalence Symbol -->
+                        <div class="flex justify-center">
+                            <div class="bg-purple-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+                                ≡
+                            </div>
+                        </div>
+                        
+                        <!-- Formula 2 -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปรียบเทียบ</label>
+                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P(x)" 
+                                      class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                      rows="2"></textarea>
+                        </div>
                     </div>
+                    
+                    <!-- Control Buttons -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="clearQuantifierFormula()" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ล้างประโยคหลัก
+                        </button>
+                        <button onclick="clearQuantifierComparison()" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ล้างประโยคเปรียบเทียบ
+                        </button>
+                        <button onclick="undoQuantifierFormula()" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ย้อนกลับ ประโยคหลัก
+                        </button>
+                        <button onclick="undoQuantifierComparison()" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ย้อนกลับ ประโยคเปรียบเทียบ
+                        </button>
+                    </div>
+                    
                     <div class="text-sm text-gray-400 mb-4">
                         <strong>ตัวอย่าง:</strong> ∀x P(x), ∃y Q(y), ∀x (P(x) → Q(x)), ∃z (P(z) ∧ Q(z))
                     </div>
@@ -1162,20 +1211,23 @@
         }
 
         function checkEquivalentStatements() {
-            const formula = document.getElementById('quantifierFormulaInput').value.trim();
-            if (formula === '') {
-                alert('กรุณาใส่ประโยคตัวบ่งปริมาณในช่องหลัก');
+            const formula1 = document.getElementById('quantifierFormulaInput').value.trim();
+            const formula2 = document.getElementById('quantifierComparisonInput').value.trim();
+            
+            if (formula1 === '' || formula2 === '') {
+                alert('กรุณาใส่ประโยคทั้งสองประโยค');
                 return;
             }
 
-            // Auto-fill the first statement with the main formula
-            document.getElementById('statement1Input').value = formula;
+            // Auto-fill the statement inputs
+            document.getElementById('statement1Input').value = formula1;
+            document.getElementById('statement2Input').value = formula2;
             
             document.getElementById('quantifierResultsContainer').classList.remove('hidden');
             document.getElementById('equivalenceResults').classList.remove('hidden');
             document.getElementById('negationResults').classList.add('hidden');
             
-            // Check if both statements are filled
+            // Check equivalence
             checkStatementsEquivalence();
         }
 
@@ -1715,20 +1767,23 @@
         }
 
         function checkEquivalentStatements() {
-            const formula = document.getElementById('quantifierFormulaInput').value.trim();
-            if (formula === '') {
-                alert('กรุณาใส่ประโยคตัวบ่งปริมาณในช่องหลัก');
+            const formula1 = document.getElementById('quantifierFormulaInput').value.trim();
+            const formula2 = document.getElementById('quantifierComparisonInput').value.trim();
+            
+            if (formula1 === '' || formula2 === '') {
+                alert('กรุณาใส่ประโยคทั้งสองประโยค');
                 return;
             }
 
-            // Auto-fill the first statement with the main formula
-            document.getElementById('statement1Input').value = formula;
+            // Auto-fill the statement inputs
+            document.getElementById('statement1Input').value = formula1;
+            document.getElementById('statement2Input').value = formula2;
             
             document.getElementById('quantifierResultsContainer').classList.remove('hidden');
             document.getElementById('equivalenceResults').classList.remove('hidden');
             document.getElementById('negationResults').classList.add('hidden');
             
-            // Check if both statements are filled
+            // Check equivalence
             checkStatementsEquivalence();
         }
 
@@ -2668,10 +2723,28 @@
                 container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
             } else {
                 container.innerHTML = variables5.map(variable => 
-                    `<button onclick="addToQuantifierFormula('${variable}(')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}(</button>`
+                    `<button onclick="addToSelectedQuantifierFormula('${variable}(')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}(</button>`
                 ).join('');
             }
         }
+
+        // New function to handle selected quantifier formula input
+        function addToSelectedQuantifierFormula(symbol) {
+            const selectedTarget = document.querySelector('input[name="quantifierTarget"]:checked').value;
+            const input = document.getElementById(selectedTarget === 'main' ? 'quantifierFormulaInput' : 'quantifierComparisonInput');
+            input.value += symbol;
+            input.focus();
+        }
+
+        // New functions for comparison input
+        function clearQuantifierComparison() {
+            document.getElementById('quantifierComparisonInput').value = '';
+        }
+
+        function undoQuantifierComparison() {
+            const input = document.getElementById('quantifierComparisonInput');
+            input.value = input.value.slice(0, -1);
+        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96be34b857b27b40',t:'MTc1NDY0NzYzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96be430ea4e4ee41',t:'MTc1NDY0ODIyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
