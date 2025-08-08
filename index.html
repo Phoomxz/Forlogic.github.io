@@ -31,6 +31,10 @@
                class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                 🔄 ตรวจสอบความสมมูล
             </a>
+            <a href="#" onclick="showSection('reasoning'); toggleMobileMenu()" id="reasoningBtnMobile" 
+               class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                🧠 การอ้างเหตุผล
+            </a>
             <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
                class="block bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                 📖 Wikipedia: Logic
@@ -58,6 +62,10 @@
                 <a href="#" onclick="showSection('equivalenceCheck')" id="equivalenceCheckBtn" 
                    class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                     🔄 ตรวจสอบความสมมูล
+                </a>
+                <a href="#" onclick="showSection('reasoning')" id="reasoningBtn" 
+                   class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                    🧠 การอ้างเหตุผล
                 </a>
                 <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
                    class="block bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
@@ -547,6 +555,112 @@
                 </div>
             </div>
         </div>
+
+        <!-- Reasoning Section -->
+        <div id="reasoningSection" class="section-content hidden">
+            <!-- Premise Management Section -->
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">จัดการประพจน์ (Premises)</h2>
+                <div class="mb-4">
+                    <p class="text-gray-300 text-sm mb-4">
+                        <strong>การอ้างเหตุผล:</strong> การเชื่อมโยงประพจน์หลายๆ ข้อด้วย "และ" (∧) แล้วสรุปด้วย "ถ้า...แล้ว" (→) ไปยังข้อสรุป
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap gap-4 items-center mb-4">
+                    <div class="flex gap-2 flex-1 min-w-[300px]">
+                        <input type="text" id="newPremise" placeholder="พิมพ์ประพจน์ เช่น P∨Q หรือ ¬R→S" 
+                               class="flex-1 px-4 py-2 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400">
+                        <button onclick="addPremise()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
+                            เพิ่มประพจน์
+                        </button>
+                    </div>
+                    <button onclick="clearPremises()" 
+                            class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                        ล้างทั้งหมด
+                    </button>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์ที่มีอยู่:</h3>
+                    <div id="premisesList" class="space-y-2 min-h-[60px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
+                        <span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion Section -->
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">ข้อสรุป (Conclusion)</h2>
+                <div class="mb-4">
+                    <label class="block text-lg font-semibold text-gray-300 mb-2">ข้อสรุปที่ต้องการตรวจสอบ:</label>
+                    <input type="text" id="conclusionInput" placeholder="พิมพ์ข้อสรุป เช่น P∧Q หรือ ¬R" 
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono">
+                </div>
+                
+                <div class="text-sm text-gray-400 mb-4">
+                    <strong>สัญลักษณ์ที่ใช้ได้:</strong> ∧ (และ), ∨ (หรือ), ¬ (นิเสธ), → (ถ้า..แล้ว), ↔ (ก็ต่อเมื่อ), (, ), {, }
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="checkReasoning()" 
+                            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">
+                        🧠 ตรวจสอบการอ้างเหตุผล
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reasoning Display Section -->
+            <div id="reasoningDisplayContainer" class="hidden">
+                <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-6">
+                    <h2 class="text-2xl font-semibold text-white mb-4">รูปแบบการอ้างเหตุผล</h2>
+                    <div class="bg-gray-700 rounded-lg p-4 font-mono text-lg">
+                        <div id="reasoningFormula" class="text-center text-white"></div>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-2 text-center">
+                        รูปแบบ: (ประพจน์ที่ 1 ∧ ประพจน์ที่ 2 ∧ ... ∧ ประพจน์ที่ n) → ข้อสรุป
+                    </div>
+                </div>
+
+                <!-- Truth Table for Reasoning -->
+                <h2 class="text-2xl font-semibold text-white mb-4">ตารางค่าความจริงสำหรับการอ้างเหตุผล</h2>
+                <div class="overflow-x-auto bg-gray-800 border border-gray-600 rounded-xl shadow-lg mb-6">
+                    <table id="reasoningTable" class="w-full border-collapse">
+                        <thead id="reasoningTableHead" class="bg-black text-white border-b border-gray-600">
+                        </thead>
+                        <tbody id="reasoningTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Reasoning Result -->
+                <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-6">
+                    <h3 class="text-xl font-semibold text-white mb-4">📊 ผลการวิเคราะห์การอ้างเหตุผล</h3>
+                    <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-300 font-medium">ลำดับค่าความจริงของการอ้างเหตุผล:</span>
+                            <div id="reasoningTruthPattern" class="font-mono text-lg"></div>
+                        </div>
+                        <div class="text-sm text-gray-400">
+                            T = จริง, F = เท็จ (เรียงตามลำดับแถวในตาราง)
+                        </div>
+                    </div>
+                    <div id="reasoningResult" class="text-center p-4 rounded-lg font-bold text-xl"></div>
+                    
+                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                        <div class="bg-gray-700 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-green-400 mb-2">✅ การอ้างเหตุผลที่ถูกต้อง (Valid)</h4>
+                            <p class="text-sm text-gray-300">เมื่อประพจน์ทั้งหมดเป็นจริง ข้อสรุปจะต้องเป็นจริงเสมอ</p>
+                        </div>
+                        <div class="bg-gray-700 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-red-400 mb-2">❌ การอ้างเหตุผลที่ไม่ถูกต้อง (Invalid)</h4>
+                            <p class="text-sm text-gray-300">มีกรณีที่ประพจน์ทั้งหมดเป็นจริง แต่ข้อสรุปเป็นเท็จ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
 
     </div>
@@ -563,7 +677,8 @@
             const mobileButtons = {
                 'truthTable': 'truthTableBtnMobile',
                 'tautologyCheck': 'tautologyCheckBtnMobile', 
-                'equivalenceCheck': 'equivalenceCheckBtnMobile'
+                'equivalenceCheck': 'equivalenceCheckBtnMobile',
+                'reasoning': 'reasoningBtnMobile'
             };
             
             // Reset all mobile buttons
@@ -584,7 +699,7 @@
         // Enhanced showSection function
         function showSection(sectionName) {
             // Hide all sections
-            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection'];
+            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection', 'reasoningSection'];
             sections.forEach(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -602,7 +717,8 @@
             const buttons = {
                 'truthTable': 'truthTableBtn',
                 'tautologyCheck': 'tautologyCheckBtn',
-                'equivalenceCheck': 'equivalenceCheckBtn'
+                'equivalenceCheck': 'equivalenceCheckBtn',
+                'reasoning': 'reasoningBtn'
             };
             
             // Reset all desktop buttons
@@ -628,6 +744,309 @@
             showSection('truthTable');
         });
     </script>
+    <script>
+        // Reasoning Section Variables
+        let premises = [];
+        let premiseHistory = [];
+
+        // Add premise function
+        function addPremise() {
+            const input = document.getElementById('newPremise');
+            const premise = input.value.trim();
+            
+            if (premise === '') {
+                alert('กรุณาใส่ประพจน์');
+                return;
+            }
+            
+            // Validate premise format
+            if (!isValidFormula(premise)) {
+                alert('รูปแบบประพจน์ไม่ถูกต้อง กรุณาตรวจสอบสัญลักษณ์');
+                return;
+            }
+            
+            premises.push(premise);
+            premiseHistory.push([...premises]);
+            input.value = '';
+            updatePremisesList();
+        }
+
+        // Clear all premises
+        function clearPremises() {
+            premises = [];
+            premiseHistory = [];
+            updatePremisesList();
+        }
+
+        // Update premises list display
+        function updatePremisesList() {
+            const container = document.getElementById('premisesList');
+            
+            if (premises.length === 0) {
+                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>';
+                return;
+            }
+            
+            container.innerHTML = premises.map((premise, index) => `
+                <div class="flex items-center justify-between bg-gray-600 rounded-lg p-3">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-blue-500 text-white px-2 py-1 rounded text-sm font-semibold">P${index + 1}</span>
+                        <span class="text-white font-mono text-lg">${premise}</span>
+                    </div>
+                    <button onclick="removePremise(${index})" 
+                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200">
+                        ลบ
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Remove specific premise
+        function removePremise(index) {
+            premises.splice(index, 1);
+            premiseHistory.push([...premises]);
+            updatePremisesList();
+        }
+
+        // Check reasoning validity
+        function checkReasoning() {
+            if (premises.length === 0) {
+                alert('กรุณาเพิ่มประพจน์อย่างน้อย 1 ข้อ');
+                return;
+            }
+            
+            const conclusion = document.getElementById('conclusionInput').value.trim();
+            if (conclusion === '') {
+                alert('กรุณาใส่ข้อสรุป');
+                return;
+            }
+            
+            if (!isValidFormula(conclusion)) {
+                alert('รูปแบบข้อสรุปไม่ถูกต้อง กรุณาตรวจสอบสัญลักษณ์');
+                return;
+            }
+            
+            try {
+                generateReasoningTable(premises, conclusion);
+                document.getElementById('reasoningDisplayContainer').classList.remove('hidden');
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        // Generate reasoning truth table
+        function generateReasoningTable(premises, conclusion) {
+            // Create reasoning formula: (P1 ∧ P2 ∧ ... ∧ Pn) → conclusion
+            const premisesConjunction = premises.join(' ∧ ');
+            const reasoningFormula = `{${premisesConjunction}} → ${conclusion}`;
+            
+            // Display the reasoning formula
+            document.getElementById('reasoningFormula').textContent = reasoningFormula;
+            
+            // Get all variables from premises and conclusion
+            const allFormulas = [...premises, conclusion];
+            const variables = [...new Set(
+                allFormulas.join('').match(/[A-Z]/g) || []
+            )].sort();
+            
+            if (variables.length === 0) {
+                throw new Error('ไม่พบตัวแปรในสูตร');
+            }
+            
+            // Generate truth table
+            const numRows = Math.pow(2, variables.length);
+            const table = document.getElementById('reasoningTable');
+            const thead = document.getElementById('reasoningTableHead');
+            const tbody = document.getElementById('reasoningTableBody');
+            
+            // Clear existing content
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+            
+            // Create header
+            const headerRow = document.createElement('tr');
+            
+            // Variable columns
+            variables.forEach(variable => {
+                const th = document.createElement('th');
+                th.textContent = variable;
+                th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
+                headerRow.appendChild(th);
+            });
+            
+            // Individual premise columns
+            premises.forEach((premise, index) => {
+                const th = document.createElement('th');
+                th.textContent = `P${index + 1}: ${premise}`;
+                th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
+                headerRow.appendChild(th);
+            });
+            
+            // Premises conjunction column
+            const premisesConjTh = document.createElement('th');
+            premisesConjTh.textContent = `ประพจน์ทั้งหมด: ${premisesConjunction}`;
+            premisesConjTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-green-700';
+            headerRow.appendChild(premisesConjTh);
+            
+            // Conclusion column
+            const conclusionTh = document.createElement('th');
+            conclusionTh.textContent = `ข้อสรุป: ${conclusion}`;
+            conclusionTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-purple-700';
+            headerRow.appendChild(conclusionTh);
+            
+            // Final reasoning column
+            const reasoningTh = document.createElement('th');
+            reasoningTh.textContent = `การอ้างเหตุผล: ${reasoningFormula}`;
+            reasoningTh.className = 'px-4 py-3 text-center bg-red-700';
+            headerRow.appendChild(reasoningTh);
+            
+            thead.appendChild(headerRow);
+            
+            // Generate rows
+            let reasoningResults = [];
+            
+            for (let i = 0; i < numRows; i++) {
+                const row = document.createElement('tr');
+                row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
+                
+                // Create variable assignments
+                const assignments = {};
+                for (let j = 0; j < variables.length; j++) {
+                    const value = (i >> (variables.length - 1 - j)) & 1;
+                    assignments[variables[j]] = value === 1;
+                }
+                
+                // Variable value columns
+                variables.forEach(variable => {
+                    const td = document.createElement('td');
+                    const value = assignments[variable];
+                    td.textContent = value ? 'T' : 'F';
+                    td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${value ? 'text-green-400' : 'text-red-400'}`;
+                    row.appendChild(td);
+                });
+                
+                // Individual premise columns
+                let premiseValues = [];
+                premises.forEach((premise, index) => {
+                    const td = document.createElement('td');
+                    const value = evaluateFormula(premise, assignments);
+                    premiseValues.push(value);
+                    td.textContent = value ? 'T' : 'F';
+                    td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${value ? 'text-green-400' : 'text-red-400'}`;
+                    row.appendChild(td);
+                });
+                
+                // Premises conjunction column
+                const premisesConjValue = premiseValues.every(v => v);
+                const premisesConjTd = document.createElement('td');
+                premisesConjTd.textContent = premisesConjValue ? 'T' : 'F';
+                premisesConjTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${premisesConjValue ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(premisesConjTd);
+                
+                // Conclusion column
+                const conclusionValue = evaluateFormula(conclusion, assignments);
+                const conclusionTd = document.createElement('td');
+                conclusionTd.textContent = conclusionValue ? 'T' : 'F';
+                conclusionTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${conclusionValue ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(conclusionTd);
+                
+                // Final reasoning result (implication)
+                const reasoningValue = !premisesConjValue || conclusionValue; // P → Q ≡ ¬P ∨ Q
+                const reasoningTd = document.createElement('td');
+                reasoningTd.textContent = reasoningValue ? 'T' : 'F';
+                reasoningTd.className = `px-4 py-3 text-center font-bold ${reasoningValue ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(reasoningTd);
+                
+                reasoningResults.push(reasoningValue);
+                tbody.appendChild(row);
+            }
+            
+            // Display results
+            const truthPattern = reasoningResults.map(r => r ? 'T' : 'F').join('');
+            document.getElementById('reasoningTruthPattern').textContent = truthPattern;
+            
+            // Check if reasoning is valid (all T's)
+            const isValid = reasoningResults.every(r => r);
+            const resultDiv = document.getElementById('reasoningResult');
+            
+            if (isValid) {
+                resultDiv.textContent = '✅ การอ้างเหตุผลถูกต้อง (Valid Reasoning)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+            } else {
+                resultDiv.textContent = '❌ การอ้างเหตุผลไม่ถูกต้อง (Invalid Reasoning)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+            }
+        }
+
+        // Utility function to validate formula format
+        function isValidFormula(formula) {
+            // Basic validation - check for valid characters and balanced parentheses
+            const validChars = /^[A-Z∧∨¬→↔(){}TF\s]+$/;
+            if (!validChars.test(formula)) return false;
+            
+            // Check balanced parentheses and braces
+            let parenCount = 0;
+            let braceCount = 0;
+            for (let char of formula) {
+                if (char === '(') parenCount++;
+                if (char === ')') parenCount--;
+                if (char === '{') braceCount++;
+                if (char === '}') braceCount--;
+                if (parenCount < 0 || braceCount < 0) return false;
+            }
+            return parenCount === 0 && braceCount === 0;
+        }
+
+        // Utility function to evaluate logical formula
+        function evaluateFormula(formula, assignments) {
+            // Replace variables with their truth values
+            let expression = formula;
+            for (let variable in assignments) {
+                const value = assignments[variable];
+                expression = expression.replace(new RegExp(variable, 'g'), value ? 'true' : 'false');
+            }
+            
+            // Replace logical operators with JavaScript equivalents
+            expression = expression.replace(/¬/g, '!');
+            expression = expression.replace(/∧/g, '&&');
+            expression = expression.replace(/∨/g, '||');
+            
+            // Handle implication (→) and biconditional (↔)
+            expression = expression.replace(/([^→]+)→([^→]+)/g, '(!($1) || ($2))');
+            expression = expression.replace(/([^↔]+)↔([^↔]+)/g, '(($1) === ($2))');
+            
+            // Replace braces with parentheses
+            expression = expression.replace(/{/g, '(');
+            expression = expression.replace(/}/g, ')');
+            
+            try {
+                return eval(expression);
+            } catch (error) {
+                throw new Error('ไม่สามารถประเมินสูตรได้: ' + formula);
+            }
+        }
+
+        // Add Enter key support for premise input
+        document.addEventListener('DOMContentLoaded', function() {
+            const premiseInput = document.getElementById('newPremise');
+            if (premiseInput) {
+                premiseInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        addPremise();
+                    }
+                });
+            }
+            
+            const conclusionInput = document.getElementById('conclusionInput');
+            if (conclusionInput) {
+                conclusionInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkReasoning();
+                    }
+                });
+            }
+        });
+    </script>
     <script src="script.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b780a4e6495805',t:'MTc1NDU3NzM0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bcb2c8d121ee31',t:'MTc1NDYzMTgzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
