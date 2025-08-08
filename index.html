@@ -400,12 +400,12 @@
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" name="formulaTarget" value="A" checked 
                                    class="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500">
-                            <span class="text-blue-400 font-medium">ประพจน์ที่ 1</span>
+                            <span class="text-blue-400 font-medium">ประพจน์ที่1</span>
                         </label>
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" name="formulaTarget" value="B" 
                                    class="mr-2 w-4 h-4 text-green-600 bg-gray-700 border-gray-600 focus:ring-green-500">
-                            <span class="text-green-400 font-medium">ประพจน์ที่ 2</span>
+                            <span class="text-green-400 font-medium">ประพจน์ที่2</span>
                         </label>
                     </div>
                 </div>
@@ -467,7 +467,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-4">
                         <!-- Formula 1 -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่ 1</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่1</label>
                             <textarea id="formulaInput3A" placeholder="เช่น P∧Q" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
@@ -482,7 +482,7 @@
                         
                         <!-- Formula 2 -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่ 2</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่2</label>
                             <textarea id="formulaInput3B" placeholder="เช่น Q∧P" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
@@ -493,19 +493,19 @@
                     <div class="flex flex-wrap gap-2">
                         <button onclick="clearFormula3A()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างประพจน์ที่ 1
+                            ล้างประพจน์ที่1
                         </button>
                         <button onclick="clearFormula3B()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างประพจน์ที่ 2
+                            ล้างประพจน์ที่2
                         </button>
                         <button onclick="undoLastAction3A()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ย้อนกลับ ประพจน์ที่ 1
+                            ย้อนกลับ ประพจน์ที่1
                         </button>
                         <button onclick="undoLastAction3B()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ย้อนกลับ ประพจน์ที่ 2
+                            ย้อนกลับ ประพจน์ที่2
                         </button>
                     </div>
                 </div>
@@ -543,11 +543,11 @@
                     <div class="mt-4">
                         <div class="bg-gray-700 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่ 1:</span>
+                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่1:</span>
                                 <div id="formula1Pattern" class="font-mono text-lg"></div>
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่ 2:</span>
+                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่2:</span>
                                 <div id="formula2Pattern" class="font-mono text-lg"></div>
                             </div>
                         </div>
@@ -1638,12 +1638,12 @@
                 });
 
                 const formula1Th = document.createElement('th');
-                formula1Th.textContent = `ประพจน์ที่ 1: ${formula1}`;
+                formula1Th.textContent = `ประพจน์ที่1: ${formula1}`;
                 formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
                 headerRow.appendChild(formula1Th);
 
                 const formula2Th = document.createElement('th');
-                formula2Th.textContent = `ประพจน์ที่ 2: ${formula2}`;
+                formula2Th.textContent = `ประพจน์ที่2: ${formula2}`;
                 formula2Th.className = 'px-4 py-3 text-center bg-green-700';
                 headerRow.appendChild(formula2Th);
 
@@ -1881,5 +1881,5 @@
             input.value = input.value.slice(0, -1);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bd0e6fb5c526e6',t:'MTc1NDYzNTU4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bd1913a6107b6a',t:'MTc1NDYzNjAyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
