@@ -898,6 +898,256 @@
         document.addEventListener('DOMContentLoaded', function() {
             showSection('truthTable');
         });
+
+        // Quantifiers Section Functions
+        function addToQuantifierFormula(symbol) {
+            const input = document.getElementById('quantifierFormulaInput');
+            input.value += symbol;
+            input.focus();
+        }
+
+        function clearQuantifierFormula() {
+            document.getElementById('quantifierFormulaInput').value = '';
+        }
+
+        function undoQuantifierFormula() {
+            const input = document.getElementById('quantifierFormulaInput');
+            input.value = input.value.slice(0, -1);
+        }
+
+        function generateNegation() {
+            const formula = document.getElementById('quantifierFormulaInput').value.trim();
+            if (formula === '') {
+                alert('กรุณาใส่ประโยคตัวบ่งปริมาณ');
+                return;
+            }
+
+            try {
+                const negatedFormula = negateQuantifierStatement(formula);
+                const steps = getNegationSteps(formula, negatedFormula);
+                
+                document.getElementById('originalStatement').textContent = formula;
+                document.getElementById('negatedStatement').textContent = negatedFormula;
+                document.getElementById('negationSteps').innerHTML = steps;
+                
+                document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+                document.getElementById('negationResults').classList.remove('hidden');
+                document.getElementById('equivalenceResults').classList.add('hidden');
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function checkEquivalentStatements() {
+            const formula = document.getElementById('quantifierFormulaInput').value.trim();
+            if (formula === '') {
+                alert('กรุณาใส่ประโยคตัวบ่งปริมาณในช่องหลัก');
+                return;
+            }
+
+            // Auto-fill the first statement with the main formula
+            document.getElementById('statement1Input').value = formula;
+            
+            document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+            document.getElementById('equivalenceResults').classList.remove('hidden');
+            document.getElementById('negationResults').classList.add('hidden');
+            
+            // Check if both statements are filled
+            checkStatementsEquivalence();
+        }
+
+        function checkStatementsEquivalence() {
+            const statement1 = document.getElementById('statement1Input').value.trim();
+            const statement2 = document.getElementById('statement2Input').value.trim();
+            
+            if (statement1 === '' || statement2 === '') {
+                document.getElementById('equivalenceResult').textContent = 'กรุณาใส่ประโยคทั้งสองประโยค';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-gray-600 text-white';
+                document.getElementById('explanationText').textContent = 'รอการกรอกข้อมูลให้ครบถ้วน';
+                return;
+            }
+
+            try {
+                const isEquivalent = checkQuantifierEquivalence(statement1, statement2);
+                const explanation = getEquivalenceExplanation(statement1, statement2, isEquivalent);
+                
+                if (isEquivalent) {
+                    document.getElementById('equivalenceResult').textContent = '✅ ประโยคทั้งสองสมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+                } else {
+                    document.getElementById('equivalenceResult').textContent = '❌ ประโยคทั้งสองไม่สมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+                }
+                
+                document.getElementById('explanationText').innerHTML = explanation;
+            } catch (error) {
+                document.getElementById('equivalenceResult').textContent = '⚠️ เกิดข้อผิดพลาดในการตรวจสอบ';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-yellow-600 text-white';
+                document.getElementById('explanationText').textContent = error.message;
+            }
+        }
+
+        function negateQuantifierStatement(formula) {
+            // Remove outer spaces
+            formula = formula.trim();
+            
+            // Handle negation of the entire formula
+            if (formula.startsWith('¬')) {
+                // Double negation elimination
+                return formula.substring(1).trim();
+            }
+            
+            // Apply De Morgan's laws for quantifiers
+            let result = applyQuantifierNegation(formula);
+            return result;
+        }
+
+        function applyQuantifierNegation(formula) {
+            // Handle ∀x P(x) -> ∃x ¬P(x)
+            const universalMatch = formula.match(/^∀([a-z])\s*(.+)$/);
+            if (universalMatch) {
+                const variable = universalMatch[1];
+                const predicate = universalMatch[2].trim();
+                return `∃${variable} ¬${predicate}`;
+            }
+            
+            // Handle ∃x P(x) -> ∀x ¬P(x)
+            const existentialMatch = formula.match(/^∃([a-z])\s*(.+)$/);
+            if (existentialMatch) {
+                const variable = existentialMatch[1];
+                const predicate = existentialMatch[2].trim();
+                return `∀${variable} ¬${predicate}`;
+            }
+            
+            // For complex formulas, just add negation
+            return `¬${formula}`;
+        }
+
+        function getNegationSteps(original, negated) {
+            let steps = '<div class="space-y-2">';
+            
+            steps += `<p><strong>ขั้นตอนที่ 1:</strong> ประโยคต้นฉบับ: <code class="bg-gray-600 px-2 py-1 rounded">${original}</code></p>`;
+            
+            if (original.startsWith('∀')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∀x P(x) ≡ ∃x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('∃')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∃x P(x) ≡ ∀x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('¬')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎการขจัดการนิเสธซ้อน (Double Negation Elimination)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> ลบ ¬ ออก</p>`;
+            } else {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+            }
+            
+            steps += `<p><strong>ผลลัพธ์:</strong> <code class="bg-gray-600 px-2 py-1 rounded">${negated}</code></p>`;
+            steps += '</div>';
+            
+            return steps;
+        }
+
+        function checkQuantifierEquivalence(statement1, statement2) {
+            // Normalize statements for comparison
+            const norm1 = normalizeQuantifierStatement(statement1);
+            const norm2 = normalizeQuantifierStatement(statement2);
+            
+            // Check direct equivalence
+            if (norm1 === norm2) return true;
+            
+            // Check if one is the negation of the other's negation (double negation)
+            const neg1 = negateQuantifierStatement(statement1);
+            const neg2 = negateQuantifierStatement(statement2);
+            
+            if (normalizeQuantifierStatement(neg1) === norm2) return true;
+            if (normalizeQuantifierStatement(neg2) === norm1) return true;
+            
+            // Check known equivalences
+            return checkKnownEquivalences(norm1, norm2);
+        }
+
+        function normalizeQuantifierStatement(statement) {
+            // Remove extra spaces and normalize format
+            return statement.replace(/\s+/g, ' ').trim();
+        }
+
+        function checkKnownEquivalences(statement1, statement2) {
+            // Define known equivalence patterns
+            const equivalences = [
+                // ∀x P(x) ≡ ¬∃x ¬P(x)
+                [/^∀([a-z])\s*(.+)$/, /^¬∃\1\s*¬(.+)$/],
+                [/^¬∃([a-z])\s*¬(.+)$/, /^∀\1\s*(.+)$/],
+                
+                // ∃x P(x) ≡ ¬∀x ¬P(x)
+                [/^∃([a-z])\s*(.+)$/, /^¬∀\1\s*¬(.+)$/],
+                [/^¬∀([a-z])\s*¬(.+)$/, /^∃\1\s*(.+)$/],
+            ];
+            
+            for (let [pattern1, pattern2] of equivalences) {
+                const match1 = statement1.match(pattern1);
+                const match2 = statement2.match(pattern2);
+                
+                if (match1 && match2) {
+                    // Check if the predicates match
+                    if (match1[2] === match2[2]) return true;
+                }
+                
+                // Check reverse direction
+                const match1Rev = statement1.match(pattern2);
+                const match2Rev = statement2.match(pattern1);
+                
+                if (match1Rev && match2Rev) {
+                    if (match1Rev[2] === match2Rev[2]) return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function getEquivalenceExplanation(statement1, statement2, isEquivalent) {
+            if (!isEquivalent) {
+                return `ประโยค "<code>${statement1}</code>" และ "<code>${statement2}</code>" ไม่สมมูลกัน เนื่องจากมีความหมายที่แตกต่างกันในเชิงตรรกะ`;
+            }
+            
+            // Check specific equivalence types
+            if (statement1 === statement2) {
+                return `ประโยคทั้งสองเหมือนกันทุกประการ`;
+            }
+            
+            // Check for De Morgan's law equivalences
+            const universalMatch1 = statement1.match(/^∀([a-z])\s*(.+)$/);
+            const existentialNegMatch2 = statement2.match(/^¬∃([a-z])\s*¬(.+)$/);
+            
+            if (universalMatch1 && existentialNegMatch2 && 
+                universalMatch1[1] === existentialNegMatch2[1] && 
+                universalMatch1[2] === existentialNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∀x P(x) ≡ ¬∃x ¬P(x)<br>
+                        ประโยค "สำหรับทุก x, P(x) เป็นจริง" สมมูลกับ "ไม่มี x ใดที่ P(x) เป็นเท็จ"`;
+            }
+            
+            const existentialMatch1 = statement1.match(/^∃([a-z])\s*(.+)$/);
+            const universalNegMatch2 = statement2.match(/^¬∀([a-z])\s*¬(.+)$/);
+            
+            if (existentialMatch1 && universalNegMatch2 && 
+                existentialMatch1[1] === universalNegMatch2[1] && 
+                existentialMatch1[2] === universalNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∃x P(x) ≡ ¬∀x ¬P(x)<br>
+                        ประโยค "มี x อย่างน้อยหนึ่งตัวที่ P(x) เป็นจริง" สมมูลกับ "ไม่ใช่ทุก x ที่ P(x) เป็นเท็จ"`;
+            }
+            
+            return `ประโยคทั้งสองสมมูลกันตามกฎของตรรกะเชิงเพรดิเคต`;
+        }
+
+        // Add event listeners for equivalence checking
+        document.addEventListener('DOMContentLoaded', function() {
+            const statement1Input = document.getElementById('statement1Input');
+            const statement2Input = document.getElementById('statement2Input');
+            
+            if (statement1Input && statement2Input) {
+                statement1Input.addEventListener('input', checkStatementsEquivalence);
+                statement2Input.addEventListener('input', checkStatementsEquivalence);
+            }
+        });
     </script>
     <script>
         // Reasoning Section Variables
@@ -1199,6 +1449,256 @@
                         checkReasoning();
                     }
                 });
+            }
+        });
+
+        // Quantifiers Section Functions
+        function addToQuantifierFormula(symbol) {
+            const input = document.getElementById('quantifierFormulaInput');
+            input.value += symbol;
+            input.focus();
+        }
+
+        function clearQuantifierFormula() {
+            document.getElementById('quantifierFormulaInput').value = '';
+        }
+
+        function undoQuantifierFormula() {
+            const input = document.getElementById('quantifierFormulaInput');
+            input.value = input.value.slice(0, -1);
+        }
+
+        function generateNegation() {
+            const formula = document.getElementById('quantifierFormulaInput').value.trim();
+            if (formula === '') {
+                alert('กรุณาใส่ประโยคตัวบ่งปริมาณ');
+                return;
+            }
+
+            try {
+                const negatedFormula = negateQuantifierStatement(formula);
+                const steps = getNegationSteps(formula, negatedFormula);
+                
+                document.getElementById('originalStatement').textContent = formula;
+                document.getElementById('negatedStatement').textContent = negatedFormula;
+                document.getElementById('negationSteps').innerHTML = steps;
+                
+                document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+                document.getElementById('negationResults').classList.remove('hidden');
+                document.getElementById('equivalenceResults').classList.add('hidden');
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function checkEquivalentStatements() {
+            const formula = document.getElementById('quantifierFormulaInput').value.trim();
+            if (formula === '') {
+                alert('กรุณาใส่ประโยคตัวบ่งปริมาณในช่องหลัก');
+                return;
+            }
+
+            // Auto-fill the first statement with the main formula
+            document.getElementById('statement1Input').value = formula;
+            
+            document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+            document.getElementById('equivalenceResults').classList.remove('hidden');
+            document.getElementById('negationResults').classList.add('hidden');
+            
+            // Check if both statements are filled
+            checkStatementsEquivalence();
+        }
+
+        function checkStatementsEquivalence() {
+            const statement1 = document.getElementById('statement1Input').value.trim();
+            const statement2 = document.getElementById('statement2Input').value.trim();
+            
+            if (statement1 === '' || statement2 === '') {
+                document.getElementById('equivalenceResult').textContent = 'กรุณาใส่ประโยคทั้งสองประโยค';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-gray-600 text-white';
+                document.getElementById('explanationText').textContent = 'รอการกรอกข้อมูลให้ครบถ้วน';
+                return;
+            }
+
+            try {
+                const isEquivalent = checkQuantifierEquivalence(statement1, statement2);
+                const explanation = getEquivalenceExplanation(statement1, statement2, isEquivalent);
+                
+                if (isEquivalent) {
+                    document.getElementById('equivalenceResult').textContent = '✅ ประโยคทั้งสองสมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+                } else {
+                    document.getElementById('equivalenceResult').textContent = '❌ ประโยคทั้งสองไม่สมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+                }
+                
+                document.getElementById('explanationText').innerHTML = explanation;
+            } catch (error) {
+                document.getElementById('equivalenceResult').textContent = '⚠️ เกิดข้อผิดพลาดในการตรวจสอบ';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-yellow-600 text-white';
+                document.getElementById('explanationText').textContent = error.message;
+            }
+        }
+
+        function negateQuantifierStatement(formula) {
+            // Remove outer spaces
+            formula = formula.trim();
+            
+            // Handle negation of the entire formula
+            if (formula.startsWith('¬')) {
+                // Double negation elimination
+                return formula.substring(1).trim();
+            }
+            
+            // Apply De Morgan's laws for quantifiers
+            let result = applyQuantifierNegation(formula);
+            return result;
+        }
+
+        function applyQuantifierNegation(formula) {
+            // Handle ∀x P(x) -> ∃x ¬P(x)
+            const universalMatch = formula.match(/^∀([a-z])\s*(.+)$/);
+            if (universalMatch) {
+                const variable = universalMatch[1];
+                const predicate = universalMatch[2].trim();
+                return `∃${variable} ¬${predicate}`;
+            }
+            
+            // Handle ∃x P(x) -> ∀x ¬P(x)
+            const existentialMatch = formula.match(/^∃([a-z])\s*(.+)$/);
+            if (existentialMatch) {
+                const variable = existentialMatch[1];
+                const predicate = existentialMatch[2].trim();
+                return `∀${variable} ¬${predicate}`;
+            }
+            
+            // For complex formulas, just add negation
+            return `¬${formula}`;
+        }
+
+        function getNegationSteps(original, negated) {
+            let steps = '<div class="space-y-2">';
+            
+            steps += `<p><strong>ขั้นตอนที่ 1:</strong> ประโยคต้นฉบับ: <code class="bg-gray-600 px-2 py-1 rounded">${original}</code></p>`;
+            
+            if (original.startsWith('∀')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∀x P(x) ≡ ∃x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('∃')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∃x P(x) ≡ ∀x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('¬')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎการขจัดการนิเสธซ้อน (Double Negation Elimination)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> ลบ ¬ ออก</p>`;
+            } else {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+            }
+            
+            steps += `<p><strong>ผลลัพธ์:</strong> <code class="bg-gray-600 px-2 py-1 rounded">${negated}</code></p>`;
+            steps += '</div>';
+            
+            return steps;
+        }
+
+        function checkQuantifierEquivalence(statement1, statement2) {
+            // Normalize statements for comparison
+            const norm1 = normalizeQuantifierStatement(statement1);
+            const norm2 = normalizeQuantifierStatement(statement2);
+            
+            // Check direct equivalence
+            if (norm1 === norm2) return true;
+            
+            // Check if one is the negation of the other's negation (double negation)
+            const neg1 = negateQuantifierStatement(statement1);
+            const neg2 = negateQuantifierStatement(statement2);
+            
+            if (normalizeQuantifierStatement(neg1) === norm2) return true;
+            if (normalizeQuantifierStatement(neg2) === norm1) return true;
+            
+            // Check known equivalences
+            return checkKnownEquivalences(norm1, norm2);
+        }
+
+        function normalizeQuantifierStatement(statement) {
+            // Remove extra spaces and normalize format
+            return statement.replace(/\s+/g, ' ').trim();
+        }
+
+        function checkKnownEquivalences(statement1, statement2) {
+            // Define known equivalence patterns
+            const equivalences = [
+                // ∀x P(x) ≡ ¬∃x ¬P(x)
+                [/^∀([a-z])\s*(.+)$/, /^¬∃\1\s*¬(.+)$/],
+                [/^¬∃([a-z])\s*¬(.+)$/, /^∀\1\s*(.+)$/],
+                
+                // ∃x P(x) ≡ ¬∀x ¬P(x)
+                [/^∃([a-z])\s*(.+)$/, /^¬∀\1\s*¬(.+)$/],
+                [/^¬∀([a-z])\s*¬(.+)$/, /^∃\1\s*(.+)$/],
+            ];
+            
+            for (let [pattern1, pattern2] of equivalences) {
+                const match1 = statement1.match(pattern1);
+                const match2 = statement2.match(pattern2);
+                
+                if (match1 && match2) {
+                    // Check if the predicates match
+                    if (match1[2] === match2[2]) return true;
+                }
+                
+                // Check reverse direction
+                const match1Rev = statement1.match(pattern2);
+                const match2Rev = statement2.match(pattern1);
+                
+                if (match1Rev && match2Rev) {
+                    if (match1Rev[2] === match2Rev[2]) return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function getEquivalenceExplanation(statement1, statement2, isEquivalent) {
+            if (!isEquivalent) {
+                return `ประโยค "<code>${statement1}</code>" และ "<code>${statement2}</code>" ไม่สมมูลกัน เนื่องจากมีความหมายที่แตกต่างกันในเชิงตรรกะ`;
+            }
+            
+            // Check specific equivalence types
+            if (statement1 === statement2) {
+                return `ประโยคทั้งสองเหมือนกันทุกประการ`;
+            }
+            
+            // Check for De Morgan's law equivalences
+            const universalMatch1 = statement1.match(/^∀([a-z])\s*(.+)$/);
+            const existentialNegMatch2 = statement2.match(/^¬∃([a-z])\s*¬(.+)$/);
+            
+            if (universalMatch1 && existentialNegMatch2 && 
+                universalMatch1[1] === existentialNegMatch2[1] && 
+                universalMatch1[2] === existentialNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∀x P(x) ≡ ¬∃x ¬P(x)<br>
+                        ประโยค "สำหรับทุก x, P(x) เป็นจริง" สมมูลกับ "ไม่มี x ใดที่ P(x) เป็นเท็จ"`;
+            }
+            
+            const existentialMatch1 = statement1.match(/^∃([a-z])\s*(.+)$/);
+            const universalNegMatch2 = statement2.match(/^¬∀([a-z])\s*¬(.+)$/);
+            
+            if (existentialMatch1 && universalNegMatch2 && 
+                existentialMatch1[1] === universalNegMatch2[1] && 
+                existentialMatch1[2] === universalNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∃x P(x) ≡ ¬∀x ¬P(x)<br>
+                        ประโยค "มี x อย่างน้อยหนึ่งตัวที่ P(x) เป็นจริง" สมมูลกับ "ไม่ใช่ทุก x ที่ P(x) เป็นเท็จ"`;
+            }
+            
+            return `ประโยคทั้งสองสมมูลกันตามกฎของตรรกะเชิงเพรดิเคต`;
+        }
+
+        // Add event listeners for equivalence checking
+        document.addEventListener('DOMContentLoaded', function() {
+            const statement1Input = document.getElementById('statement1Input');
+            const statement2Input = document.getElementById('statement2Input');
+            
+            if (statement1Input && statement2Input) {
+                statement1Input.addEventListener('input', checkStatementsEquivalence);
+                statement2Input.addEventListener('input', checkStatementsEquivalence);
             }
         });
     </script>
@@ -1881,5 +2381,5 @@
             input.value = input.value.slice(0, -1);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bd214e05b07b58',t:'MTc1NDYzNjM1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bd2c4401e9272b',t:'MTc1NDYzNjgwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
