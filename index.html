@@ -81,7 +81,7 @@
         <div id="truthTableSection" class="section-content">
             <!-- Variable Management Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">จัดการตัวแปร</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">จัดการประพจน์</h2>
                 <div class="flex flex-wrap gap-4 items-center mb-4">
                     <div class="flex gap-2">
                         <input type="text" id="newVariable" placeholder="ชื่อตัวแปร (เช่น P, Q, R)" 
@@ -99,22 +99,22 @@
                 </div>
                 
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปรที่มีอยู่:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์ที่มีอยู่:</h3>
                     <div id="variablesList" class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
-                        <span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>
+                        <span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>
                     </div>
                 </div>
             </div>
 
             <!-- Formula Builder Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">สร้างสูตรตรรกะ</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">เชื่อมประพจน์</h2>
                 
                 <!-- Variable Buttons -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปร:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
                     <div id="variableButtons" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>
+                        <span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
                         </button>
                         <button onclick="clearFormula()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-3 py-3 lg:px-4 lg:py-2 rounded-lg transition duration-200 text-sm lg:text-base col-span-2 lg:col-span-1">
-                            ล้างสูตร
+                            ล้างประพจน์
                         </button>
                         <button onclick="undoLastAction()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-3 py-3 lg:px-4 lg:py-2 rounded-lg transition duration-200 text-sm lg:text-base">
@@ -171,9 +171,9 @@
 
                 <!-- Formula Input/Display Section -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สูตรตรรกะ:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์:</h3>
                     <div class="mb-2">
-                        <textarea id="formulaInput" placeholder="พิมพ์สูตรโดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง" 
+                        <textarea id="formulaInput" placeholder="พิมพ์ประพจน์โดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง" 
                                   class="w-full px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono resize-none"
                                   rows="3"></textarea>
                     </div>
@@ -226,22 +226,22 @@
                 </div>
                 
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปรที่มีอยู่:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์ที่มีอยู่:</h3>
                     <div id="variablesList2" class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
-                        <span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>
+                        <span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>
                     </div>
                 </div>
             </div>
 
             <!-- Formula Builder Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">สร้างสูตรตรรกะ</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">เชื่อมประพจน์</h2>
                 
                 <!-- Variable Buttons -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปร:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
                     <div id="variableButtons2" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>
+                        <span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>
                     </div>
                 </div>
 
@@ -287,7 +287,7 @@
                         </button>
                         <button onclick="clearFormula2()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างสูตร
+                            ล้างประพจน์
                         </button>
                         <button onclick="undoLastAction2()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
@@ -298,9 +298,9 @@
 
                 <!-- Formula Input/Display Section -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สูตรตรรกะ:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์:</h3>
                     <div class="mb-2">
-                        <textarea id="formulaInput2" placeholder="พิมพ์สูตรโดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง" 
+                        <textarea id="formulaInput2" placeholder="พิมพ์ประพจน์โดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง" 
                                   class="w-full px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono resize-none"
                                   rows="3"></textarea>
                     </div>
@@ -364,7 +364,7 @@
         <div id="equivalenceCheckSection" class="section-content hidden">
             <!-- Variable Management Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">จัดการตัวแปร</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">จัดการประพจน์</h2>
                 <div class="flex flex-wrap gap-4 items-center mb-4">
                     <div class="flex gap-2">
                         <input type="text" id="newVariable3" placeholder="ชื่อตัวแปร (เช่น P, Q, R)" 
@@ -382,16 +382,16 @@
                 </div>
                 
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปรที่มีอยู่:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์ที่มีอยู่:</h3>
                     <div id="variablesList3" class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
-                        <span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>
+                        <span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>
                     </div>
                 </div>
             </div>
 
             <!-- Formula Builder Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">สร้างสูตรตรรกะ</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">เชื่อมประพจน์</h2>
                 
                 <!-- Formula Target Selection -->
                 <div class="mb-6">
@@ -412,9 +412,9 @@
 
                 <!-- Variable Buttons -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปร:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
                     <div id="variableButtons3" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>
+                        <span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>
                     </div>
                 </div>
 
@@ -463,11 +463,11 @@
 
                 <!-- Formula Comparison Input -->
                 <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เปรียบเทียบสูตรตรรกะ:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เปรียบเทียบประพจน์:</h3>
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-4">
                         <!-- Formula 1 -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">สูตรที่ 1</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่ 1</label>
                             <textarea id="formulaInput3A" placeholder="เช่น P∧Q" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
@@ -482,7 +482,7 @@
                         
                         <!-- Formula 2 -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-400 mb-1">สูตรที่ 2</label>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประพจน์ที่ 2</label>
                             <textarea id="formulaInput3B" placeholder="เช่น Q∧P" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
@@ -493,19 +493,19 @@
                     <div class="flex flex-wrap gap-2">
                         <button onclick="clearFormula3A()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างสูตรที่ 1
+                            ล้างประพจน์ที่ 1
                         </button>
                         <button onclick="clearFormula3B()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ล้างสูตรที่ 2
+                            ล้างประพจน์ที่ 2
                         </button>
                         <button onclick="undoLastAction3A()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ย้อนกลับ สูตรที่ 1
+                            ย้อนกลับ ประพจน์ที่ 1
                         </button>
                         <button onclick="undoLastAction3B()" 
                                 class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            ย้อนกลับ สูตรที่ 2
+                            ย้อนกลับ ประพจน์ที่ 2
                         </button>
                     </div>
                 </div>
@@ -543,11 +543,11 @@
                     <div class="mt-4">
                         <div class="bg-gray-700 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์สูตรที่ 1:</span>
+                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่ 1:</span>
                                 <div id="formula1Pattern" class="font-mono text-lg"></div>
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์สูตรที่ 2:</span>
+                                <span class="text-gray-300 font-medium">รูปแบบผลลัพธ์ประพจน์ที่ 2:</span>
                                 <div id="formula2Pattern" class="font-mono text-lg"></div>
                             </div>
                         </div>
@@ -560,7 +560,7 @@
         <div id="reasoningSection" class="section-content hidden">
             <!-- Variable Management Section for Reasoning -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">จัดการตัวแปร</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">จัดการประพจน์</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
                         <strong>การอ้างเหตุผล:</strong> การเชื่อมโยงประพจน์หลายๆ ข้อด้วย "และ" (∧) แล้วสรุปด้วย "ถ้า...แล้ว" (→) ไปยังข้อสรุป
@@ -584,22 +584,22 @@
                 </div>
                 
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปรที่มีอยู่:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์ที่มีอยู่:</h3>
                     <div id="variablesList4" class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
-                        <span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>
+                        <span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>
                     </div>
                 </div>
             </div>
 
             <!-- Formula Builder for Premises -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">สร้างประพจน์ (Premises)</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">เหตุ</h2>
                 
                 <!-- Variable Buttons -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปร:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
                     <div id="variableButtons4" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>
+                        <span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>
                     </div>
                 </div>
 
@@ -658,12 +658,12 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">ประพจน์:</h3>
                     <div class="flex gap-2 mb-2">
-                        <textarea id="newPremise" placeholder="พิมพ์ประพจน์ เช่น P∨Q หรือ ¬R→S หรือใช้ปุ่มด้านบน" 
+                        <textarea id="newPremise" placeholder="พิมพ์เหตุ เช่น P∨Q หรือ ¬R→S หรือใช้ปุ่มด้านบน" 
                                   class="flex-1 px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono resize-none"
                                   rows="2"></textarea>
                         <button onclick="addPremise()" 
                                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
-                            เพิ่มประพจน์
+                            เพิ่มเหตุ
                         </button>
                     </div>
                     <div class="text-sm text-gray-400 mb-4">
@@ -673,7 +673,7 @@
 
                 <button onclick="clearPremises()" 
                         class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                    ล้างประพจน์ทั้งหมด
+                    ล้างเหตุทั้งหมด
                 </button>
                 
                 <div class="mt-4">
@@ -686,13 +686,13 @@
 
             <!-- Conclusion Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">สร้างข้อสรุป (Conclusion)</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">ผล</h2>
                 
                 <!-- Conclusion Formula Builder -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกตัวแปร:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประพจน์:</h3>
                     <div id="variableButtons4Conclusion" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>
+                        <span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>
                     </div>
                 </div>
 
@@ -1249,7 +1249,7 @@
         function updateVariablesList() {
             const container = document.getElementById('variablesList');
             if (variables.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>';
             } else {
                 container.innerHTML = variables.map(variable => 
                     `<span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">${variable}</span>`
@@ -1260,7 +1260,7 @@
         function updateVariableButtons() {
             const container = document.getElementById('variableButtons');
             if (variables.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
             } else {
                 container.innerHTML = variables.map(variable => 
                     `<button onclick="addToFormula('${variable}')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}</button>`
@@ -1390,7 +1390,7 @@
         function updateVariablesList2() {
             const container = document.getElementById('variablesList2');
             if (variables2.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>';
             } else {
                 container.innerHTML = variables2.map(variable => 
                     `<span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">${variable}</span>`
@@ -1401,7 +1401,7 @@
         function updateVariableButtons2() {
             const container = document.getElementById('variableButtons2');
             if (variables2.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
             } else {
                 container.innerHTML = variables2.map(variable => 
                     `<button onclick="addToFormula2('${variable}')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}</button>`
@@ -1561,7 +1561,7 @@
         function updateVariablesList3() {
             const container = document.getElementById('variablesList3');
             if (variables3.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>';
             } else {
                 container.innerHTML = variables3.map(variable => 
                     `<span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">${variable}</span>`
@@ -1572,7 +1572,7 @@
         function updateVariableButtons3() {
             const container = document.getElementById('variableButtons3');
             if (variables3.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
             } else {
                 container.innerHTML = variables3.map(variable => 
                     `<button onclick="addToSelectedFormula('${variable}')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}</button>`
@@ -1638,12 +1638,12 @@
                 });
 
                 const formula1Th = document.createElement('th');
-                formula1Th.textContent = `สูตรที่ 1: ${formula1}`;
+                formula1Th.textContent = `ประพจน์ที่ 1: ${formula1}`;
                 formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
                 headerRow.appendChild(formula1Th);
 
                 const formula2Th = document.createElement('th');
-                formula2Th.textContent = `สูตรที่ 2: ${formula2}`;
+                formula2Th.textContent = `ประพจน์ที่ 2: ${formula2}`;
                 formula2Th.className = 'px-4 py-3 text-center bg-green-700';
                 headerRow.appendChild(formula2Th);
 
@@ -1822,7 +1822,7 @@
         function updateVariablesList4() {
             const container = document.getElementById('variablesList4');
             if (variables4.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีตัวแปร - เพิ่มตัวแปรเพื่อเริ่มต้น</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น</span>';
             } else {
                 container.innerHTML = variables4.map(variable => 
                     `<span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">${variable}</span>`
@@ -1835,8 +1835,8 @@
             const conclusionContainer = document.getElementById('variableButtons4Conclusion');
             
             if (variables4.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>';
-                conclusionContainer.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มตัวแปรก่อนเพื่อแสดงปุ่ม</span>';
+                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
+                conclusionContainer.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประพจน์ก่อนเพื่อแสดงปุ่ม</span>';
             } else {
                 const buttonHTML = variables4.map(variable => 
                     `<button onclick="addToPremiseFormula('${variable}')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${variable}</button>`
@@ -1881,5 +1881,5 @@
             input.value = input.value.slice(0, -1);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bcc55020e47b56',t:'MTc1NDYzMjU4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bd082444df2725',t:'MTc1NDYzNTMyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
