@@ -11,7 +11,27 @@
     <!-- Mobile Header -->
     <div class="lg:hidden bg-gray-800 border-b border-gray-600 p-4 sticky top-0 z-50">
         <div class="flex items-center justify-between">
-            <h1 class="text-lg font-bold text-white">FOR LOGIC</h1>
+            <div class="flex items-center gap-3">
+                <h1 class="text-lg font-bold text-white" id="mobileTitle">FOR LOGIC</h1>
+                <div class="relative">
+                    <button onclick="toggleLanguageMenu()" class="text-white text-sm bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition duration-200">
+                        🌐 <span id="currentLangMobile">EN</span>
+                    </button>
+                    <div id="languageMenuMobile" class="hidden absolute top-full right-0 mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-[120px]">
+                        <button onclick="changeLanguage('en')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">English</button>
+                        <button onclick="changeLanguage('zh')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">中文</button>
+                        <button onclick="changeLanguage('hi')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">हिन्दी</button>
+                        <button onclick="changeLanguage('es')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Español</button>
+                        <button onclick="changeLanguage('fr')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Français</button>
+                        <button onclick="changeLanguage('ar')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">العربية</button>
+                        <button onclick="changeLanguage('bn')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">বাংলা</button>
+                        <button onclick="changeLanguage('pt')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Português</button>
+                        <button onclick="changeLanguage('ru')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Русский</button>
+                        <button onclick="changeLanguage('ur')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">اردو</button>
+                        <button onclick="changeLanguage('th')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">ไทย</button>
+                    </div>
+                </div>
+            </div>
             <button onclick="toggleMobileMenu()" class="text-white text-2xl">
                 ☰
             </button>
@@ -59,8 +79,28 @@
         <!-- Left Sidebar Menu (Desktop) -->
         <div id="left" class="hidden lg:block w-64 bg-gray-800 border-r border-gray-600 p-6 flex-shrink-0">
             <div class="mb-8">
-                <h1 class="text-2xl font-bold text-white mb-2">FOR LOGIC</h1>
-                <p class="text-gray-300 text-sm">เครื่องมือทางตรรกศาสตร์</p>
+                <div class="flex items-center justify-between mb-2">
+                    <h1 class="text-2xl font-bold text-white" id="desktopTitle">FOR LOGIC</h1>
+                    <div class="relative">
+                        <button onclick="toggleLanguageMenuDesktop()" class="text-white text-sm bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition duration-200">
+                            🌐 <span id="currentLangDesktop">EN</span>
+                        </button>
+                        <div id="languageMenuDesktop" class="hidden absolute top-full right-0 mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg z-50 min-w-[120px]">
+                            <button onclick="changeLanguage('en')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">English</button>
+                            <button onclick="changeLanguage('zh')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">中文</button>
+                            <button onclick="changeLanguage('hi')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">हिन्दी</button>
+                            <button onclick="changeLanguage('es')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Español</button>
+                            <button onclick="changeLanguage('fr')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Français</button>
+                            <button onclick="changeLanguage('ar')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">العربية</button>
+                            <button onclick="changeLanguage('bn')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">বাংলা</button>
+                            <button onclick="changeLanguage('pt')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Português</button>
+                            <button onclick="changeLanguage('ru')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">Русский</button>
+                            <button onclick="changeLanguage('ur')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">اردو</button>
+                            <button onclick="changeLanguage('th')" class="block w-full text-left px-3 py-2 text-white hover:bg-gray-600 text-sm">ไทย</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-300 text-sm" id="subtitle">เครื่องมือทางตรรกศาสตร์</p>
             </div>
             
             <nav class="menu space-y-2">
@@ -1446,6 +1486,231 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             showSection('truthTable');
+            initializeLanguage();
+        });
+
+        // Language System
+        let currentLanguage = 'th'; // Default to Thai
+
+        const translations = {
+            en: {
+                title: "FOR LOGIC",
+                subtitle: "Logic Tools",
+                truthTable: "📊 Truth Table",
+                tautologyCheck: "⚡ Tautology Check",
+                equivalenceCheck: "🔄 Equivalence Check",
+                reasoning: "🧠 Reasoning",
+                quantifierEquivalence: "🔄 Quantifier Equivalence",
+                quantifierNegation: "❌ Quantifier Negation",
+                information: "ℹ️ Additional Information",
+                wikipedia: "📖 Wikipedia: Logic"
+            },
+            zh: {
+                title: "逻辑工具",
+                subtitle: "逻辑工具",
+                truthTable: "📊 真值表",
+                tautologyCheck: "⚡ 重言式检查",
+                equivalenceCheck: "🔄 等价检查",
+                reasoning: "🧠 推理",
+                quantifierEquivalence: "🔄 量词等价",
+                quantifierNegation: "❌ 量词否定",
+                information: "ℹ️ 附加信息",
+                wikipedia: "📖 维基百科：逻辑"
+            },
+            hi: {
+                title: "तर्क उपकरण",
+                subtitle: "तर्क उपकरण",
+                truthTable: "📊 सत्य तालिका",
+                tautologyCheck: "⚡ तर्कसंगतता जांच",
+                equivalenceCheck: "🔄 समानता जांच",
+                reasoning: "🧠 तर्क",
+                quantifierEquivalence: "🔄 परिमाणक समानता",
+                quantifierNegation: "❌ परिमाणक नकारात्मकता",
+                information: "ℹ️ अतिरिक्त जानकारी",
+                wikipedia: "📖 विकिपीडिया: तर्क"
+            },
+            es: {
+                title: "HERRAMIENTAS LÓGICAS",
+                subtitle: "Herramientas Lógicas",
+                truthTable: "📊 Tabla de Verdad",
+                tautologyCheck: "⚡ Verificación de Tautología",
+                equivalenceCheck: "🔄 Verificación de Equivalencia",
+                reasoning: "🧠 Razonamiento",
+                quantifierEquivalence: "🔄 Equivalencia de Cuantificadores",
+                quantifierNegation: "❌ Negación de Cuantificadores",
+                information: "ℹ️ Información Adicional",
+                wikipedia: "📖 Wikipedia: Lógica"
+            },
+            fr: {
+                title: "OUTILS LOGIQUES",
+                subtitle: "Outils Logiques",
+                truthTable: "📊 Table de Vérité",
+                tautologyCheck: "⚡ Vérification de Tautologie",
+                equivalenceCheck: "🔄 Vérification d'Équivalence",
+                reasoning: "🧠 Raisonnement",
+                quantifierEquivalence: "🔄 Équivalence de Quantificateurs",
+                quantifierNegation: "❌ Négation de Quantificateurs",
+                information: "ℹ️ Informations Supplémentaires",
+                wikipedia: "📖 Wikipédia: Logique"
+            },
+            ar: {
+                title: "أدوات المنطق",
+                subtitle: "أدوات المنطق",
+                truthTable: "📊 جدول الحقيقة",
+                tautologyCheck: "⚡ فحص التحصيل الحاصل",
+                equivalenceCheck: "🔄 فحص التكافؤ",
+                reasoning: "🧠 الاستدلال",
+                quantifierEquivalence: "🔄 تكافؤ المحددات الكمية",
+                quantifierNegation: "❌ نفي المحددات الكمية",
+                information: "ℹ️ معلومات إضافية",
+                wikipedia: "📖 ويكيبيديا: المنطق"
+            },
+            bn: {
+                title: "যুক্তি সরঞ্জাম",
+                subtitle: "যুক্তি সরঞ্জাম",
+                truthTable: "📊 সত্য সারণি",
+                tautologyCheck: "⚡ টটোলজি পরীক্ষা",
+                equivalenceCheck: "🔄 সমতুল্যতা পরীক্ষা",
+                reasoning: "🧠 যুক্তি",
+                quantifierEquivalence: "🔄 পরিমাণবাচক সমতুল্যতা",
+                quantifierNegation: "❌ পরিমাণবাচক নেগেশন",
+                information: "ℹ️ অতিরিক্ত তথ্য",
+                wikipedia: "📖 উইকিপিডিয়া: যুক্তি"
+            },
+            pt: {
+                title: "FERRAMENTAS LÓGICAS",
+                subtitle: "Ferramentas Lógicas",
+                truthTable: "📊 Tabela Verdade",
+                tautologyCheck: "⚡ Verificação de Tautologia",
+                equivalenceCheck: "🔄 Verificação de Equivalência",
+                reasoning: "🧠 Raciocínio",
+                quantifierEquivalence: "🔄 Equivalência de Quantificadores",
+                quantifierNegation: "❌ Negação de Quantificadores",
+                information: "ℹ️ Informações Adicionais",
+                wikipedia: "📖 Wikipédia: Lógica"
+            },
+            ru: {
+                title: "ЛОГИЧЕСКИЕ ИНСТРУМЕНТЫ",
+                subtitle: "Логические Инструменты",
+                truthTable: "📊 Таблица Истинности",
+                tautologyCheck: "⚡ Проверка Тавтологии",
+                equivalenceCheck: "🔄 Проверка Эквивалентности",
+                reasoning: "🧠 Рассуждение",
+                quantifierEquivalence: "🔄 Эквивалентность Кванторов",
+                quantifierNegation: "❌ Отрицание Кванторов",
+                information: "ℹ️ Дополнительная Информация",
+                wikipedia: "📖 Википедия: Логика"
+            },
+            ur: {
+                title: "منطقی آلات",
+                subtitle: "منطقی آلات",
+                truthTable: "📊 سچائی کا جدول",
+                tautologyCheck: "⚡ ٹاٹولوجی چیک",
+                equivalenceCheck: "🔄 مساوات چیک",
+                reasoning: "🧠 استدلال",
+                quantifierEquivalence: "🔄 مقداری مساوات",
+                quantifierNegation: "❌ مقداری نفی",
+                information: "ℹ️ اضافی معلومات",
+                wikipedia: "📖 ویکیپیڈیا: منطق"
+            },
+            th: {
+                title: "FOR LOGIC",
+                subtitle: "เครื่องมือทางตรรกศาสตร์",
+                truthTable: "📊 ตารางค่าความจริง",
+                tautologyCheck: "⚡ ตรวจสอบสัจนิรันดร์",
+                equivalenceCheck: "🔄 ตรวจสอบความสมมูล",
+                reasoning: "🧠 การอ้างเหตุผล",
+                quantifierEquivalence: "🔄 สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ",
+                quantifierNegation: "❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ",
+                information: "ℹ️ ข้อมูลเพิ่มเติม",
+                wikipedia: "📖 Wikipedia: Logic"
+            }
+        };
+
+        function initializeLanguage() {
+            // Set default language to Thai
+            updateLanguageDisplay();
+        }
+
+        function toggleLanguageMenu() {
+            const menu = document.getElementById('languageMenuMobile');
+            menu.classList.toggle('hidden');
+        }
+
+        function toggleLanguageMenuDesktop() {
+            const menu = document.getElementById('languageMenuDesktop');
+            menu.classList.toggle('hidden');
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            updateLanguageDisplay();
+            
+            // Hide language menus
+            document.getElementById('languageMenuMobile').classList.add('hidden');
+            document.getElementById('languageMenuDesktop').classList.add('hidden');
+        }
+
+        function updateLanguageDisplay() {
+            const langCodes = {
+                'en': 'EN', 'zh': '中文', 'hi': 'हिं', 'es': 'ES', 'fr': 'FR',
+                'ar': 'عر', 'bn': 'বাং', 'pt': 'PT', 'ru': 'RU', 'ur': 'اردو', 'th': 'TH'
+            };
+
+            // Update language indicators
+            document.getElementById('currentLangMobile').textContent = langCodes[currentLanguage];
+            document.getElementById('currentLangDesktop').textContent = langCodes[currentLanguage];
+
+            // Update titles and subtitles
+            document.getElementById('mobileTitle').textContent = translations[currentLanguage].title;
+            document.getElementById('desktopTitle').textContent = translations[currentLanguage].title;
+            document.getElementById('subtitle').textContent = translations[currentLanguage].subtitle;
+
+            // Update menu items - Desktop
+            updateMenuText('truthTableBtn', translations[currentLanguage].truthTable);
+            updateMenuText('tautologyCheckBtn', translations[currentLanguage].tautologyCheck);
+            updateMenuText('equivalenceCheckBtn', translations[currentLanguage].equivalenceCheck);
+            updateMenuText('reasoningBtn', translations[currentLanguage].reasoning);
+            updateMenuText('quantifierEquivalenceBtn', translations[currentLanguage].quantifierEquivalence);
+            updateMenuText('quantifierNegationBtn', translations[currentLanguage].quantifierNegation);
+            updateMenuText('informationBtn', translations[currentLanguage].information);
+
+            // Update menu items - Mobile
+            updateMenuText('truthTableBtnMobile', translations[currentLanguage].truthTable);
+            updateMenuText('tautologyCheckBtnMobile', translations[currentLanguage].tautologyCheck);
+            updateMenuText('equivalenceCheckBtnMobile', translations[currentLanguage].equivalenceCheck);
+            updateMenuText('reasoningBtnMobile', translations[currentLanguage].reasoning);
+            updateMenuText('quantifierEquivalenceBtnMobile', translations[currentLanguage].quantifierEquivalence);
+            updateMenuText('quantifierNegationBtnMobile', translations[currentLanguage].quantifierNegation);
+            updateMenuText('informationBtnMobile', translations[currentLanguage].information);
+
+            // Update Wikipedia links
+            const wikiLinks = document.querySelectorAll('a[href*="wikipedia"]');
+            wikiLinks.forEach(link => {
+                link.textContent = translations[currentLanguage].wikipedia;
+            });
+        }
+
+        function updateMenuText(elementId, text) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        // Close language menus when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('languageMenuMobile');
+            const desktopMenu = document.getElementById('languageMenuDesktop');
+            const mobileButton = event.target.closest('[onclick="toggleLanguageMenu()"]');
+            const desktopButton = event.target.closest('[onclick="toggleLanguageMenuDesktop()"]');
+
+            if (!mobileButton && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+            if (!desktopButton && !desktopMenu.contains(event.target)) {
+                desktopMenu.classList.add('hidden');
+            }
         });
     </script>
     <script>
@@ -3899,5 +4164,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd7902418c45b1',t:'MTc1NDgwNzcyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd8766d2634b65',t:'MTc1NDgwODMxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
