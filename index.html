@@ -639,29 +639,13 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToSelectedQuantifierFormula('P(x)')" 
+                        <button onclick="addToSelectedQuantifierFormula('P')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P(x)
+                            P
                         </button>
-                        <button onclick="addToSelectedQuantifierFormula('Q(x)')" 
+                        <button onclick="addToSelectedQuantifierFormula('Q')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q(x)
-                        </button>
-                        <button onclick="addToSelectedQuantifierFormula('R(x)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            R(x)
-                        </button>
-                        <button onclick="addToSelectedQuantifierFormula('P(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P(y)
-                        </button>
-                        <button onclick="addToSelectedQuantifierFormula('Q(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q(y)
-                        </button>
-                        <button onclick="addToSelectedQuantifierFormula('R(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            R(y)
+                            Q
                         </button>
                     </div>
                 </div>
@@ -913,29 +897,13 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToNegationFormula('P(x)')" 
+                        <button onclick="addToNegationFormula('P')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P(x)
+                            P
                         </button>
-                        <button onclick="addToNegationFormula('Q(x)')" 
+                        <button onclick="addToNegationFormula('Q')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q(x)
-                        </button>
-                        <button onclick="addToNegationFormula('R(x)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            R(x)
-                        </button>
-                        <button onclick="addToNegationFormula('P(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P(y)
-                        </button>
-                        <button onclick="addToNegationFormula('Q(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q(y)
-                        </button>
-                        <button onclick="addToNegationFormula('R(y)')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            R(y)
+                            Q
                         </button>
                     </div>
                 </div>
@@ -2101,6 +2069,75 @@
                 }
             }
             
+            // Check for logical equivalences within predicates
+            return checkPredicateEquivalence(statement1, statement2);
+        }
+        
+        function checkPredicateEquivalence(statement1, statement2) {
+            // Extract quantifier and predicate parts
+            const parseStatement = (stmt) => {
+                const match = stmt.match(/^(∀|∃)([a-z])\s*(.+)$/);
+                if (match) {
+                    return {
+                        quantifier: match[1],
+                        variable: match[2],
+                        predicate: match[3].trim()
+                    };
+                }
+                return null;
+            };
+            
+            const parsed1 = parseStatement(statement1);
+            const parsed2 = parseStatement(statement2);
+            
+            // If both have same quantifier and variable, check predicate equivalence
+            if (parsed1 && parsed2 && 
+                parsed1.quantifier === parsed2.quantifier && 
+                parsed1.variable === parsed2.variable) {
+                
+                return checkLogicalEquivalence(parsed1.predicate, parsed2.predicate);
+            }
+            
+            return false;
+        }
+        
+        function checkLogicalEquivalence(pred1, pred2) {
+            // Normalize predicates by removing extra spaces
+            const norm1 = pred1.replace(/\s+/g, ' ').trim();
+            const norm2 = pred2.replace(/\s+/g, ' ').trim();
+            
+            // Direct match
+            if (norm1 === norm2) return true;
+            
+            // Check P→Q ≡ ¬P∨Q
+            const implicationPattern1 = /^(.+)→(.+)$/;
+            const disjunctionPattern1 = /^¬(.+)∨(.+)$/;
+            
+            const impMatch1 = norm1.match(implicationPattern1);
+            const disjMatch2 = norm2.match(disjunctionPattern1);
+            
+            if (impMatch1 && disjMatch2) {
+                const p1 = impMatch1[1].trim();
+                const q1 = impMatch1[2].trim();
+                const notP2 = disjMatch2[1].trim();
+                const q2 = disjMatch2[2].trim();
+                
+                if (p1 === notP2 && q1 === q2) return true;
+            }
+            
+            // Check reverse: ¬P∨Q ≡ P→Q
+            const disjMatch1 = norm1.match(disjunctionPattern1);
+            const impMatch2 = norm2.match(implicationPattern1);
+            
+            if (disjMatch1 && impMatch2) {
+                const notP1 = disjMatch1[1].trim();
+                const q1 = disjMatch1[2].trim();
+                const p2 = impMatch2[1].trim();
+                const q2 = impMatch2[2].trim();
+                
+                if (notP1 === p2 && q1 === q2) return true;
+            }
+            
             return false;
         }
 
@@ -2516,6 +2553,75 @@
                 if (match1Rev && match2Rev) {
                     if (match1Rev[2] === match2Rev[2]) return true;
                 }
+            }
+            
+            // Check for logical equivalences within predicates
+            return checkPredicateEquivalence(statement1, statement2);
+        }
+        
+        function checkPredicateEquivalence(statement1, statement2) {
+            // Extract quantifier and predicate parts
+            const parseStatement = (stmt) => {
+                const match = stmt.match(/^(∀|∃)([a-z])\s*(.+)$/);
+                if (match) {
+                    return {
+                        quantifier: match[1],
+                        variable: match[2],
+                        predicate: match[3].trim()
+                    };
+                }
+                return null;
+            };
+            
+            const parsed1 = parseStatement(statement1);
+            const parsed2 = parseStatement(statement2);
+            
+            // If both have same quantifier and variable, check predicate equivalence
+            if (parsed1 && parsed2 && 
+                parsed1.quantifier === parsed2.quantifier && 
+                parsed1.variable === parsed2.variable) {
+                
+                return checkLogicalEquivalence(parsed1.predicate, parsed2.predicate);
+            }
+            
+            return false;
+        }
+        
+        function checkLogicalEquivalence(pred1, pred2) {
+            // Normalize predicates by removing extra spaces
+            const norm1 = pred1.replace(/\s+/g, ' ').trim();
+            const norm2 = pred2.replace(/\s+/g, ' ').trim();
+            
+            // Direct match
+            if (norm1 === norm2) return true;
+            
+            // Check P→Q ≡ ¬P∨Q
+            const implicationPattern1 = /^(.+)→(.+)$/;
+            const disjunctionPattern1 = /^¬(.+)∨(.+)$/;
+            
+            const impMatch1 = norm1.match(implicationPattern1);
+            const disjMatch2 = norm2.match(disjunctionPattern1);
+            
+            if (impMatch1 && disjMatch2) {
+                const p1 = impMatch1[1].trim();
+                const q1 = impMatch1[2].trim();
+                const notP2 = disjMatch2[1].trim();
+                const q2 = disjMatch2[2].trim();
+                
+                if (p1 === notP2 && q1 === q2) return true;
+            }
+            
+            // Check reverse: ¬P∨Q ≡ P→Q
+            const disjMatch1 = norm1.match(disjunctionPattern1);
+            const impMatch2 = norm2.match(implicationPattern1);
+            
+            if (disjMatch1 && impMatch2) {
+                const notP1 = disjMatch1[1].trim();
+                const q1 = disjMatch1[2].trim();
+                const p2 = impMatch2[1].trim();
+                const q2 = impMatch2[2].trim();
+                
+                if (notP1 === p2 && q1 === q2) return true;
             }
             
             return false;
@@ -3272,5 +3378,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cce651c0c41100',t:'MTc1NDgwMTcxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd0c16723d10d6',t:'MTc1NDgwMzI2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
