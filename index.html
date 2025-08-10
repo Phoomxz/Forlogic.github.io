@@ -584,6 +584,23 @@
                     </p>
                 </div>
                 
+                <!-- Formula Target Selection -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-3">เลือกประโยคที่ต้องการแก้ไข:</h3>
+                    <div class="flex gap-4 mb-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="quantifierFormulaTarget" value="main" checked 
+                                   class="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500">
+                            <span class="text-blue-400 font-medium">ประโยคเปิดหลัก</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="quantifierFormulaTarget" value="comparison" 
+                                   class="mr-2 w-4 h-4 text-green-600 bg-gray-700 border-gray-600 focus:ring-green-500">
+                            <span class="text-green-400 font-medium">ประโยคเปิดเปรียบเทียบ</span>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Quantifiers Section -->
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวบ่งปริมาณ:</h3>
@@ -599,20 +616,53 @@
                     </div>
                 </div>
 
-                <!-- Formula Target Selection -->
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-3">เลือกประโยคที่ต้องการแก้ไข:</h3>
-                    <div class="flex gap-4 mb-4">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="quantifierFormulaTarget" value="main" checked 
-                                   class="mr-2 w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500">
-                            <span class="text-blue-400 font-medium">ประโยคเปิดหลัก</span>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="quantifierFormulaTarget" value="comparison" 
-                                   class="mr-2 w-4 h-4 text-green-600 bg-gray-700 border-gray-600 focus:ring-green-500">
-                            <span class="text-green-400 font-medium">ประโยคเปิดเปรียบเทียบ</span>
-                        </label>
+                <!-- Variables Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปร:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToSelectedQuantifierFormula('x')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            x
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('y')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            y
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('z')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            z
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Predicates Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToSelectedQuantifierFormula('P(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(x)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('Q(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(x)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('R(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            R(x)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('P(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(y)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('Q(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(y)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('R(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            R(y)
+                        </button>
                     </div>
                 </div>
 
@@ -836,6 +886,56 @@
                         <button onclick="addToNegationFormula('∃')" 
                                 class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∃ (For some)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Variables Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวแปร:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToNegationFormula('x')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            x
+                        </button>
+                        <button onclick="addToNegationFormula('y')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            y
+                        </button>
+                        <button onclick="addToNegationFormula('z')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            z
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Predicates Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToNegationFormula('P(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(x)
+                        </button>
+                        <button onclick="addToNegationFormula('Q(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(x)
+                        </button>
+                        <button onclick="addToNegationFormula('R(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            R(x)
+                        </button>
+                        <button onclick="addToNegationFormula('P(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(y)
+                        </button>
+                        <button onclick="addToNegationFormula('Q(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(y)
+                        </button>
+                        <button onclick="addToNegationFormula('R(y)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            R(y)
                         </button>
                     </div>
                 </div>
@@ -1810,12 +1910,26 @@
                 return `{${distributeNegation(inner)}}`;
             }
             
-            // Find main connective (∧, ∨, →, ↔)
+            // Find main connective (∧, ∨, →, ↔) - need to handle quantifiers first
             let depth = 0;
             let mainConnective = null;
             let mainIndex = -1;
             
-            for (let i = 0; i < formula.length; i++) {
+            // Skip quantifiers at the beginning
+            let startIndex = 0;
+            while (startIndex < formula.length && (formula[startIndex] === '∀' || formula[startIndex] === '∃')) {
+                startIndex++;
+                // Skip variable after quantifier
+                while (startIndex < formula.length && /[a-z]/.test(formula[startIndex])) {
+                    startIndex++;
+                }
+                // Skip spaces
+                while (startIndex < formula.length && formula[startIndex] === ' ') {
+                    startIndex++;
+                }
+            }
+            
+            for (let i = startIndex; i < formula.length; i++) {
                 const char = formula[i];
                 if (char === '(' || char === '{') depth++;
                 else if (char === ')' || char === '}') depth--;
@@ -1835,16 +1949,16 @@
                 switch (mainConnective) {
                     case '∧':
                         // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
-                        return `${distributeNegation(left)} ∨ ${distributeNegation(right)}`;
+                        return `${applyQuantifierNegation(left)} ∨ ${applyQuantifierNegation(right)}`;
                     case '∨':
                         // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
-                        return `${distributeNegation(left)} ∧ ${distributeNegation(right)}`;
+                        return `${applyQuantifierNegation(left)} ∧ ${applyQuantifierNegation(right)}`;
                     case '→':
                         // ¬(P → Q) ≡ P ∧ ¬Q
-                        return `${left} ∧ ${distributeNegation(right)}`;
+                        return `${left} ∧ ${applyQuantifierNegation(right)}`;
                     case '↔':
                         // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
-                        return `(${left} ∧ ${distributeNegation(right)}) ∨ (${distributeNegation(left)} ∧ ${right})`;
+                        return `(${left} ∧ ${applyQuantifierNegation(right)}) ∨ (${applyQuantifierNegation(left)} ∧ ${right})`;
                 }
             }
             
@@ -2213,12 +2327,26 @@
                 return `{${distributeNegation(inner)}}`;
             }
             
-            // Find main connective (∧, ∨, →, ↔)
+            // Find main connective (∧, ∨, →, ↔) - need to handle quantifiers first
             let depth = 0;
             let mainConnective = null;
             let mainIndex = -1;
             
-            for (let i = 0; i < formula.length; i++) {
+            // Skip quantifiers at the beginning
+            let startIndex = 0;
+            while (startIndex < formula.length && (formula[startIndex] === '∀' || formula[startIndex] === '∃')) {
+                startIndex++;
+                // Skip variable after quantifier
+                while (startIndex < formula.length && /[a-z]/.test(formula[startIndex])) {
+                    startIndex++;
+                }
+                // Skip spaces
+                while (startIndex < formula.length && formula[startIndex] === ' ') {
+                    startIndex++;
+                }
+            }
+            
+            for (let i = startIndex; i < formula.length; i++) {
                 const char = formula[i];
                 if (char === '(' || char === '{') depth++;
                 else if (char === ')' || char === '}') depth--;
@@ -2238,16 +2366,16 @@
                 switch (mainConnective) {
                     case '∧':
                         // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
-                        return `${distributeNegation(left)} ∨ ${distributeNegation(right)}`;
+                        return `${applyQuantifierNegation(left)} ∨ ${applyQuantifierNegation(right)}`;
                     case '∨':
                         // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
-                        return `${distributeNegation(left)} ∧ ${distributeNegation(right)}`;
+                        return `${applyQuantifierNegation(left)} ∧ ${applyQuantifierNegation(right)}`;
                     case '→':
                         // ¬(P → Q) ≡ P ∧ ¬Q
-                        return `${left} ∧ ${distributeNegation(right)}`;
+                        return `${left} ∧ ${applyQuantifierNegation(right)}`;
                     case '↔':
                         // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
-                        return `(${left} ∧ ${distributeNegation(right)}) ∨ (${distributeNegation(left)} ∧ ${right})`;
+                        return `(${left} ∧ ${applyQuantifierNegation(right)}) ∨ (${applyQuantifierNegation(left)} ∧ ${right})`;
                 }
             }
             
@@ -3144,5 +3272,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ccc582147299a6',t:'MTc1NDgwMDM2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cce651c0c41100',t:'MTc1NDgwMTcxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
