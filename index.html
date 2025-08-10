@@ -580,13 +580,13 @@
                 <h2 class="text-2xl font-semibold text-white mb-4">สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
-                        <strong>ตัวบ่งปริมาณ:</strong> ∀ (สำหรับทุก), ∃ (มีอยู่), ¬ (นิเสธ) | <strong>ตัวอย่าง:</strong> ∀x P(x), ∃x Q(x), ¬∀x R(x)
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
                     </p>
                 </div>
                 
-                <!-- Formula Builder for Quantifier Statements -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สร้างประโยคเปิด:</h3>
+                <!-- Quantifiers Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวบ่งปริมาณ:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToQuantifierFormula('∀')" 
                                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
@@ -596,6 +596,13 @@
                                 class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∃ (มีอยู่)
                         </button>
+                    </div>
+                </div>
+
+                <!-- Formula Builder for Quantifier Statements -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวดำเนินการตรรกะ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToQuantifierFormula('¬')" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ¬ (นิเสธ)
@@ -612,6 +619,48 @@
                                 class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             → (ถ้า..แล้ว)
                         </button>
+                        <button onclick="addToQuantifierFormula('↔')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ↔ (ก็ต่อเมื่อ)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comparison Operators Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวดำเนินการเปรียบเทียบ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToQuantifierFormula('>')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            > (มากกว่า)
+                        </button>
+                        <button onclick="addToQuantifierFormula('≥')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≥ (มากกว่าเท่ากับ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('<')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            < (น้อยกว่า)
+                        </button>
+                        <button onclick="addToQuantifierFormula('≤')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≤ (น้อยกว่าเท่ากับ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('=')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            = (เท่ากับ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('≠')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≠ (ไม่เท่ากับ)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parentheses Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">วงเล็บ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToQuantifierFormula('(')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             (
@@ -619,6 +668,14 @@
                         <button onclick="addToQuantifierFormula(')')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
+                        </button>
+                        <button onclick="addToQuantifierFormula('{')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            {
+                        </button>
+                        <button onclick="addToQuantifierFormula('}')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            }
                         </button>
                         <button onclick="clearQuantifierFormula()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
@@ -728,13 +785,13 @@
                 <h2 class="text-2xl font-semibold text-white mb-4">นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
-                        <strong>กฎการนิเสธ:</strong> ¬∀x P(x) ≡ ∃x ¬P(x), ¬∃x P(x) ≡ ∀x ¬P(x)
+                        <strong>กฎการกระจายเสธ:</strong> ¬∀x P(x) ≡ ∃x ¬P(x), ¬∃x P(x) ≡ ∀x ¬P(x), ¬(P ∧ Q) ≡ ¬P ∨ ¬Q, ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
                     </p>
                 </div>
                 
-                <!-- Formula Builder for Quantifier Statements -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สร้างประโยคเปิด:</h3>
+                <!-- Quantifiers Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวบ่งปริมาณ:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToNegationFormula('∀')" 
                                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
@@ -744,6 +801,13 @@
                                 class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ∃ (มีอยู่)
                         </button>
+                    </div>
+                </div>
+
+                <!-- Formula Builder for Quantifier Statements -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวดำเนินการตรรกะ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToNegationFormula('¬')" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             ¬ (นิเสธ)
@@ -760,6 +824,48 @@
                                 class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             → (ถ้า..แล้ว)
                         </button>
+                        <button onclick="addToNegationFormula('↔')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ↔ (ก็ต่อเมื่อ)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comparison Operators Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ตัวดำเนินการเปรียบเทียบ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToNegationFormula('>')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            > (มากกว่า)
+                        </button>
+                        <button onclick="addToNegationFormula('≥')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≥ (มากกว่าเท่ากับ)
+                        </button>
+                        <button onclick="addToNegationFormula('<')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            < (น้อยกว่า)
+                        </button>
+                        <button onclick="addToNegationFormula('≤')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≤ (น้อยกว่าเท่ากับ)
+                        </button>
+                        <button onclick="addToNegationFormula('=')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            = (เท่ากับ)
+                        </button>
+                        <button onclick="addToNegationFormula('≠')" 
+                                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ≠ (ไม่เท่ากับ)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parentheses Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">วงเล็บ:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="addToNegationFormula('(')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             (
@@ -767,6 +873,14 @@
                         <button onclick="addToNegationFormula(')')" 
                                 class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             )
+                        </button>
+                        <button onclick="addToNegationFormula('{')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            {
+                        </button>
+                        <button onclick="addToNegationFormula('}')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            }
                         </button>
                         <button onclick="clearNegationFormula()" 
                                 class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
@@ -1593,7 +1707,7 @@
                 return formula.substring(1).trim();
             }
             
-            // Apply De Morgan's laws for quantifiers
+            // Apply De Morgan's laws for quantifiers and logical operators
             let result = applyQuantifierNegation(formula);
             return result;
         }
@@ -1604,7 +1718,8 @@
             if (universalMatch) {
                 const variable = universalMatch[1];
                 const predicate = universalMatch[2].trim();
-                return `∃${variable} ¬${predicate}`;
+                const negatedPredicate = distributeNegation(predicate);
+                return `∃${variable} ${negatedPredicate}`;
             }
             
             // Handle ∃x P(x) -> ∀x ¬P(x)
@@ -1612,10 +1727,93 @@
             if (existentialMatch) {
                 const variable = existentialMatch[1];
                 const predicate = existentialMatch[2].trim();
-                return `∀${variable} ¬${predicate}`;
+                const negatedPredicate = distributeNegation(predicate);
+                return `∀${variable} ${negatedPredicate}`;
             }
             
-            // For complex formulas, just add negation
+            // For complex formulas without quantifiers, distribute negation
+            return distributeNegation(formula);
+        }
+
+        function distributeNegation(formula) {
+            formula = formula.trim();
+            
+            // Handle double negation
+            if (formula.startsWith('¬')) {
+                return formula.substring(1).trim();
+            }
+            
+            // Handle parentheses - find the main connective
+            if (formula.startsWith('(') && formula.endsWith(')')) {
+                const inner = formula.slice(1, -1);
+                return `(${distributeNegation(inner)})`;
+            }
+            
+            // Handle braces
+            if (formula.startsWith('{') && formula.endsWith('}')) {
+                const inner = formula.slice(1, -1);
+                return `{${distributeNegation(inner)}}`;
+            }
+            
+            // Find main connective (∧, ∨, →, ↔)
+            let depth = 0;
+            let mainConnective = null;
+            let mainIndex = -1;
+            
+            for (let i = 0; i < formula.length; i++) {
+                const char = formula[i];
+                if (char === '(' || char === '{') depth++;
+                else if (char === ')' || char === '}') depth--;
+                else if (depth === 0) {
+                    if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
+                        mainConnective = char;
+                        mainIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            if (mainConnective && mainIndex !== -1) {
+                const left = formula.substring(0, mainIndex).trim();
+                const right = formula.substring(mainIndex + 1).trim();
+                
+                switch (mainConnective) {
+                    case '∧':
+                        // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
+                        return `${distributeNegation(left)} ∨ ${distributeNegation(right)}`;
+                    case '∨':
+                        // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
+                        return `${distributeNegation(left)} ∧ ${distributeNegation(right)}`;
+                    case '→':
+                        // ¬(P → Q) ≡ P ∧ ¬Q
+                        return `${left} ∧ ${distributeNegation(right)}`;
+                    case '↔':
+                        // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
+                        return `(${left} ∧ ${distributeNegation(right)}) ∨ (${distributeNegation(left)} ∧ ${right})`;
+                }
+            }
+            
+            // Handle comparison operators
+            const comparisonMatch = formula.match(/^(.+)\s*([>≥<≤=≠])\s*(.+)$/);
+            if (comparisonMatch) {
+                const left = comparisonMatch[1].trim();
+                const operator = comparisonMatch[2];
+                const right = comparisonMatch[3].trim();
+                
+                // Negate comparison operators
+                const negatedOperators = {
+                    '>': '≤',
+                    '≥': '<',
+                    '<': '≥',
+                    '≤': '>',
+                    '=': '≠',
+                    '≠': '='
+                };
+                
+                return `${left} ${negatedOperators[operator]} ${right}`;
+            }
+            
+            // For simple predicates or complex expressions, just add negation
             return `¬${formula}`;
         }
 
@@ -1626,15 +1824,52 @@
             
             if (original.startsWith('∀')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∀x P(x) ≡ ∃x ¬P(x)</p>`;
-                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และกระจายเสธเข้าไปในเพรดิเคต</p>`;
+                
+                // Show intermediate steps for complex predicates
+                const match = original.match(/^∀([a-z])\s*(.+)$/);
+                if (match) {
+                    const predicate = match[2].trim();
+                    if (predicate.includes('∧') || predicate.includes('∨') || predicate.includes('→') || predicate.includes('↔')) {
+                        steps += `<p><strong>ขั้นตอนที่ 4:</strong> กระจายเสธในเพรดิเคต: ¬(${predicate})</p>`;
+                        const distributedPredicate = distributeNegation(predicate);
+                        steps += `<p><strong>ขั้นตอนที่ 5:</strong> ใช้กฎ De Morgan: ${distributedPredicate}</p>`;
+                    }
+                }
             } else if (original.startsWith('∃')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∃x P(x) ≡ ∀x ¬P(x)</p>`;
-                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และกระจายเสธเข้าไปในเพรดิเคต</p>`;
+                
+                // Show intermediate steps for complex predicates
+                const match = original.match(/^∃([a-z])\s*(.+)$/);
+                if (match) {
+                    const predicate = match[2].trim();
+                    if (predicate.includes('∧') || predicate.includes('∨') || predicate.includes('→') || predicate.includes('↔')) {
+                        steps += `<p><strong>ขั้นตอนที่ 4:</strong> กระจายเสธในเพรดิเคต: ¬(${predicate})</p>`;
+                        const distributedPredicate = distributeNegation(predicate);
+                        steps += `<p><strong>ขั้นตอนที่ 5:</strong> ใช้กฎ De Morgan: ${distributedPredicate}</p>`;
+                    }
+                }
             } else if (original.startsWith('¬')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎการขจัดการนิเสธซ้อน (Double Negation Elimination)</p>`;
                 steps += `<p><strong>ขั้นตอนที่ 3:</strong> ลบ ¬ ออก</p>`;
             } else {
-                steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+                // Handle complex formulas without quantifiers
+                if (original.includes('∧')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ De Morgan: ¬(P ∧ Q) ≡ ¬P ∨ ¬Q</p>`;
+                } else if (original.includes('∨')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ De Morgan: ¬(P ∨ Q) ≡ ¬P ∧ ¬Q</p>`;
+                } else if (original.includes('→')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ: ¬(P → Q) ≡ P ∧ ¬Q</p>`;
+                } else if (original.includes('↔')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ: ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)</p>`;
+                } else if (original.match(/[>≥<≤=≠]/)) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> เปลี่ยนเครื่องหมายเปรียบเทียบ</p>`;
+                    steps += `<p><strong>ขั้นตอนที่ 3:</strong> > เป็น ≤, ≥ เป็น <, < เป็น ≥, ≤ เป็น >, = เป็น ≠, ≠ เป็น =</p>`;
+                } else {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+                }
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> กระจายเสธเข้าไปในส่วนประกอบต่างๆ</p>`;
             }
             
             steps += `<p><strong>ผลลัพธ์:</strong> <code class="bg-gray-600 px-2 py-1 rounded">${negated}</code></p>`;
@@ -1858,7 +2093,7 @@
                 return formula.substring(1).trim();
             }
             
-            // Apply De Morgan's laws for quantifiers
+            // Apply De Morgan's laws for quantifiers and logical operators
             let result = applyQuantifierNegation(formula);
             return result;
         }
@@ -1869,7 +2104,8 @@
             if (universalMatch) {
                 const variable = universalMatch[1];
                 const predicate = universalMatch[2].trim();
-                return `∃${variable} ¬${predicate}`;
+                const negatedPredicate = distributeNegation(predicate);
+                return `∃${variable} ${negatedPredicate}`;
             }
             
             // Handle ∃x P(x) -> ∀x ¬P(x)
@@ -1877,10 +2113,93 @@
             if (existentialMatch) {
                 const variable = existentialMatch[1];
                 const predicate = existentialMatch[2].trim();
-                return `∀${variable} ¬${predicate}`;
+                const negatedPredicate = distributeNegation(predicate);
+                return `∀${variable} ${negatedPredicate}`;
             }
             
-            // For complex formulas, just add negation
+            // For complex formulas without quantifiers, distribute negation
+            return distributeNegation(formula);
+        }
+
+        function distributeNegation(formula) {
+            formula = formula.trim();
+            
+            // Handle double negation
+            if (formula.startsWith('¬')) {
+                return formula.substring(1).trim();
+            }
+            
+            // Handle parentheses - find the main connective
+            if (formula.startsWith('(') && formula.endsWith(')')) {
+                const inner = formula.slice(1, -1);
+                return `(${distributeNegation(inner)})`;
+            }
+            
+            // Handle braces
+            if (formula.startsWith('{') && formula.endsWith('}')) {
+                const inner = formula.slice(1, -1);
+                return `{${distributeNegation(inner)}}`;
+            }
+            
+            // Find main connective (∧, ∨, →, ↔)
+            let depth = 0;
+            let mainConnective = null;
+            let mainIndex = -1;
+            
+            for (let i = 0; i < formula.length; i++) {
+                const char = formula[i];
+                if (char === '(' || char === '{') depth++;
+                else if (char === ')' || char === '}') depth--;
+                else if (depth === 0) {
+                    if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
+                        mainConnective = char;
+                        mainIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            if (mainConnective && mainIndex !== -1) {
+                const left = formula.substring(0, mainIndex).trim();
+                const right = formula.substring(mainIndex + 1).trim();
+                
+                switch (mainConnective) {
+                    case '∧':
+                        // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
+                        return `${distributeNegation(left)} ∨ ${distributeNegation(right)}`;
+                    case '∨':
+                        // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
+                        return `${distributeNegation(left)} ∧ ${distributeNegation(right)}`;
+                    case '→':
+                        // ¬(P → Q) ≡ P ∧ ¬Q
+                        return `${left} ∧ ${distributeNegation(right)}`;
+                    case '↔':
+                        // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
+                        return `(${left} ∧ ${distributeNegation(right)}) ∨ (${distributeNegation(left)} ∧ ${right})`;
+                }
+            }
+            
+            // Handle comparison operators
+            const comparisonMatch = formula.match(/^(.+)\s*([>≥<≤=≠])\s*(.+)$/);
+            if (comparisonMatch) {
+                const left = comparisonMatch[1].trim();
+                const operator = comparisonMatch[2];
+                const right = comparisonMatch[3].trim();
+                
+                // Negate comparison operators
+                const negatedOperators = {
+                    '>': '≤',
+                    '≥': '<',
+                    '<': '≥',
+                    '≤': '>',
+                    '=': '≠',
+                    '≠': '='
+                };
+                
+                return `${left} ${negatedOperators[operator]} ${right}`;
+            }
+            
+            // For simple predicates or complex expressions, just add negation
             return `¬${formula}`;
         }
 
@@ -1891,15 +2210,52 @@
             
             if (original.startsWith('∀')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∀x P(x) ≡ ∃x ¬P(x)</p>`;
-                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และกระจายเสธเข้าไปในเพรดิเคต</p>`;
+                
+                // Show intermediate steps for complex predicates
+                const match = original.match(/^∀([a-z])\s*(.+)$/);
+                if (match) {
+                    const predicate = match[2].trim();
+                    if (predicate.includes('∧') || predicate.includes('∨') || predicate.includes('→') || predicate.includes('↔')) {
+                        steps += `<p><strong>ขั้นตอนที่ 4:</strong> กระจายเสธในเพรดิเคต: ¬(${predicate})</p>`;
+                        const distributedPredicate = distributeNegation(predicate);
+                        steps += `<p><strong>ขั้นตอนที่ 5:</strong> ใช้กฎ De Morgan: ${distributedPredicate}</p>`;
+                    }
+                }
             } else if (original.startsWith('∃')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∃x P(x) ≡ ∀x ¬P(x)</p>`;
-                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และกระจายเสธเข้าไปในเพรดิเคต</p>`;
+                
+                // Show intermediate steps for complex predicates
+                const match = original.match(/^∃([a-z])\s*(.+)$/);
+                if (match) {
+                    const predicate = match[2].trim();
+                    if (predicate.includes('∧') || predicate.includes('∨') || predicate.includes('→') || predicate.includes('↔')) {
+                        steps += `<p><strong>ขั้นตอนที่ 4:</strong> กระจายเสธในเพรดิเคต: ¬(${predicate})</p>`;
+                        const distributedPredicate = distributeNegation(predicate);
+                        steps += `<p><strong>ขั้นตอนที่ 5:</strong> ใช้กฎ De Morgan: ${distributedPredicate}</p>`;
+                    }
+                }
             } else if (original.startsWith('¬')) {
                 steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎการขจัดการนิเสธซ้อน (Double Negation Elimination)</p>`;
                 steps += `<p><strong>ขั้นตอนที่ 3:</strong> ลบ ¬ ออก</p>`;
             } else {
-                steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+                // Handle complex formulas without quantifiers
+                if (original.includes('∧')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ De Morgan: ¬(P ∧ Q) ≡ ¬P ∨ ¬Q</p>`;
+                } else if (original.includes('∨')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ De Morgan: ¬(P ∨ Q) ≡ ¬P ∧ ¬Q</p>`;
+                } else if (original.includes('→')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ: ¬(P → Q) ≡ P ∧ ¬Q</p>`;
+                } else if (original.includes('↔')) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ: ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)</p>`;
+                } else if (original.match(/[>≥<≤=≠]/)) {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> เปลี่ยนเครื่องหมายเปรียบเทียบ</p>`;
+                    steps += `<p><strong>ขั้นตอนที่ 3:</strong> > เป็น ≤, ≥ เป็น <, < เป็น ≥, ≤ เป็น >, = เป็น ≠, ≠ เป็น =</p>`;
+                } else {
+                    steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+                }
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> กระจายเสธเข้าไปในส่วนประกอบต่างๆ</p>`;
             }
             
             steps += `<p><strong>ผลลัพธ์:</strong> <code class="bg-gray-600 px-2 py-1 rounded">${negated}</code></p>`;
@@ -2716,5 +3072,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cc75b3c42745bd',t:'MTc1NDc5NzEwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cc91c9c67e4b9b',t:'MTc1NDc5ODI1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
