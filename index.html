@@ -43,6 +43,10 @@
                class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                 ❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ
             </a>
+            <a href="#" onclick="showSection('information'); toggleMobileMenu()" id="informationBtnMobile" 
+               class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                ℹ️ ข้อมูลเพิ่มเติม
+            </a>
 
             <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
                class="block bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
@@ -83,6 +87,10 @@
                 <a href="#" onclick="showSection('quantifierNegation')" id="quantifierNegationBtn" 
                    class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                     ❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ
+                </a>
+                <a href="#" onclick="showSection('information')" id="informationBtn" 
+                   class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                    ℹ️ ข้อมูลเพิ่มเติม
                 </a>
 
                 <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
@@ -581,10 +589,10 @@
                 <h2 class="text-2xl font-semibold text-white mb-4">สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
-                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P ≡ ¬∃x ¬P, ∃x P ≡ ¬∀x ¬P
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
                     </p>
                     <p class="text-gray-300 text-sm">
-                        <strong>ประโยคเปิดที่ใช้:</strong> P, Q - สามารถใช้ในการสร้างประโยคเปิดที่มีตัวบ่งปริมาณได้
+                        <strong>ประโยคเปิดที่ใช้:</strong> P(x), Q(x) - สามารถใช้ในการสร้างประโยคเปิดที่มีตัวบ่งปริมาณได้
                     </p>
                 </div>
             </div>
@@ -607,21 +615,6 @@
                                    class="mr-2 w-4 h-4 text-green-600 bg-gray-700 border-gray-600 focus:ring-green-500">
                             <span class="text-green-400 font-medium">ประโยคเปิดที่2</span>
                         </label>
-                    </div>
-                </div>
-
-                <!-- Predicates Section -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToSelectedQuantifierFormula('P')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P
-                        </button>
-                        <button onclick="addToSelectedQuantifierFormula('Q')" 
-                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q
-                        </button>
                     </div>
                 </div>
 
@@ -655,6 +648,21 @@
                         <button onclick="addToSelectedQuantifierFormula('z')" 
                                 class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
                             z
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Predicates Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToSelectedQuantifierFormula('P(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(x)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('Q(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(x)
                         </button>
                     </div>
                 </div>
@@ -774,7 +782,7 @@
                         <!-- Formula 1 -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่1</label>
-                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P" 
+                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P(x)" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
                         </div>
@@ -789,14 +797,14 @@
                         <!-- Formula 2 -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่2</label>
-                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P" 
+                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P(x)" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
                         </div>
                     </div>
                     
                     <div class="text-sm text-gray-400 mb-4">
-                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P ≡ ¬∃x ¬P, ∃x P ≡ ¬∀x ¬P
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
                     </div>
                 </div>
 
@@ -898,13 +906,13 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToNegationFormula('P')" 
+                        <button onclick="addToNegationFormula('P(x)')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P
+                            P(x)
                         </button>
-                        <button onclick="addToNegationFormula('Q')" 
+                        <button onclick="addToNegationFormula('Q(x)')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q
+                            Q(x)
                         </button>
                     </div>
                 </div>
@@ -1074,6 +1082,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div id="informationSection" class="section-content hidden">
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">ข้อมูลเพิ่มเติม</h2>
+                <div class="text-center text-gray-400 py-20">
+                    <p class="text-lg">หน้านี้ยังไม่มีเนื้อหา</p>
+                    <p class="text-sm mt-2">กำลังพัฒนาเพิ่มเติม...</p>
                 </div>
             </div>
         </div>
@@ -1359,7 +1378,8 @@
                 'equivalenceCheck': 'equivalenceCheckBtnMobile',
                 'reasoning': 'reasoningBtnMobile',
                 'quantifierEquivalence': 'quantifierEquivalenceBtnMobile',
-                'quantifierNegation': 'quantifierNegationBtnMobile'
+                'quantifierNegation': 'quantifierNegationBtnMobile',
+                'information': 'informationBtnMobile'
             };
             
             // Reset all mobile buttons
@@ -1380,7 +1400,7 @@
         // Enhanced showSection function
         function showSection(sectionName) {
             // Hide all sections
-            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection', 'reasoningSection', 'quantifierEquivalenceSection', 'quantifierNegationSection'];
+            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection', 'reasoningSection', 'quantifierEquivalenceSection', 'quantifierNegationSection', 'informationSection'];
             sections.forEach(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -1401,7 +1421,8 @@
                 'equivalenceCheck': 'equivalenceCheckBtn',
                 'reasoning': 'reasoningBtn',
                 'quantifierEquivalence': 'quantifierEquivalenceBtn',
-                'quantifierNegation': 'quantifierNegationBtn'
+                'quantifierNegation': 'quantifierNegationBtn',
+                'information': 'informationBtn'
             };
             
             // Reset all desktop buttons
@@ -3878,5 +3899,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd51a7c43df305',t:'MTc1NDgwNjEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd7902418c45b1',t:'MTc1NDgwNzcyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
