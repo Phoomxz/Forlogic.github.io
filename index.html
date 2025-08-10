@@ -576,36 +576,16 @@
 
         <!-- Quantifier Equivalence Section -->
         <div id="quantifierEquivalenceSection" class="section-content hidden">
-            <!-- Predicate Management Section -->
+            <!-- Introduction Section -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-white mb-4">ระบุประโยคเปิด</h2>
+                <h2 class="text-2xl font-semibold text-white mb-4">สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
                         <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
                     </p>
-                </div>
-                
-                <div class="flex flex-wrap gap-4 items-center mb-4">
-                    <div class="flex gap-2">
-                        <input type="text" id="newPredicate" placeholder="ชื่อประโยคเปิด (เช่น P, Q, R)" 
-                               class="px-4 py-2 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
-                               maxlength="3">
-                        <button onclick="addPredicate()" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
-                            เพิ่มประโยคเปิด
-                        </button>
-                    </div>
-                    <button onclick="clearPredicates()" 
-                            class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                        ล้างทั้งหมด
-                    </button>
-                </div>
-                
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิดที่มีอยู่:</h3>
-                    <div id="predicatesList" class="flex flex-wrap gap-2 min-h-[40px] p-3 bg-gray-700 border border-gray-500 rounded-lg">
-                        <span class="text-gray-400 text-sm">ยังไม่มีประโยคเปิด - เพิ่มประโยคเปิดเพื่อเริ่มต้น</span>
-                    </div>
+                    <p class="text-gray-300 text-sm">
+                        <strong>ประโยคเปิดที่ใช้:</strong> P(x), Q(x) - สามารถใช้ในการสร้างประโยคเปิดที่มีตัวบ่งปริมาณได้
+                    </p>
                 </div>
             </div>
 
@@ -633,8 +613,15 @@
                 <!-- Predicate Buttons -->
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประโยคเปิด:</h3>
-                    <div id="predicateButtons" class="flex flex-wrap gap-2 mb-4">
-                        <span class="text-gray-400 text-sm">เพิ่มประโยคเปิดก่อนเพื่อแสดงปุ่ม</span>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToSelectedQuantifierFormula('P(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            P(x)
+                        </button>
+                        <button onclick="addToSelectedQuantifierFormula('Q(x)')" 
+                                class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            Q(x)
+                        </button>
                     </div>
                 </div>
 
@@ -1791,11 +1778,6 @@
                 return;
             }
 
-            if (predicates.length === 0) {
-                alert('กรุณาเพิ่มประโยคเปิดอย่างน้อย 1 ตัว');
-                return;
-            }
-
             try {
                 generateQuantifierComparisonTable(formula1, formula2);
                 document.getElementById('quantifierResultsContainer').classList.remove('hidden');
@@ -1804,116 +1786,7 @@
             }
         }
 
-        function generateQuantifierComparisonTable(formula1, formula2) {
-            // Extract predicates from formulas
-            const allPredicates = [...new Set((formula1 + formula2).match(/[A-Z]/g) || [])].sort();
-            
-            if (allPredicates.length === 0) {
-                throw new Error('ไม่พบประโยคเปิดในสูตร');
-            }
 
-            // Generate all possible truth value combinations for predicates
-            const numRows = Math.pow(2, allPredicates.length);
-            const table = document.getElementById('quantifierComparisonTable');
-            const thead = document.getElementById('quantifierTableHead');
-            const tbody = document.getElementById('quantifierTableBody');
-
-            // Clear existing content
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
-
-            // Create header
-            const headerRow = document.createElement('tr');
-            
-            // Predicate columns
-            allPredicates.forEach(predicate => {
-                const th = document.createElement('th');
-                th.textContent = predicate;
-                th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
-                headerRow.appendChild(th);
-            });
-            
-            // Formula 1 column
-            const formula1Th = document.createElement('th');
-            formula1Th.textContent = `ประโยคเปิดที่1: ${formula1}`;
-            formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
-            headerRow.appendChild(formula1Th);
-            
-            // Formula 2 column
-            const formula2Th = document.createElement('th');
-            formula2Th.textContent = `ประโยคเปิดที่2: ${formula2}`;
-            formula2Th.className = 'px-4 py-3 text-center bg-green-700';
-            headerRow.appendChild(formula2Th);
-            
-            thead.appendChild(headerRow);
-
-            // Generate rows
-            let results1 = [];
-            let results2 = [];
-
-            for (let i = 0; i < numRows; i++) {
-                const row = document.createElement('tr');
-                row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
-
-                // Create predicate assignments
-                const assignments = {};
-                for (let j = 0; j < allPredicates.length; j++) {
-                    const value = (i >> (allPredicates.length - 1 - j)) & 1;
-                    assignments[allPredicates[j]] = value === 1;
-                }
-
-                // Predicate value columns
-                allPredicates.forEach(predicate => {
-                    const td = document.createElement('td');
-                    const value = assignments[predicate];
-                    td.textContent = value ? 'T' : 'F';
-                    td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${value ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(td);
-                });
-
-                // Evaluate formulas
-                const result1 = evaluateQuantifierFormula(formula1, assignments);
-                const result2 = evaluateQuantifierFormula(formula2, assignments);
-                results1.push(result1);
-                results2.push(result2);
-
-                // Formula 1 result column
-                const result1Td = document.createElement('td');
-                result1Td.textContent = result1 ? 'T' : 'F';
-                result1Td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result1 ? 'text-green-400' : 'text-red-400'}`;
-                row.appendChild(result1Td);
-
-                // Formula 2 result column
-                const result2Td = document.createElement('td');
-                result2Td.textContent = result2 ? 'T' : 'F';
-                result2Td.className = `px-4 py-3 text-center font-bold ${result2 ? 'text-green-400' : 'text-red-400'}`;
-                row.appendChild(result2Td);
-
-                tbody.appendChild(row);
-            }
-
-            // Check equivalence
-            const isEquivalent = results1.every((r1, i) => r1 === results2[i]);
-            
-            const pattern1 = results1.map(r => r ? 'T' : 'F').join('');
-            const pattern2 = results2.map(r => r ? 'T' : 'F').join('');
-            
-            document.getElementById('quantifierFormula1Pattern').textContent = pattern1;
-            document.getElementById('quantifierFormula2Pattern').textContent = pattern2;
-
-            const resultDiv = document.getElementById('quantifierEquivalenceResult');
-            const explanationDiv = document.getElementById('quantifierExplanationText');
-            
-            if (isEquivalent) {
-                resultDiv.textContent = '✅ ประโยคเปิดทั้งสองสมมูลกัน (Equivalent)';
-                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
-                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, true);
-            } else {
-                resultDiv.textContent = '❌ ประโยคเปิดทั้งสองไม่สมมูลกัน (Not Equivalent)';
-                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
-                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, false);
-            }
-        }
 
         function evaluateQuantifierFormula(formula, predicateAssignments) {
             // This is a simplified evaluation for demonstration
@@ -2356,65 +2229,7 @@
             return `ประโยคทั้งสองสมมูลกันตามกฎของตรรกะเชิงเพรดิเคต`;
         }
 
-        // Predicate Management Functions
-        let predicates = [];
-        let predicateHistory = [];
 
-        function addPredicate() {
-            const input = document.getElementById('newPredicate');
-            const predicate = input.value.trim().toUpperCase();
-            
-            if (predicate === '') {
-                alert('กรุณาใส่ชื่อประโยคเปิด');
-                return;
-            }
-            
-            if (!/^[A-Z]+$/.test(predicate)) {
-                alert('ชื่อประโยคเปิดต้องเป็นตัวอักษรภาษาอังกฤษเท่านั้น');
-                return;
-            }
-            
-            if (predicates.includes(predicate)) {
-                alert('ประโยคเปิดนี้มีอยู่แล้ว');
-                return;
-            }
-            
-            predicates.push(predicate);
-            predicateHistory.push([...predicates]);
-            input.value = '';
-            updatePredicatesList();
-            updatePredicateButtons();
-        }
-
-        function clearPredicates() {
-            predicates = [];
-            predicateHistory = [];
-            updatePredicatesList();
-            updatePredicateButtons();
-            document.getElementById('quantifierResultsContainer').classList.add('hidden');
-        }
-
-        function updatePredicatesList() {
-            const container = document.getElementById('predicatesList');
-            if (predicates.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">ยังไม่มีประโยคเปิด - เพิ่มประโยคเปิดเพื่อเริ่มต้น</span>';
-            } else {
-                container.innerHTML = predicates.map(predicate => 
-                    `<span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">${predicate}</span>`
-                ).join('');
-            }
-        }
-
-        function updatePredicateButtons() {
-            const container = document.getElementById('predicateButtons');
-            if (predicates.length === 0) {
-                container.innerHTML = '<span class="text-gray-400 text-sm">เพิ่มประโยคเปิดก่อนเพื่อแสดงปุ่ม</span>';
-            } else {
-                container.innerHTML = predicates.map(predicate => 
-                    `<button onclick="addToSelectedQuantifierFormula('${predicate}')" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">${predicate}</button>`
-                ).join('');
-            }
-        }
 
         // Quantifier Functions
         function addToSelectedQuantifierFormula(symbol) {
@@ -2516,116 +2331,7 @@
             checkStatementsEquivalence();
         }
 
-        function generateQuantifierComparisonTable(formula1, formula2) {
-            // Extract predicates from formulas
-            const allPredicates = [...new Set((formula1 + formula2).match(/[A-Z]/g) || [])].sort();
-            
-            if (allPredicates.length === 0) {
-                throw new Error('ไม่พบประโยคเปิดในสูตร');
-            }
 
-            // Generate all possible truth value combinations for predicates
-            const numRows = Math.pow(2, allPredicates.length);
-            const table = document.getElementById('quantifierComparisonTable');
-            const thead = document.getElementById('quantifierTableHead');
-            const tbody = document.getElementById('quantifierTableBody');
-
-            // Clear existing content
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
-
-            // Create header
-            const headerRow = document.createElement('tr');
-            
-            // Predicate columns
-            allPredicates.forEach(predicate => {
-                const th = document.createElement('th');
-                th.textContent = predicate;
-                th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
-                headerRow.appendChild(th);
-            });
-            
-            // Formula 1 column
-            const formula1Th = document.createElement('th');
-            formula1Th.textContent = `ประโยคเปิดที่1: ${formula1}`;
-            formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
-            headerRow.appendChild(formula1Th);
-            
-            // Formula 2 column
-            const formula2Th = document.createElement('th');
-            formula2Th.textContent = `ประโยคเปิดที่2: ${formula2}`;
-            formula2Th.className = 'px-4 py-3 text-center bg-green-700';
-            headerRow.appendChild(formula2Th);
-            
-            thead.appendChild(headerRow);
-
-            // Generate rows
-            let results1 = [];
-            let results2 = [];
-
-            for (let i = 0; i < numRows; i++) {
-                const row = document.createElement('tr');
-                row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
-
-                // Create predicate assignments
-                const assignments = {};
-                for (let j = 0; j < allPredicates.length; j++) {
-                    const value = (i >> (allPredicates.length - 1 - j)) & 1;
-                    assignments[allPredicates[j]] = value === 1;
-                }
-
-                // Predicate value columns
-                allPredicates.forEach(predicate => {
-                    const td = document.createElement('td');
-                    const value = assignments[predicate];
-                    td.textContent = value ? 'T' : 'F';
-                    td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${value ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(td);
-                });
-
-                // Evaluate formulas
-                const result1 = evaluateQuantifierFormula(formula1, assignments);
-                const result2 = evaluateQuantifierFormula(formula2, assignments);
-                results1.push(result1);
-                results2.push(result2);
-
-                // Formula 1 result column
-                const result1Td = document.createElement('td');
-                result1Td.textContent = result1 ? 'T' : 'F';
-                result1Td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result1 ? 'text-green-400' : 'text-red-400'}`;
-                row.appendChild(result1Td);
-
-                // Formula 2 result column
-                const result2Td = document.createElement('td');
-                result2Td.textContent = result2 ? 'T' : 'F';
-                result2Td.className = `px-4 py-3 text-center font-bold ${result2 ? 'text-green-400' : 'text-red-400'}`;
-                row.appendChild(result2Td);
-
-                tbody.appendChild(row);
-            }
-
-            // Check equivalence
-            const isEquivalent = results1.every((r1, i) => r1 === results2[i]);
-            
-            const pattern1 = results1.map(r => r ? 'T' : 'F').join('');
-            const pattern2 = results2.map(r => r ? 'T' : 'F').join('');
-            
-            document.getElementById('quantifierFormula1Pattern').textContent = pattern1;
-            document.getElementById('quantifierFormula2Pattern').textContent = pattern2;
-
-            const resultDiv = document.getElementById('quantifierEquivalenceResult');
-            const explanationDiv = document.getElementById('quantifierExplanationText');
-            
-            if (isEquivalent) {
-                resultDiv.textContent = '✅ ประโยคเปิดทั้งสองสมมูลกัน (Equivalent)';
-                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
-                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, true);
-            } else {
-                resultDiv.textContent = '❌ ประโยคเปิดทั้งสองไม่สมมูลกัน (Not Equivalent)';
-                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
-                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, false);
-            }
-        }
 
         function evaluateQuantifierFormula(formula, predicateAssignments) {
             // This is a simplified evaluation for demonstration
@@ -3672,13 +3378,7 @@
                 });
             }
 
-            // Quantifier section
-            const newPredicateInput = document.getElementById('newPredicate');
-            if (newPredicateInput) {
-                newPredicateInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') addPredicate();
-                });
-            }
+
         });
 
         // Reasoning Section Variables and Functions
@@ -3793,5 +3493,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd212f05ec4b70',t:'MTc1NDgwNDEyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd310b773b130f',t:'MTc1NDgwNDc3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
