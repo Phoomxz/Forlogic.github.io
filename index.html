@@ -35,6 +35,14 @@
                class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                 🧠 การอ้างเหตุผล
             </a>
+            <a href="#" onclick="showSection('quantifierEquivalence'); toggleMobileMenu()" id="quantifierEquivalenceBtnMobile" 
+               class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                🔄 สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ
+            </a>
+            <a href="#" onclick="showSection('quantifierNegation'); toggleMobileMenu()" id="quantifierNegationBtnMobile" 
+               class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                ❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ
+            </a>
 
             <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
                class="block bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
@@ -67,6 +75,14 @@
                 <a href="#" onclick="showSection('reasoning')" id="reasoningBtn" 
                    class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                     🧠 การอ้างเหตุผล
+                </a>
+                <a href="#" onclick="showSection('quantifierEquivalence')" id="quantifierEquivalenceBtn" 
+                   class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                    🔄 สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ
+                </a>
+                <a href="#" onclick="showSection('quantifierNegation')" id="quantifierNegationBtn" 
+                   class="block bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
+                    ❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ
                 </a>
 
                 <a href="https://en.wikipedia.org/wiki/Logic" target="_blank" 
@@ -558,6 +574,272 @@
             </div>
         </div>
 
+        <!-- Quantifier Equivalence Section -->
+        <div id="quantifierEquivalenceSection" class="section-content hidden">
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
+                <div class="mb-4">
+                    <p class="text-gray-300 text-sm mb-4">
+                        <strong>ตัวบ่งปริมาณ:</strong> ∀ (สำหรับทุก), ∃ (มีอยู่), ¬ (นิเสธ) | <strong>ตัวอย่าง:</strong> ∀x P(x), ∃x Q(x), ¬∀x R(x)
+                    </p>
+                </div>
+                
+                <!-- Formula Builder for Quantifier Statements -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สร้างประโยคเปิด:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToQuantifierFormula('∀')" 
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∀ (สำหรับทุก)
+                        </button>
+                        <button onclick="addToQuantifierFormula('∃')" 
+                                class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∃ (มีอยู่)
+                        </button>
+                        <button onclick="addToQuantifierFormula('¬')" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ¬ (นิเสธ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('∧')" 
+                                class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∧ (และ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('∨')" 
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∨ (หรือ)
+                        </button>
+                        <button onclick="addToQuantifierFormula('→')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            → (ถ้า..แล้ว)
+                        </button>
+                        <button onclick="addToQuantifierFormula('(')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            (
+                        </button>
+                        <button onclick="addToQuantifierFormula(')')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            )
+                        </button>
+                        <button onclick="clearQuantifierFormula()" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ล้าง
+                        </button>
+                        <button onclick="undoQuantifierFormula()" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ย้อนกลับ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formula Comparison Input -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เปรียบเทียบประโยคเปิด:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-4">
+                        <!-- Formula 1 -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่1</label>
+                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P(x)" 
+                                      class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                      rows="2"></textarea>
+                        </div>
+                        
+                        <!-- Equivalence Symbol -->
+                        <div class="flex justify-center">
+                            <div class="bg-purple-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+                                ≡
+                            </div>
+                        </div>
+                        
+                        <!-- Formula 2 -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่2</label>
+                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P(x)" 
+                                      class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                      rows="2"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="text-sm text-gray-400 mb-4">
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="checkEquivalentStatements()" 
+                            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">
+                        🔄 ตรวจสอบความสมมูล
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quantifier Results Display -->
+            <div id="quantifierResultsContainer" class="hidden">
+                <!-- Equivalence Results -->
+                <div id="equivalenceResults" class="hidden">
+                    <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-6">
+                        <h2 class="text-2xl font-semibold text-white mb-4">ผลการตรวจสอบความสมมูล</h2>
+                        
+                        <!-- Manual Comparison Section -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-300 mb-3">เปรียบเทียบรายละเอียด:</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่1</label>
+                                    <textarea id="statement1Input" 
+                                              class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                              rows="2" readonly></textarea>
+                                </div>
+                                
+                                <div class="flex justify-center">
+                                    <div class="bg-purple-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+                                        ≡?
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่2</label>
+                                    <textarea id="statement2Input" 
+                                              class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
+                                              rows="2" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div id="equivalenceResult" class="text-center p-4 rounded-lg font-bold text-xl mb-4 bg-gray-600 text-white">
+                            รอการตรวจสอบ...
+                        </div>
+                        
+                        <!-- Explanation -->
+                        <div class="bg-gray-700 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-300 mb-2">คำอธิบาย:</h4>
+                            <div id="explanationText" class="text-gray-300">
+                                รอการกรอกข้อมูลให้ครบถ้วน
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantifier Negation Section -->
+        <div id="quantifierNegationSection" class="section-content hidden">
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-white mb-4">นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
+                <div class="mb-4">
+                    <p class="text-gray-300 text-sm mb-4">
+                        <strong>กฎการนิเสธ:</strong> ¬∀x P(x) ≡ ∃x ¬P(x), ¬∃x P(x) ≡ ∀x ¬P(x)
+                    </p>
+                </div>
+                
+                <!-- Formula Builder for Quantifier Statements -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">สร้างประโยคเปิด:</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="addToNegationFormula('∀')" 
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∀ (สำหรับทุก)
+                        </button>
+                        <button onclick="addToNegationFormula('∃')" 
+                                class="bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∃ (มีอยู่)
+                        </button>
+                        <button onclick="addToNegationFormula('¬')" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ¬ (นิเสธ)
+                        </button>
+                        <button onclick="addToNegationFormula('∧')" 
+                                class="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∧ (และ)
+                        </button>
+                        <button onclick="addToNegationFormula('∨')" 
+                                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ∨ (หรือ)
+                        </button>
+                        <button onclick="addToNegationFormula('→')" 
+                                class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            → (ถ้า..แล้ว)
+                        </button>
+                        <button onclick="addToNegationFormula('(')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            (
+                        </button>
+                        <button onclick="addToNegationFormula(')')" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            )
+                        </button>
+                        <button onclick="clearNegationFormula()" 
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ล้าง
+                        </button>
+                        <button onclick="undoNegationFormula()" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
+                            ย้อนกลับ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formula Input -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิดที่ต้องการหานิเสธ:</h3>
+                    <textarea id="negationFormulaInput" placeholder="เช่น ∀x P(x) หรือ ∃x Q(x)" 
+                              class="w-full px-4 py-3 bg-gray-700 border border-gray-500 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-lg font-mono resize-none"
+                              rows="3"></textarea>
+                    <div class="text-sm text-gray-400 mt-2">
+                        <strong>ตัวอย่าง:</strong> ∀x P(x), ∃x Q(x), ¬∀x R(x), ∀x (P(x) → Q(x))
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="generateNegation()" 
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200 shadow-lg hover:shadow-xl">
+                        ❌ สร้างนิเสธ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Negation Results Display -->
+            <div id="negationResultsContainer" class="hidden">
+                <!-- Negation Results -->
+                <div id="negationResults" class="hidden">
+                    <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-6">
+                        <h2 class="text-2xl font-semibold text-white mb-4">ผลการสร้างนิเสธ</h2>
+                        
+                        <!-- Original and Negated Statements -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคต้นฉบับ</label>
+                                <div class="bg-gray-700 border-2 border-blue-500 rounded-lg p-4">
+                                    <div id="originalStatement" class="text-white font-mono text-lg text-center"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center">
+                                <div class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+                                    ¬
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคนิเสธ</label>
+                                <div class="bg-gray-700 border-2 border-red-500 rounded-lg p-4">
+                                    <div id="negatedStatement" class="text-white font-mono text-lg text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Steps Explanation -->
+                        <div class="bg-gray-700 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-300 mb-2">ขั้นตอนการสร้างนิเสธ:</h4>
+                            <div id="negationSteps" class="text-gray-300">
+                                รอการประมวลผล...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Reasoning Section -->
         <div id="reasoningSection" class="section-content hidden">
             <!-- Variable Management Section for Reasoning -->
@@ -837,7 +1119,9 @@
                 'truthTable': 'truthTableBtnMobile',
                 'tautologyCheck': 'tautologyCheckBtnMobile', 
                 'equivalenceCheck': 'equivalenceCheckBtnMobile',
-                'reasoning': 'reasoningBtnMobile'
+                'reasoning': 'reasoningBtnMobile',
+                'quantifierEquivalence': 'quantifierEquivalenceBtnMobile',
+                'quantifierNegation': 'quantifierNegationBtnMobile'
             };
             
             // Reset all mobile buttons
@@ -858,7 +1142,7 @@
         // Enhanced showSection function
         function showSection(sectionName) {
             // Hide all sections
-            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection', 'reasoningSection'];
+            const sections = ['truthTableSection', 'tautologyCheckSection', 'equivalenceCheckSection', 'reasoningSection', 'quantifierEquivalenceSection', 'quantifierNegationSection'];
             sections.forEach(section => {
                 const element = document.getElementById(section);
                 if (element) {
@@ -877,7 +1161,9 @@
                 'truthTable': 'truthTableBtn',
                 'tautologyCheck': 'tautologyCheckBtn',
                 'equivalenceCheck': 'equivalenceCheckBtn',
-                'reasoning': 'reasoningBtn'
+                'reasoning': 'reasoningBtn',
+                'quantifierEquivalence': 'quantifierEquivalenceBtn',
+                'quantifierNegation': 'quantifierNegationBtn'
             };
             
             // Reset all desktop buttons
@@ -1261,6 +1547,271 @@
             document.getElementById('quantifierResultsContainer').classList.remove('hidden');
             document.getElementById('equivalenceResults').classList.remove('hidden');
             document.getElementById('negationResults').classList.add('hidden');
+            
+            // Check equivalence
+            checkStatementsEquivalence();
+        }
+
+        function checkStatementsEquivalence() {
+            const statement1 = document.getElementById('statement1Input').value.trim();
+            const statement2 = document.getElementById('statement2Input').value.trim();
+            
+            if (statement1 === '' || statement2 === '') {
+                document.getElementById('equivalenceResult').textContent = 'กรุณาใส่ประโยคทั้งสองประโยค';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-gray-600 text-white';
+                document.getElementById('explanationText').textContent = 'รอการกรอกข้อมูลให้ครบถ้วน';
+                return;
+            }
+
+            try {
+                const isEquivalent = checkQuantifierEquivalence(statement1, statement2);
+                const explanation = getEquivalenceExplanation(statement1, statement2, isEquivalent);
+                
+                if (isEquivalent) {
+                    document.getElementById('equivalenceResult').textContent = '✅ ประโยคทั้งสองสมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+                } else {
+                    document.getElementById('equivalenceResult').textContent = '❌ ประโยคทั้งสองไม่สมมูลกัน';
+                    document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+                }
+                
+                document.getElementById('explanationText').innerHTML = explanation;
+            } catch (error) {
+                document.getElementById('equivalenceResult').textContent = '⚠️ เกิดข้อผิดพลาดในการตรวจสอบ';
+                document.getElementById('equivalenceResult').className = 'text-center p-4 rounded-lg font-bold text-xl bg-yellow-600 text-white';
+                document.getElementById('explanationText').textContent = error.message;
+            }
+        }
+
+        function negateQuantifierStatement(formula) {
+            // Remove outer spaces
+            formula = formula.trim();
+            
+            // Handle negation of the entire formula
+            if (formula.startsWith('¬')) {
+                // Double negation elimination
+                return formula.substring(1).trim();
+            }
+            
+            // Apply De Morgan's laws for quantifiers
+            let result = applyQuantifierNegation(formula);
+            return result;
+        }
+
+        function applyQuantifierNegation(formula) {
+            // Handle ∀x P(x) -> ∃x ¬P(x)
+            const universalMatch = formula.match(/^∀([a-z])\s*(.+)$/);
+            if (universalMatch) {
+                const variable = universalMatch[1];
+                const predicate = universalMatch[2].trim();
+                return `∃${variable} ¬${predicate}`;
+            }
+            
+            // Handle ∃x P(x) -> ∀x ¬P(x)
+            const existentialMatch = formula.match(/^∃([a-z])\s*(.+)$/);
+            if (existentialMatch) {
+                const variable = existentialMatch[1];
+                const predicate = existentialMatch[2].trim();
+                return `∀${variable} ¬${predicate}`;
+            }
+            
+            // For complex formulas, just add negation
+            return `¬${formula}`;
+        }
+
+        function getNegationSteps(original, negated) {
+            let steps = '<div class="space-y-2">';
+            
+            steps += `<p><strong>ขั้นตอนที่ 1:</strong> ประโยคต้นฉบับ: <code class="bg-gray-600 px-2 py-1 rounded">${original}</code></p>`;
+            
+            if (original.startsWith('∀')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∀x P(x) ≡ ∃x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∀ เป็น ∃ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('∃')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎ ¬∃x P(x) ≡ ∀x ¬P(x)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> เปลี่ยน ∃ เป็น ∀ และเพิ่ม ¬ ให้กับเพรดิเคต</p>`;
+            } else if (original.startsWith('¬')) {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> ใช้กฎการขจัดการนิเสธซ้อน (Double Negation Elimination)</p>`;
+                steps += `<p><strong>ขั้นตอนที่ 3:</strong> ลบ ¬ ออก</p>`;
+            } else {
+                steps += `<p><strong>ขั้นตอนที่ 2:</strong> เพิ่ม ¬ ข้างหน้าประโยค</p>`;
+            }
+            
+            steps += `<p><strong>ผลลัพธ์:</strong> <code class="bg-gray-600 px-2 py-1 rounded">${negated}</code></p>`;
+            steps += '</div>';
+            
+            return steps;
+        }
+
+        function checkQuantifierEquivalence(statement1, statement2) {
+            // Normalize statements for comparison
+            const norm1 = normalizeQuantifierStatement(statement1);
+            const norm2 = normalizeQuantifierStatement(statement2);
+            
+            // Check direct equivalence
+            if (norm1 === norm2) return true;
+            
+            // Check if one is the negation of the other's negation (double negation)
+            const neg1 = negateQuantifierStatement(statement1);
+            const neg2 = negateQuantifierStatement(statement2);
+            
+            if (normalizeQuantifierStatement(neg1) === norm2) return true;
+            if (normalizeQuantifierStatement(neg2) === norm1) return true;
+            
+            // Check known equivalences
+            return checkKnownEquivalences(norm1, norm2);
+        }
+
+        function normalizeQuantifierStatement(statement) {
+            // Remove extra spaces and normalize format
+            return statement.replace(/\s+/g, ' ').trim();
+        }
+
+        function checkKnownEquivalences(statement1, statement2) {
+            // Define known equivalence patterns
+            const equivalences = [
+                // ∀x P(x) ≡ ¬∃x ¬P(x)
+                [/^∀([a-z])\s*(.+)$/, /^¬∃\1\s*¬(.+)$/],
+                [/^¬∃([a-z])\s*¬(.+)$/, /^∀\1\s*(.+)$/],
+                
+                // ∃x P(x) ≡ ¬∀x ¬P(x)
+                [/^∃([a-z])\s*(.+)$/, /^¬∀\1\s*¬(.+)$/],
+                [/^¬∀([a-z])\s*¬(.+)$/, /^∃\1\s*(.+)$/],
+            ];
+            
+            for (let [pattern1, pattern2] of equivalences) {
+                const match1 = statement1.match(pattern1);
+                const match2 = statement2.match(pattern2);
+                
+                if (match1 && match2) {
+                    // Check if the predicates match
+                    if (match1[2] === match2[2]) return true;
+                }
+                
+                // Check reverse direction
+                const match1Rev = statement1.match(pattern2);
+                const match2Rev = statement2.match(pattern1);
+                
+                if (match1Rev && match2Rev) {
+                    if (match1Rev[2] === match2Rev[2]) return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function getEquivalenceExplanation(statement1, statement2, isEquivalent) {
+            if (!isEquivalent) {
+                return `ประโยค "<code>${statement1}</code>" และ "<code>${statement2}</code>" ไม่สมมูลกัน เนื่องจากมีความหมายที่แตกต่างกันในเชิงตรรกะ`;
+            }
+            
+            // Check specific equivalence types
+            if (statement1 === statement2) {
+                return `ประโยคทั้งสองเหมือนกันทุกประการ`;
+            }
+            
+            // Check for De Morgan's law equivalences
+            const universalMatch1 = statement1.match(/^∀([a-z])\s*(.+)$/);
+            const existentialNegMatch2 = statement2.match(/^¬∃([a-z])\s*¬(.+)$/);
+            
+            if (universalMatch1 && existentialNegMatch2 && 
+                universalMatch1[1] === existentialNegMatch2[1] && 
+                universalMatch1[2] === existentialNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∀x P(x) ≡ ¬∃x ¬P(x)<br>
+                        ประโยค "สำหรับทุก x, P(x) เป็นจริง" สมมูลกับ "ไม่มี x ใดที่ P(x) เป็นเท็จ"`;
+            }
+            
+            const existentialMatch1 = statement1.match(/^∃([a-z])\s*(.+)$/);
+            const universalNegMatch2 = statement2.match(/^¬∀([a-z])\s*¬(.+)$/);
+            
+            if (existentialMatch1 && universalNegMatch2 && 
+                existentialMatch1[1] === universalNegMatch2[1] && 
+                existentialMatch1[2] === universalNegMatch2[2]) {
+                return `ใช้กฎ De Morgan สำหรับตัวบ่งปริมาณ: ∃x P(x) ≡ ¬∀x ¬P(x)<br>
+                        ประโยค "มี x อย่างน้อยหนึ่งตัวที่ P(x) เป็นจริง" สมมูลกับ "ไม่ใช่ทุก x ที่ P(x) เป็นเท็จ"`;
+            }
+            
+            return `ประโยคทั้งสองสมมูลกันตามกฎของตรรกะเชิงเพรดิเคต`;
+        }
+
+        // Quantifier Functions
+        function addToQuantifierFormula(symbol) {
+            const input = document.getElementById('quantifierFormulaInput');
+            const cursorPosition = input.selectionStart;
+            const textBefore = input.value.substring(0, cursorPosition);
+            const textAfter = input.value.substring(input.selectionEnd);
+            
+            input.value = textBefore + symbol + textAfter;
+            input.focus();
+            input.setSelectionRange(cursorPosition + symbol.length, cursorPosition + symbol.length);
+        }
+
+        function clearQuantifierFormula() {
+            document.getElementById('quantifierFormulaInput').value = '';
+        }
+
+        function undoQuantifierFormula() {
+            const input = document.getElementById('quantifierFormulaInput');
+            input.value = input.value.slice(0, -1);
+        }
+
+        function addToNegationFormula(symbol) {
+            const input = document.getElementById('negationFormulaInput');
+            const cursorPosition = input.selectionStart;
+            const textBefore = input.value.substring(0, cursorPosition);
+            const textAfter = input.value.substring(input.selectionEnd);
+            
+            input.value = textBefore + symbol + textAfter;
+            input.focus();
+            input.setSelectionRange(cursorPosition + symbol.length, cursorPosition + symbol.length);
+        }
+
+        function clearNegationFormula() {
+            document.getElementById('negationFormulaInput').value = '';
+        }
+
+        function undoNegationFormula() {
+            const input = document.getElementById('negationFormulaInput');
+            input.value = input.value.slice(0, -1);
+        }
+
+        function generateNegation() {
+            const formula = document.getElementById('negationFormulaInput').value.trim();
+            if (formula === '') {
+                alert('กรุณาใส่ประโยคตัวบ่งปริมาณ');
+                return;
+            }
+
+            try {
+                const negatedFormula = negateQuantifierStatement(formula);
+                const steps = getNegationSteps(formula, negatedFormula);
+                
+                document.getElementById('originalStatement').textContent = formula;
+                document.getElementById('negatedStatement').textContent = negatedFormula;
+                document.getElementById('negationSteps').innerHTML = steps;
+                
+                document.getElementById('negationResultsContainer').classList.remove('hidden');
+                document.getElementById('negationResults').classList.remove('hidden');
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function checkEquivalentStatements() {
+            const formula1 = document.getElementById('quantifierFormulaInput').value.trim();
+            const formula2 = document.getElementById('quantifierComparisonInput').value.trim();
+            
+            if (formula1 === '' || formula2 === '') {
+                alert('กรุณาใส่ประโยคทั้งสองประโยค');
+                return;
+            }
+
+            // Auto-fill the statement inputs
+            document.getElementById('statement1Input').value = formula1;
+            document.getElementById('statement2Input').value = formula2;
+            
+            document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+            document.getElementById('equivalenceResults').classList.remove('hidden');
             
             // Check equivalence
             checkStatementsEquivalence();
@@ -2165,5 +2716,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cc610fd4634b8f',t:'MTc1NDc5NjI1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cc75b3c42745bd',t:'MTc1NDc5NzEwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
