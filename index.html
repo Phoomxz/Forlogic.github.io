@@ -1786,6 +1786,200 @@
             }
         }
 
+        function generateQuantifierComparisonTable(formula1, formula2) {
+            // Create comparison table for quantifier statements
+            const table = document.getElementById('quantifierComparisonTable');
+            const thead = document.getElementById('quantifierTableHead');
+            const tbody = document.getElementById('quantifierTableBody');
+
+            // Clear existing content
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Create header
+            const headerRow = document.createElement('tr');
+            
+            // Predicate columns (P and Q)
+            const pTh = document.createElement('th');
+            pTh.textContent = 'P';
+            pTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
+            headerRow.appendChild(pTh);
+            
+            const qTh = document.createElement('th');
+            qTh.textContent = 'Q';
+            qTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
+            headerRow.appendChild(qTh);
+            
+            // Formula columns
+            const formula1Th = document.createElement('th');
+            formula1Th.textContent = `ประโยคที่1: ${formula1}`;
+            formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
+            headerRow.appendChild(formula1Th);
+            
+            const formula2Th = document.createElement('th');
+            formula2Th.textContent = `ประโยคที่2: ${formula2}`;
+            formula2Th.className = 'px-4 py-3 text-center bg-green-700';
+            headerRow.appendChild(formula2Th);
+            
+            thead.appendChild(headerRow);
+
+            // Generate rows for different predicate combinations
+            const predicateCombinations = [
+                { P: true, Q: true },
+                { P: true, Q: false },
+                { P: false, Q: true },
+                { P: false, Q: false }
+            ];
+
+            let results1 = [];
+            let results2 = [];
+
+            predicateCombinations.forEach((combination, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
+
+                // P value
+                const pTd = document.createElement('td');
+                pTd.textContent = combination.P ? 'T' : 'F';
+                pTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${combination.P ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(pTd);
+
+                // Q value
+                const qTd = document.createElement('td');
+                qTd.textContent = combination.Q ? 'T' : 'F';
+                qTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${combination.Q ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(qTd);
+
+                // Evaluate formulas
+                const result1 = evaluateQuantifierFormula(formula1, combination);
+                const result2 = evaluateQuantifierFormula(formula2, combination);
+                
+                results1.push(result1);
+                results2.push(result2);
+
+                // Formula 1 result
+                const result1Td = document.createElement('td');
+                result1Td.textContent = result1 ? 'T' : 'F';
+                result1Td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result1 ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(result1Td);
+
+                // Formula 2 result
+                const result2Td = document.createElement('td');
+                result2Td.textContent = result2 ? 'T' : 'F';
+                result2Td.className = `px-4 py-3 text-center font-bold ${result2 ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(result2Td);
+
+                tbody.appendChild(row);
+            });
+
+            // Check equivalence
+            const isEquivalent = results1.every((r1, i) => r1 === results2[i]);
+            
+            const pattern1 = results1.map(r => r ? 'T' : 'F').join('');
+            const pattern2 = results2.map(r => r ? 'T' : 'F').join('');
+            
+            document.getElementById('quantifierFormula1Pattern').textContent = pattern1;
+            document.getElementById('quantifierFormula2Pattern').textContent = pattern2;
+
+            const resultDiv = document.getElementById('quantifierEquivalenceResult');
+            const explanationDiv = document.getElementById('quantifierExplanationText');
+            
+            if (isEquivalent) {
+                resultDiv.textContent = '✅ ประโยคเปิดทั้งสองสมมูลกัน (Equivalent)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, true);
+            } else {
+                resultDiv.textContent = '❌ ประโยคเปิดทั้งสองไม่สมมูลกัน (Not Equivalent)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, false);
+            }
+        }
+
+        function evaluateQuantifierFormula(formula, predicateAssignments) {
+            // Handle specific quantifier patterns
+            
+            // ∀x P(x) - true if P is true
+            if (formula.match(/^∀[a-z]\s*P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ∃x P(x) - true if P is true  
+            if (formula.match(/^∃[a-z]\s*P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ∀x Q(x) - true if Q is true
+            if (formula.match(/^∀[a-z]\s*Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ∃x Q(x) - true if Q is true
+            if (formula.match(/^∃[a-z]\s*Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ¬∃x ¬P(x) - equivalent to ∀x P(x)
+            if (formula.match(/^¬∃[a-z]\s*¬P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ¬∀x ¬P(x) - equivalent to ∃x P(x)
+            if (formula.match(/^¬∀[a-z]\s*¬P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ¬∃x ¬Q(x) - equivalent to ∀x Q(x)
+            if (formula.match(/^¬∃[a-z]\s*¬Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ¬∀x ¬Q(x) - equivalent to ∃x Q(x)
+            if (formula.match(/^¬∀[a-z]\s*¬Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // Handle negated quantifiers
+            // ¬∀x P(x) - equivalent to ∃x ¬P(x) - true if P is false
+            if (formula.match(/^¬∀[a-z]\s*P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ¬∃x P(x) - equivalent to ∀x ¬P(x) - true if P is false
+            if (formula.match(/^¬∃[a-z]\s*P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ∃x ¬P(x) - true if P is false
+            if (formula.match(/^∃[a-z]\s*¬P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ∀x ¬P(x) - true if P is false
+            if (formula.match(/^∀[a-z]\s*¬P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // Similar patterns for Q
+            if (formula.match(/^¬∀[a-z]\s*Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^¬∃[a-z]\s*Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^∃[a-z]\s*¬Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^∀[a-z]\s*¬Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            // Default case - try to parse more complex formulas
+            return false;
+        }
+
 
 
         function evaluateQuantifierFormula(formula, predicateAssignments) {
@@ -2320,15 +2514,206 @@
                 return;
             }
 
-            // Auto-fill the statement inputs
-            document.getElementById('statement1Input').value = formula1;
-            document.getElementById('statement2Input').value = formula2;
+            try {
+                generateQuantifierComparisonTable(formula1, formula2);
+                document.getElementById('quantifierResultsContainer').classList.remove('hidden');
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+            }
+        }
+
+        function generateQuantifierComparisonTable(formula1, formula2) {
+            // Create comparison table for quantifier statements
+            const table = document.getElementById('quantifierComparisonTable');
+            const thead = document.getElementById('quantifierTableHead');
+            const tbody = document.getElementById('quantifierTableBody');
+
+            // Clear existing content
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Create header
+            const headerRow = document.createElement('tr');
             
-            document.getElementById('quantifierResultsContainer').classList.remove('hidden');
-            document.getElementById('equivalenceResults').classList.remove('hidden');
+            // Predicate columns (P and Q)
+            const pTh = document.createElement('th');
+            pTh.textContent = 'P';
+            pTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
+            headerRow.appendChild(pTh);
             
+            const qTh = document.createElement('th');
+            qTh.textContent = 'Q';
+            qTh.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
+            headerRow.appendChild(qTh);
+            
+            // Formula columns
+            const formula1Th = document.createElement('th');
+            formula1Th.textContent = `ประโยคที่1: ${formula1}`;
+            formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
+            headerRow.appendChild(formula1Th);
+            
+            const formula2Th = document.createElement('th');
+            formula2Th.textContent = `ประโยคที่2: ${formula2}`;
+            formula2Th.className = 'px-4 py-3 text-center bg-green-700';
+            headerRow.appendChild(formula2Th);
+            
+            thead.appendChild(headerRow);
+
+            // Generate rows for different predicate combinations
+            const predicateCombinations = [
+                { P: true, Q: true },
+                { P: true, Q: false },
+                { P: false, Q: true },
+                { P: false, Q: false }
+            ];
+
+            let results1 = [];
+            let results2 = [];
+
+            predicateCombinations.forEach((combination, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
+
+                // P value
+                const pTd = document.createElement('td');
+                pTd.textContent = combination.P ? 'T' : 'F';
+                pTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${combination.P ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(pTd);
+
+                // Q value
+                const qTd = document.createElement('td');
+                qTd.textContent = combination.Q ? 'T' : 'F';
+                qTd.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${combination.Q ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(qTd);
+
+                // Evaluate formulas
+                const result1 = evaluateQuantifierFormula(formula1, combination);
+                const result2 = evaluateQuantifierFormula(formula2, combination);
+                
+                results1.push(result1);
+                results2.push(result2);
+
+                // Formula 1 result
+                const result1Td = document.createElement('td');
+                result1Td.textContent = result1 ? 'T' : 'F';
+                result1Td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result1 ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(result1Td);
+
+                // Formula 2 result
+                const result2Td = document.createElement('td');
+                result2Td.textContent = result2 ? 'T' : 'F';
+                result2Td.className = `px-4 py-3 text-center font-bold ${result2 ? 'text-green-400' : 'text-red-400'}`;
+                row.appendChild(result2Td);
+
+                tbody.appendChild(row);
+            });
+
             // Check equivalence
-            checkStatementsEquivalence();
+            const isEquivalent = results1.every((r1, i) => r1 === results2[i]);
+            
+            const pattern1 = results1.map(r => r ? 'T' : 'F').join('');
+            const pattern2 = results2.map(r => r ? 'T' : 'F').join('');
+            
+            document.getElementById('quantifierFormula1Pattern').textContent = pattern1;
+            document.getElementById('quantifierFormula2Pattern').textContent = pattern2;
+
+            const resultDiv = document.getElementById('quantifierEquivalenceResult');
+            const explanationDiv = document.getElementById('quantifierExplanationText');
+            
+            if (isEquivalent) {
+                resultDiv.textContent = '✅ ประโยคเปิดทั้งสองสมมูลกัน (Equivalent)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-green-600 text-white';
+                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, true);
+            } else {
+                resultDiv.textContent = '❌ ประโยคเปิดทั้งสองไม่สมมูลกัน (Not Equivalent)';
+                resultDiv.className = 'text-center p-4 rounded-lg font-bold text-xl bg-red-600 text-white';
+                explanationDiv.innerHTML = getQuantifierEquivalenceExplanation(formula1, formula2, false);
+            }
+        }
+
+        function evaluateQuantifierFormula(formula, predicateAssignments) {
+            // Handle specific quantifier patterns
+            
+            // ∀x P(x) - true if P is true
+            if (formula.match(/^∀[a-z]\s*P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ∃x P(x) - true if P is true  
+            if (formula.match(/^∃[a-z]\s*P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ∀x Q(x) - true if Q is true
+            if (formula.match(/^∀[a-z]\s*Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ∃x Q(x) - true if Q is true
+            if (formula.match(/^∃[a-z]\s*Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ¬∃x ¬P(x) - equivalent to ∀x P(x)
+            if (formula.match(/^¬∃[a-z]\s*¬P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ¬∀x ¬P(x) - equivalent to ∃x P(x)
+            if (formula.match(/^¬∀[a-z]\s*¬P\([a-z]\)$/)) {
+                return predicateAssignments.P;
+            }
+            
+            // ¬∃x ¬Q(x) - equivalent to ∀x Q(x)
+            if (formula.match(/^¬∃[a-z]\s*¬Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // ¬∀x ¬Q(x) - equivalent to ∃x Q(x)
+            if (formula.match(/^¬∀[a-z]\s*¬Q\([a-z]\)$/)) {
+                return predicateAssignments.Q;
+            }
+            
+            // Handle negated quantifiers
+            // ¬∀x P(x) - equivalent to ∃x ¬P(x) - true if P is false
+            if (formula.match(/^¬∀[a-z]\s*P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ¬∃x P(x) - equivalent to ∀x ¬P(x) - true if P is false
+            if (formula.match(/^¬∃[a-z]\s*P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ∃x ¬P(x) - true if P is false
+            if (formula.match(/^∃[a-z]\s*¬P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // ∀x ¬P(x) - true if P is false
+            if (formula.match(/^∀[a-z]\s*¬P\([a-z]\)$/)) {
+                return !predicateAssignments.P;
+            }
+            
+            // Similar patterns for Q
+            if (formula.match(/^¬∀[a-z]\s*Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^¬∃[a-z]\s*Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^∃[a-z]\s*¬Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            if (formula.match(/^∀[a-z]\s*¬Q\([a-z]\)$/)) {
+                return !predicateAssignments.Q;
+            }
+            
+            // Default case - try to parse more complex formulas
+            return false;
         }
 
 
@@ -3493,5 +3878,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd310b773b130f',t:'MTc1NDgwNDc3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd37340111130f',t:'MTc1NDgwNTAyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
