@@ -581,10 +581,10 @@
                 <h2 class="text-2xl font-semibold text-white mb-4">สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ</h2>
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm mb-4">
-                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P ≡ ¬∃x ¬P, ∃x P ≡ ¬∀x ¬P
                     </p>
                     <p class="text-gray-300 text-sm">
-                        <strong>ประโยคเปิดที่ใช้:</strong> P(x), Q(x) - สามารถใช้ในการสร้างประโยคเปิดที่มีตัวบ่งปริมาณได้
+                        <strong>ประโยคเปิดที่ใช้:</strong> P, Q - สามารถใช้ในการสร้างประโยคเปิดที่มีตัวบ่งปริมาณได้
                     </p>
                 </div>
             </div>
@@ -610,17 +610,17 @@
                     </div>
                 </div>
 
-                <!-- Predicate Buttons -->
+                <!-- Predicates Section -->
                 <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">เลือกประโยคเปิด:</h3>
+                    <h3 class="text-lg font-semibold text-gray-300 mb-2">ประโยคเปิด:</h3>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="addToSelectedQuantifierFormula('P(x)')" 
+                        <button onclick="addToSelectedQuantifierFormula('P')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            P(x)
+                            P
                         </button>
-                        <button onclick="addToSelectedQuantifierFormula('Q(x)')" 
+                        <button onclick="addToSelectedQuantifierFormula('Q')" 
                                 class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-200">
-                            Q(x)
+                            Q
                         </button>
                     </div>
                 </div>
@@ -774,7 +774,7 @@
                         <!-- Formula 1 -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่1</label>
-                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P(x)" 
+                            <textarea id="quantifierFormulaInput" placeholder="เช่น ∀x P" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-blue-500 text-white rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
                         </div>
@@ -789,14 +789,14 @@
                         <!-- Formula 2 -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-400 mb-1">ประโยคเปิดที่2</label>
-                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P(x)" 
+                            <textarea id="quantifierComparisonInput" placeholder="เช่น ¬∃x ¬P" 
                                       class="w-full px-4 py-3 bg-gray-700 border-2 border-green-500 text-white rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 placeholder-gray-400 text-lg font-mono resize-none"
                                       rows="2"></textarea>
                         </div>
                     </div>
                     
                     <div class="text-sm text-gray-400 mb-4">
-                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P(x) ≡ ¬∃x ¬P(x), ∃x P(x) ≡ ¬∀x ¬P(x)
+                        <strong>ตัวอย่างความสมมูล:</strong> ∀x P ≡ ¬∃x ¬P, ∃x P ≡ ¬∀x ¬P
                     </div>
                 </div>
 
@@ -3878,5 +3878,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd37340111130f',t:'MTc1NDgwNTAyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96cd51a7c43df305',t:'MTc1NDgwNjEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
