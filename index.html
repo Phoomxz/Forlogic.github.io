@@ -60,7 +60,7 @@
             </a>
 
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4raPiy6FZ110jGQGmYUGNDTCcomi3gCbIOWnUqOnGwtFAiw/viewform?usp=dialog" 
-               target="_blank" 
+               target="_blank" id="surveyBtnMobile"
                class="block bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-3 rounded-lg transition duration-200 text-sm">
                 📝 แบบสอบถาม
             </a>
@@ -1208,19 +1208,12 @@
 
                         <!-- Feedback -->
                         <div class="mb-6">
-                            <h4 class="text-lg font-medium text-gray-300 mb-3">Feedback:</h4>
+                            <h4 class="text-lg font-medium text-gray-300 mb-3" id="feedbackTitle">Feedback:</h4>
                             <div class="space-y-2">
                                 <div>
                                     <a href="mailto:tooakaengtohjeen@gmail.com" 
                                        class="text-yellow-400 hover:text-yellow-300 transition duration-200 font-medium">
                                         📧 tooakaengtohjeen@gmail.com
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf4raPiy6FZ110jGQGmYUGNDTCcomi3gCbIOWnUqOnGwtFAiw/viewform?usp=dialog" 
-                                       target="_blank" 
-                                       class="text-purple-400 hover:text-purple-300 transition duration-200 font-medium">
-                                        📝 แบบสอบถาม
                                     </a>
                                 </div>
                             </div>
@@ -1711,6 +1704,7 @@
                 quantifierEquivalence: "🔄 Quantifier Equivalence",
                 quantifierNegation: "❌ Quantifier Negation",
                 information: "ℹ️ Additional Information",
+                survey: "📝 Survey",
                 wikipedia: "📖 Wikipedia: Logic",
                 visitorCounterTitle: "📊 Visit Statistics",
                 visitorCountLabel: "Total Visitors",
@@ -1879,6 +1873,7 @@
                 quantifierEquivalence: "🔄 สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ",
                 quantifierNegation: "❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ",
                 information: "ℹ️ ข้อมูลเพิ่มเติม",
+                survey: "📝 แบบสอบถาม",
                 wikipedia: "📖 Wikipedia: Logic",
                 visitorCounterTitle: "📊 สถิติการเข้าชม",
                 visitorCountLabel: "ผู้เข้าชมทั้งหมด",
@@ -2087,6 +2082,7 @@
             updateMenuText('quantifierEquivalenceBtn', t.quantifierEquivalence);
             updateMenuText('quantifierNegationBtn', t.quantifierNegation);
             updateMenuText('informationBtn', t.information);
+            updateMenuText('surveyBtn', t.survey);
 
             // Update menu items - Mobile
             updateMenuText('truthTableBtnMobile', t.truthTable);
@@ -2096,6 +2092,7 @@
             updateMenuText('quantifierEquivalenceBtnMobile', t.quantifierEquivalence);
             updateMenuText('quantifierNegationBtnMobile', t.quantifierNegation);
             updateMenuText('informationBtnMobile', t.information);
+            updateMenuText('surveyBtnMobile', t.survey);
 
             // Update Wikipedia links
             const wikiLinks = document.querySelectorAll('a[href*="wikipedia"]');
@@ -2113,55 +2110,141 @@
         }
 
         function updateContentSections(t) {
-            // Truth Table Section
-            updateTextContent('h2:contains("ระบุประพจน์")', t.specifyPropositions);
-            updateButtonText('เพิ่มประพจน์', t.addProposition);
-            updateButtonText('ล้างทั้งหมด', t.clearAll);
-            updateTextContent('h3:contains("ประพจน์ที่มีอยู่")', t.existingPropositions);
-            updatePlaceholder('newVariable', t.addProposition + ' (e.g. P, Q, R)');
+            // Update all text elements by their text content
+            updateElementsByText(t);
             
-            // Update operator buttons
-            updateButtonTextByOnClick('addToFormula(\'∧\')', `∧ (${t.and})`);
-            updateButtonTextByOnClick('addToFormula(\'∨\')', `∨ (${t.or})`);
-            updateButtonTextByOnClick('addToFormula(\'¬\')', `¬ (${t.not})`);
-            updateButtonTextByOnClick('addToFormula(\'→\')', `→ (${t.implies})`);
-            updateButtonTextByOnClick('addToFormula(\'↔\')', `↔ (${t.biconditional})`);
-            
-            updateButtonText('ล้างประพจน์', t.clearFormula);
-            updateButtonText('ย้อนกลับ', t.undo);
-            updateButtonText('🔍 สร้างตารางค่าความจริง', t.generateTruthTable);
+            // Update placeholders
+            updatePlaceholder('newVariable', currentLanguage === 'en' ? 'Proposition name (e.g. P, Q, R)' : 'ชื่อประพจน์ (เช่น P, Q, R)');
+            updatePlaceholder('newVariable2', currentLanguage === 'en' ? 'Proposition name (e.g. P, Q, R)' : 'ชื่อประพจน์ (เช่น P, Q, R)');
+            updatePlaceholder('newVariable3', currentLanguage === 'en' ? 'Proposition name (e.g. P, Q, R)' : 'ชื่อประพจน์ (เช่น P, Q, R)');
+            updatePlaceholder('newVariable4', currentLanguage === 'en' ? 'Proposition name (e.g. P, Q, R)' : 'ชื่อประพจน์ (เช่น P, Q, R)');
+            updatePlaceholder('formulaInput', currentLanguage === 'en' ? 'Type formula directly e.g. P∧Q or ¬P→Q or use buttons below' : 'พิมพ์ประพจน์โดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง');
+            updatePlaceholder('formulaInput2', currentLanguage === 'en' ? 'Type formula directly e.g. P∧Q or ¬P→Q or use buttons below' : 'พิมพ์ประพจน์โดยตรง เช่น P∧Q หรือ ¬P→Q หรือใช้ปุ่มด้านล่าง');
+            updatePlaceholder('formulaInput3A', currentLanguage === 'en' ? 'e.g. P∧Q' : 'เช่น P∧Q');
+            updatePlaceholder('formulaInput3B', currentLanguage === 'en' ? 'e.g. Q∧P' : 'เช่น Q∧P');
+            updatePlaceholder('newPremise', currentLanguage === 'en' ? 'Type premise e.g. P∨Q or ¬R→S or use buttons above' : 'พิมพ์เหตุ เช่น P∨Q หรือ ¬R→S หรือใช้ปุ่มด้านบน');
+            updatePlaceholder('conclusionInput', currentLanguage === 'en' ? 'Type conclusion e.g. P∧Q or ¬R or use buttons above' : 'พิมพ์ข้อสรุป เช่น P∧Q หรือ ¬R หรือใช้ปุ่มด้านบน');
+            updatePlaceholder('quantifierFormulaInput', currentLanguage === 'en' ? 'e.g. ∀x P(x)' : 'เช่น ∀x P(x)');
+            updatePlaceholder('quantifierComparisonInput', currentLanguage === 'en' ? 'e.g. ¬∃x ¬P(x)' : 'เช่น ¬∃x ¬P(x)');
+            updatePlaceholder('negationFormulaInput', currentLanguage === 'en' ? 'e.g. ∀x P(x) or ∃x Q(x)' : 'เช่น ∀x P(x) หรือ ∃x Q(x)');
+        }
 
-            // Tautology Section
-            updateButtonText('⚡ ตรวจสอบสัจนิรันดร์', t.checkTautology);
+        function updateElementsByText(t) {
+            // Helper function to update elements by their text content
+            const textMappings = {
+                // Common elements
+                'ระบุประพจน์': t.specifyPropositions,
+                'เพิ่มประพจน์': t.addProposition,
+                'ล้างทั้งหมด': t.clearAll,
+                'ประพจน์ที่มีอยู่:': t.existingPropositions,
+                'ยังไม่มีประพจน์ - เพิ่มประพจน์เพื่อเริ่มต้น': t.noPropositions,
+                'เชื่อมประพจน์': t.connectPropositions,
+                'เลือกประพจน์:': t.selectProposition,
+                'เลือกตัวดำเนินการ:': t.selectOperator,
+                'ประพจน์:': t.proposition,
+                'ล้างประพจน์': t.clearFormula,
+                'ย้อนกลับ': t.undo,
+                '🔍 สร้างตารางค่าความจริง': t.generateTruthTable,
+                'ตารางค่าความจริง': t.truthTableTitle,
+                
+                // Tautology section
+                '⚡ ตรวจสอบสัจนิรันดร์': t.checkTautology,
+                'ตารางค่าความจริงสำหรับการตรวจสอบสัจนิรันดร์': t.truthTableForTautology,
+                '📊 ผลการวิเคราะห์': t.analysisResults,
+                'ลำดับค่าความจริง:': t.truthSequence,
+                '🟢 Tautology (สัจนิรันดร์)': t.tautologyTitle,
+                '🔴 Contradiction (ขัดแย้ง)': t.contradictionTitle,
+                'สูตรที่เป็นจริงในทุกกรณี - ไม่ขึ้นกับค่าของตัวแปร': t.tautologyDesc,
+                'สูตรที่เป็นเท็จในทุกกรณี - ไม่สามารถเป็นจริงได้เลย': t.contradictionDesc,
+                
+                // Equivalence section
+                '🔄 ตรวจสอบความสมมูล': t.checkEquivalence,
+                'เลือกประพจน์ที่ต้องการแก้ไข:': t.selectFormulaToEdit,
+                'ประพจน์ที่1': t.formula1,
+                'ประพจน์ที่2': t.formula2,
+                'เปรียบเทียบประพจน์:': t.compareFormulas,
+                'ล้างประพจน์ที่1': t.clearFormula1,
+                'ล้างประพจน์ที่2': t.clearFormula2,
+                'ย้อนกลับ ประพจน์ที่1': t.undoFormula1,
+                'ย้อนกลับ ประพจน์ที่2': t.undoFormula2,
+                'ผลการตรวจสอบความสมมูล': t.equivalenceCheckResult,
+                '📊 ผลการเปรียบเทียบ': t.comparisonResults,
+                'รูปแบบผลลัพธ์ประพจน์ที่1:': t.formula1Pattern,
+                'รูปแบบผลลัพธ์ประพจน์ที่2:': t.formula2Pattern,
+                
+                // Reasoning section
+                'เหตุ': t.premises,
+                'เพิ่มเหตุ': t.addPremise,
+                'ล้างเหตุทั้งหมด': t.clearAllPremises,
+                'ผล': t.conclusion,
+                'ข้อสรุปที่ต้องการตรวจสอบ:': t.conclusionToCheck,
+                '🧠 ตรวจสอบการอ้างเหตุผล': t.checkReasoning,
+                'รูปแบบการอ้างเหตุผล': t.reasoningPattern,
+                'รูปแบบ: (ประพจน์ที่ 1 ∧ ประพจน์ที่ 2 ∧ ... ∧ ประพจน์ที่ n) → ข้อสรุป': t.reasoningFormat,
+                'ตารางค่าความจริงสำหรับการอ้างเหตุผล': t.truthTableForReasoning,
+                '📊 ผลการวิเคราะห์การอ้างเหตุผล': t.reasoningAnalysis,
+                'ลำดับค่าความจริงของการอ้างเหตุผล:': t.reasoningTruthSequence,
+                
+                // Quantifier sections
+                'สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ': t.quantifierEquivalenceTitle,
+                'นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ': t.quantifierNegationTitle,
+                'เชื่อมประโยคเปิด': t.connectOpenSentences,
+                'เลือกประโยคที่ต้องการแก้ไข:': t.selectSentenceToEdit,
+                'ประโยคเปิดที่1': t.openSentence1,
+                'ประโยคเปิดที่2': t.openSentence2,
+                'ตัวบ่งปริมาณ:': t.quantifiers,
+                'ตัวแปร:': t.variables,
+                'ประโยคเปิด:': t.openSentencesLabel,
+                'ตัวดำเนินการตรรกะ:': t.logicalOperators,
+                'ตัวดำเนินการเปรียบเทียบ:': t.comparisonOperators,
+                'ตัวดำเนินการทางคณิตศาสตร์:': t.mathOperators,
+                'วงเล็บ:': t.parentheses,
+                'ล้าง': t.clear,
+                'เปรียบเทียบประโยคเปิด:': t.compareOpenSentences,
+                '❌ สร้างนิเสธ': t.generateNegation,
+                'ผลการสร้างนิเสธ': t.negationResults,
+                'ประโยคต้นฉบับ': t.originalSentence,
+                'ประโยคนิเสธ': t.negatedSentence,
+                'ขั้นตอนการสร้างนิเสธ:': t.negationSteps,
+                'ประโยคเปิดที่ต้องการหานิเสธ:': t.sentenceToNegate,
+                
+                // Information section
+                'ข้อมูลเพิ่มเติม': t.additionalInfo,
+                'พื้นที่โฆษณา': t.advertisementSpace,
+                'Advertisement Space': t.advertisementSpace,
+                'เว็บไซต์สำหรับตรวจสอบค่าความจริงทางตรรกศาสตร์': t.logicTruthWebsite,
+                'ช่วยให้ผู้ใช้สามารถตรวจสอบความถูกต้องและการเชื่อมโยงระหว่างเงื่อนไขต่างๆ ได้อย่างรวดเร็วและแม่นยำ': t.websiteDescription,
+                'ทีมผู้พัฒนา': t.developmentTeam,
+                'สมาชิกทีม:': t.teamMembers,
+                'ครูที่ปรึกษา:': t.advisors,
+                'Contact:': t.contact,
+                'Feedback:': t.feedback,
+                'ช่องทางการโอนเงิน:': t.paymentChannels,
+                'ธนาคารกสิกรไทย': t.kasikornBank,
+                'TrueMoney Wallet': t.trueMoney,
+                'สแกน QR Code เพื่อ Tip': t.scanQR,
+                '© 2025 FOR LOGIC - พัฒนาโดยทีมนักเรียนเพื่อการศึกษา': t.footer
+            };
 
-            // Equivalence Section  
-            updateButtonText('🔄 ตรวจสอบความสมมูล', t.checkEquivalence);
+            // Update all elements with matching text
+            Object.keys(textMappings).forEach(originalText => {
+                const elements = document.querySelectorAll('*');
+                elements.forEach(element => {
+                    // Only update text nodes, not elements with children
+                    if (element.childNodes.length === 1 && element.childNodes[0].nodeType === Node.TEXT_NODE) {
+                        if (element.textContent.trim() === originalText) {
+                            element.textContent = textMappings[originalText];
+                        }
+                    }
+                    // Also check for elements that contain only the text we're looking for
+                    if (element.textContent === originalText && element.children.length === 0) {
+                        element.textContent = textMappings[originalText];
+                    }
+                });
+            });
 
-            // Reasoning Section
-            updateButtonText('🧠 ตรวจสอบการอ้างเหตุผล', t.checkReasoning);
-
-            // Quantifier Sections
-            updateButtonText('🔄 ตรวจสอบความสมมูล', t.checkEquivalenceBtn);
-            updateButtonText('❌ สร้างนิเสธ', t.generateNegation);
-
-            // Information Section
-            updateTextContent('h3:contains("เว็บไซต์สำหรับตรวจสอบค่าความจริงทางตรรกศาสตร์")', t.logicTruthWebsite);
-            updateTextContent('p:contains("ช่วยให้ผู้ใช้สามารถตรวจสอบความถูกต้อง")', t.websiteDescription);
-            updateTextContent('h3:contains("ทีมผู้พัฒนา")', t.developmentTeam);
-            updateTextContent('h4:contains("สมาชิกทีม")', t.teamMembers);
-            updateTextContent('h4:contains("ครูที่ปรึกษา")', t.advisors);
-            updateTextContent('h4:contains("Contact")', t.contact);
-            updateTextContent('h4:contains("Feedback")', t.feedback);
-            updateTextContent('h4:contains("ช่องทางการโอนเงิน")', t.paymentChannels);
-            updateTextContent('div:contains("ธนาคารกสิกรไทย")', t.kasikornBank);
-            updateTextContent('div:contains("TrueMoney Wallet")', t.trueMoney);
-            updateTextContent('p:contains("สแกน QR Code เพื่อ Tip")', t.scanQR);
-            
-            // Footer
-            const footerElement = document.querySelector('p:contains("© 2025 FOR LOGIC")');
-            if (footerElement) {
-                footerElement.textContent = t.footer;
-            }
+            // Update specific elements by ID
+            updateMenuText('feedbackTitle', t.feedback);
         }
 
         function updateTextContent(selector, text) {
@@ -4669,5 +4752,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d5d472179545c9',t:'MTc1NDg5NTM1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d5f761b1694b95',t:'MTc1NDg5Njc4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
