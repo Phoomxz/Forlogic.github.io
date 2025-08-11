@@ -1240,15 +1240,26 @@
                 </div>
             </div>
 
+            <!-- Visitor Counter Section -->
+            <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold text-white mb-4 text-center" id="visitorCounterTitle">📊 สถิติการเข้าชม</h3>
+                <div class="text-center">
+                    <div class="bg-gray-700 rounded-lg p-6 inline-block">
+                        <div class="text-4xl font-bold text-blue-400 mb-2" id="visitorCount">0</div>
+                        <div class="text-gray-300 text-sm" id="visitorCountLabel">ผู้เข้าชมทั้งหมด</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TIP ME Section - Bottom -->
             <div class="bg-gray-800 border border-gray-600 rounded-xl p-6 mb-8">
-                <h3 class="text-2xl font-semibold text-white mb-6 text-center">💰 TIP ME</h3>
+                <h3 class="text-2xl font-semibold text-white mb-6 text-center" id="tipMeTitle">💰 TIP ME</h3>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <!-- QR Code Section -->
                     <div class="text-center">
                         <div class="bg-white rounded-xl p-4 inline-block mb-4">
-                            <img src="https://media.discordapp.net/attachments/1045/1777/_20250810_144954.jpg?ex=6899a0ba&is=68984f3a&hm=8bbe33524cafc933d89ed095d999972ce3e563b0f5e0b0c5bc1463edb24ecc58&=&format=webp&width=639&height=930" 
+                            <img src="https://drive.google.com/uc?export=view&id=1mjOzNjhAKJJEesSUtrzE8wuiro0Gv7-6" 
                                  alt="QR Code สำหรับ Tip" 
                                  class="w-full max-w-[250px] mx-auto rounded-lg"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1650,10 +1661,46 @@
             updateMobileMenuState(sectionName);
         }
 
+        // Visitor Counter Functions
+        function initializeVisitorCounter() {
+            // Get current visitor count from localStorage
+            let visitorCount = localStorage.getItem('forLogicVisitorCount');
+            
+            if (!visitorCount) {
+                // First time visitor
+                visitorCount = 1;
+            } else {
+                // Increment visitor count
+                visitorCount = parseInt(visitorCount) + 1;
+            }
+            
+            // Store updated count
+            localStorage.setItem('forLogicVisitorCount', visitorCount);
+            
+            // Display count with animation
+            animateVisitorCount(visitorCount);
+        }
+
+        function animateVisitorCount(targetCount) {
+            const counterElement = document.getElementById('visitorCount');
+            let currentCount = 0;
+            const increment = Math.ceil(targetCount / 50); // Animation speed
+            
+            const timer = setInterval(() => {
+                currentCount += increment;
+                if (currentCount >= targetCount) {
+                    currentCount = targetCount;
+                    clearInterval(timer);
+                }
+                counterElement.textContent = currentCount.toLocaleString();
+            }, 30);
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             showSection('truthTable');
             initializeLanguage();
+            initializeVisitorCounter();
         });
 
         // Language System
@@ -1670,7 +1717,10 @@
                 quantifierEquivalence: "🔄 Quantifier Equivalence",
                 quantifierNegation: "❌ Quantifier Negation",
                 information: "ℹ️ Additional Information",
-                wikipedia: "📖 Wikipedia: Logic"
+                wikipedia: "📖 Wikipedia: Logic",
+                visitorCounterTitle: "📊 Visit Statistics",
+                visitorCountLabel: "Total Visitors",
+                tipMeTitle: "💰 TIP ME"
             },
             zh: {
                 title: "逻辑工具",
@@ -1682,7 +1732,10 @@
                 quantifierEquivalence: "🔄 量词等价",
                 quantifierNegation: "❌ 量词否定",
                 information: "ℹ️ 附加信息",
-                wikipedia: "📖 维基百科：逻辑"
+                wikipedia: "📖 维基百科：逻辑",
+                visitorCounterTitle: "📊 访问统计",
+                visitorCountLabel: "总访问者",
+                tipMeTitle: "💰 打赏我"
             },
             hi: {
                 title: "तर्क उपकरण",
@@ -1694,7 +1747,10 @@
                 quantifierEquivalence: "🔄 परिमाणक समानता",
                 quantifierNegation: "❌ परिमाणक नकारात्मकता",
                 information: "ℹ️ अतिरिक्त जानकारी",
-                wikipedia: "📖 विकिपीडिया: तर्क"
+                wikipedia: "📖 विकिपीडिया: तर्क",
+                visitorCounterTitle: "📊 विज़िट आंकड़े",
+                visitorCountLabel: "कुल आगंतुक",
+                tipMeTitle: "💰 टिप दें"
             },
             es: {
                 title: "HERRAMIENTAS LÓGICAS",
@@ -1706,7 +1762,10 @@
                 quantifierEquivalence: "🔄 Equivalencia de Cuantificadores",
                 quantifierNegation: "❌ Negación de Cuantificadores",
                 information: "ℹ️ Información Adicional",
-                wikipedia: "📖 Wikipedia: Lógica"
+                wikipedia: "📖 Wikipedia: Lógica",
+                visitorCounterTitle: "📊 Estadísticas de Visitas",
+                visitorCountLabel: "Visitantes Totales",
+                tipMeTitle: "💰 PROPINA"
             },
             fr: {
                 title: "OUTILS LOGIQUES",
@@ -1718,7 +1777,10 @@
                 quantifierEquivalence: "🔄 Équivalence de Quantificateurs",
                 quantifierNegation: "❌ Négation de Quantificateurs",
                 information: "ℹ️ Informations Supplémentaires",
-                wikipedia: "📖 Wikipédia: Logique"
+                wikipedia: "📖 Wikipédia: Logique",
+                visitorCounterTitle: "📊 Statistiques de Visite",
+                visitorCountLabel: "Visiteurs Totaux",
+                tipMeTitle: "💰 POURBOIRE"
             },
             ar: {
                 title: "أدوات المنطق",
@@ -1730,7 +1792,10 @@
                 quantifierEquivalence: "🔄 تكافؤ المحددات الكمية",
                 quantifierNegation: "❌ نفي المحددات الكمية",
                 information: "ℹ️ معلومات إضافية",
-                wikipedia: "📖 ويكيبيديا: المنطق"
+                wikipedia: "📖 ويكيبيديا: المنطق",
+                visitorCounterTitle: "📊 إحصائيات الزيارة",
+                visitorCountLabel: "إجمالي الزوار",
+                tipMeTitle: "💰 إكرامية"
             },
             bn: {
                 title: "যুক্তি সরঞ্জাম",
@@ -1742,7 +1807,10 @@
                 quantifierEquivalence: "🔄 পরিমাণবাচক সমতুল্যতা",
                 quantifierNegation: "❌ পরিমাণবাচক নেগেশন",
                 information: "ℹ️ অতিরিক্ত তথ্য",
-                wikipedia: "📖 উইকিপিডিয়া: যুক্তি"
+                wikipedia: "📖 উইকিপিডিয়া: যুক্তি",
+                visitorCounterTitle: "📊 ভিজিট পরিসংখ্যান",
+                visitorCountLabel: "মোট দর্শক",
+                tipMeTitle: "💰 টিপ দিন"
             },
             pt: {
                 title: "FERRAMENTAS LÓGICAS",
@@ -1754,7 +1822,10 @@
                 quantifierEquivalence: "🔄 Equivalência de Quantificadores",
                 quantifierNegation: "❌ Negação de Quantificadores",
                 information: "ℹ️ Informações Adicionais",
-                wikipedia: "📖 Wikipédia: Lógica"
+                wikipedia: "📖 Wikipédia: Lógica",
+                visitorCounterTitle: "📊 Estatísticas de Visita",
+                visitorCountLabel: "Visitantes Totais",
+                tipMeTitle: "💰 GORJETA"
             },
             ru: {
                 title: "ЛОГИЧЕСКИЕ ИНСТРУМЕНТЫ",
@@ -1766,7 +1837,10 @@
                 quantifierEquivalence: "🔄 Эквивалентность Кванторов",
                 quantifierNegation: "❌ Отрицание Кванторов",
                 information: "ℹ️ Дополнительная Информация",
-                wikipedia: "📖 Википедия: Логика"
+                wikipedia: "📖 Википедия: Логика",
+                visitorCounterTitle: "📊 Статистика Посещений",
+                visitorCountLabel: "Всего Посетителей",
+                tipMeTitle: "💰 ЧАЕВЫЕ"
             },
             ur: {
                 title: "منطقی آلات",
@@ -1778,7 +1852,10 @@
                 quantifierEquivalence: "🔄 مقداری مساوات",
                 quantifierNegation: "❌ مقداری نفی",
                 information: "ℹ️ اضافی معلومات",
-                wikipedia: "📖 ویکیپیڈیا: منطق"
+                wikipedia: "📖 ویکیپیڈیا: منطق",
+                visitorCounterTitle: "📊 وزٹ کی تفصیلات",
+                visitorCountLabel: "کل زائرین",
+                tipMeTitle: "💰 ٹپ دیں"
             },
             th: {
                 title: "FOR LOGIC",
@@ -1790,7 +1867,10 @@
                 quantifierEquivalence: "🔄 สมมูลของประโยคเปิดที่มีตัวบ่งปริมาณ",
                 quantifierNegation: "❌ นิเสธของประโยคเปิดที่มีตัวบ่งปริมาณ",
                 information: "ℹ️ ข้อมูลเพิ่มเติม",
-                wikipedia: "📖 Wikipedia: Logic"
+                wikipedia: "📖 Wikipedia: Logic",
+                visitorCounterTitle: "📊 สถิติการเข้าชม",
+                visitorCountLabel: "ผู้เข้าชมทั้งหมด",
+                tipMeTitle: "💰 TIP ME"
             }
         };
 
@@ -1856,6 +1936,11 @@
             wikiLinks.forEach(link => {
                 link.textContent = translations[currentLanguage].wikipedia;
             });
+
+            // Update new elements
+            updateMenuText('visitorCounterTitle', translations[currentLanguage].visitorCounterTitle);
+            updateMenuText('visitorCountLabel', translations[currentLanguage].visitorCountLabel);
+            updateMenuText('tipMeTitle', translations[currentLanguage].tipMeTitle);
         }
 
         function updateMenuText(elementId, text) {
@@ -4331,5 +4416,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ce119b6685c8d7',t:'MTc1NDgxMzk3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d57f58f4a40886',t:'MTc1NDg5MTg2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
