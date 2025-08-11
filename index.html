@@ -1661,24 +1661,24 @@
             updateMobileMenuState(sectionName);
         }
 
-        // Visitor Counter Functions
-        function initializeVisitorCounter() {
-            // Get current visitor count from localStorage
-            let visitorCount = localStorage.getItem('forLogicVisitorCount');
-            
-            if (!visitorCount) {
-                // First time visitor
-                visitorCount = 1;
-            } else {
-                // Increment visitor count
-                visitorCount = parseInt(visitorCount) + 1;
+        // Global Visitor Counter Functions
+        async function initializeVisitorCounter() {
+            try {
+                // ใช้ CountAPI.xyz สำหรับนับผู้เข้าชม global
+                const response = await fetch('https://api.countapi.xyz/hit/forlogic-tool/visits');
+                const data = await response.json();
+                
+                if (data && data.value) {
+                    animateVisitorCount(data.value);
+                } else {
+                    // Fallback ถ้า API ไม่ทำงาน
+                    document.getElementById('visitorCount').textContent = '---';
+                }
+            } catch (error) {
+                console.log('ไม่สามารถโหลดข้อมูลผู้เข้าชมได้:', error);
+                // Fallback แสดงข้อความแทน
+                document.getElementById('visitorCount').textContent = '---';
             }
-            
-            // Store updated count
-            localStorage.setItem('forLogicVisitorCount', visitorCount);
-            
-            // Display count with animation
-            animateVisitorCount(visitorCount);
         }
 
         function animateVisitorCount(targetCount) {
@@ -1694,6 +1694,18 @@
                 }
                 counterElement.textContent = currentCount.toLocaleString();
             }, 30);
+        }
+
+        // ฟังก์ชันสำหรับดูจำนวนผู้เข้าชมปัจจุบันโดยไม่เพิ่ม
+        async function getVisitorCount() {
+            try {
+                const response = await fetch('https://api.countapi.xyz/get/forlogic-tool/visits');
+                const data = await response.json();
+                return data.value || 0;
+            } catch (error) {
+                console.log('ไม่สามารถดึงข้อมูลผู้เข้าชมได้:', error);
+                return 0;
+            }
         }
 
         // Initialize on page load
@@ -4765,5 +4777,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d61b9662934b65',t:'MTc1NDg5ODI2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d62f52d5d833b6',t:'MTc1NDg5OTA3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
