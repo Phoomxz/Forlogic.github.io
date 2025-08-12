@@ -1256,34 +1256,29 @@
                 <h3 class="text-2xl font-semibold text-white mb-6 text-center" id="tipMeTitle">💰 TIP ME</h3>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <!-- Website Preview Section -->
+                    <!-- QR Code Section -->
                     <div class="text-center">
-                        <div class="bg-gray-700 rounded-xl p-6 inline-block mb-4 border-2 border-blue-500">
-                            <div class="text-center">
-                                <div class="text-6xl mb-4">🌐</div>
-                                <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-lg mb-2">
-                                    FOR LOGIC
-                                </div>
-                                <div class="text-gray-300 text-sm mb-3">เครื่องมือทางตรรกศาสตร์</div>
-                                <div class="flex justify-center gap-2 mb-3">
-                                    <div class="bg-indigo-500 text-white px-2 py-1 rounded text-xs">📊 Truth Table</div>
-                                    <div class="bg-green-500 text-white px-2 py-1 rounded text-xs">⚡ Tautology</div>
-                                </div>
-                                <div class="text-blue-400 text-xs font-mono">forlogic.canva.site</div>
+                        <div class="bg-white rounded-xl p-6 inline-block mb-4">
+                            <img src="https://drive.google.com/uc?export=view&id=1mjOzNjhAKJJEesSUtrzE8wuiro0Gv7-6" 
+                                 alt="QR Code สำหรับ Tip" 
+                                 class="w-48 h-48 mx-auto rounded-lg"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="w-48 h-48 mx-auto bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 text-sm text-center" style="display: none;">
+                                QR Code<br>ไม่สามารถโหลดได้
                             </div>
                         </div>
-                        <p class="text-gray-300 text-sm">เว็บไซต์ FOR LOGIC - เครื่องมือทางตรรกศาสตร์</p>
+                        <p class="text-gray-300 text-sm" id="scanQR">สแกน QR Code เพื่อ Tip</p>
                     </div>
 
                     <!-- Payment Details Section -->
                     <div>
-                        <h4 class="text-lg font-semibold text-white mb-4">ช่องทางการโอนเงิน:</h4>
+                        <h4 class="text-lg font-semibold text-white mb-4" id="paymentChannels">ช่องทางการโอนเงิน:</h4>
                         <div class="space-y-3">
                             <div class="bg-gray-700 rounded-lg p-4">
                                 <div class="flex items-center gap-3">
                                     <div class="text-2xl">🏦</div>
                                     <div>
-                                        <div class="text-gray-300 font-medium">ธนาคารกสิกรไทย</div>
+                                        <div class="text-gray-300 font-medium" id="kasikornBank">ธนาคารกสิกรไทย</div>
                                         <div class="text-white font-mono text-lg">176-3-75362-6</div>
                                     </div>
                                 </div>
@@ -1292,7 +1287,7 @@
                                 <div class="flex items-center gap-3">
                                     <div class="text-2xl">💰</div>
                                     <div>
-                                        <div class="text-gray-300 font-medium">TrueMoney Wallet</div>
+                                        <div class="text-gray-300 font-medium" id="trueMoney">TrueMoney Wallet</div>
                                         <div class="text-white font-mono text-lg">0990393939</div>
                                     </div>
                                 </div>
@@ -1300,7 +1295,7 @@
                         </div>
                         
                         <div class="mt-4 p-4 bg-blue-900/30 rounded-lg border border-blue-500/30">
-                            <p class="text-blue-300 text-sm text-center">
+                            <p class="text-blue-300 text-sm text-center" id="supportMessage">
                                 💙 หากคุณพอใจกับเครื่องมือนี้<br>
                                 สามารถสนับสนุนทีมพัฒนาได้ที่นี่ ขอบคุณครับ!
                             </p>
@@ -1665,163 +1660,106 @@
             updateMobileMenuState(sectionName);
         }
 
-        // Global Visitor Counter Functions with GitHub Integration
+        // Simple Visitor Counter System
         async function initializeVisitorCounter() {
             try {
-                // ลองใช้ CountAPI.xyz ก่อน
-                await incrementCountAPI();
-                
-                // บันทึกข้อมูลลง GitHub
-                await logVisitToGitHub();
-                
+                // ใช้ระบบนับแบบง่าย ๆ ด้วย localStorage และ sessionStorage
+                await initializeSimpleCounter();
             } catch (error) {
                 console.log('เกิดข้อผิดพลาดในระบบนับผู้เข้าชม:', error);
-                // ใช้ localStorage เป็น fallback
-                await initializeLocalCounter();
+                // แสดงจำนวนฐานถ้าเกิดข้อผิดพลาด
+                animateVisitorCount(1250);
             }
         }
 
-        async function incrementCountAPI() {
+        async function initializeSimpleCounter() {
             try {
-                // ใช้ CountAPI.xyz สำหรับนับผู้เข้าชม global
-                const response = await fetch('https://api.countapi.xyz/hit/forlogic-tool-v2/visits', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    }
-                });
+                // ตรวจสอบว่าเป็นการเข้าชมใหม่หรือไม่ (ใช้ sessionStorage)
+                const isNewVisit = !sessionStorage.getItem('forlogic-visited');
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                if (isNewVisit) {
+                    // ทำเครื่องหมายว่าได้เข้าชมแล้วในเซสชันนี้
+                    sessionStorage.setItem('forlogic-visited', 'true');
+                    
+                    // เพิ่มจำนวนผู้เข้าชม
+                    let totalVisits = parseInt(localStorage.getItem('forlogic-total-visits') || '0');
+                    totalVisits++;
+                    localStorage.setItem('forlogic-total-visits', totalVisits.toString());
+                    
+                    // บันทึกข้อมูลการเข้าชมเพิ่มเติม
+                    logVisitData();
                 }
                 
-                const data = await response.json();
+                // แสดงจำนวนผู้เข้าชมทั้งหมด (เริ่มต้นที่ 0)
+                const totalVisits = parseInt(localStorage.getItem('forlogic-total-visits') || '0');
                 
-                if (data && typeof data.value === 'number') {
-                    animateVisitorCount(data.value);
-                    console.log('นับผู้เข้าชมสำเร็จ:', data.value);
-                } else {
-                    throw new Error('Invalid response format');
-                }
+                animateVisitorCount(totalVisits);
+                console.log('นับผู้เข้าชมสำเร็จ:', totalVisits);
+                
             } catch (error) {
-                console.log('CountAPI ไม่ทำงาน, ใช้ระบบสำรอง:', error);
-                throw error;
+                console.log('ระบบนับผู้เข้าชมล้มเหลว:', error);
+                // แสดงจำนวน 0 ถ้าเกิดข้อผิดพลาด
+                animateVisitorCount(0);
             }
         }
 
-        async function initializeLocalCounter() {
+        function logVisitData() {
             try {
-                // ใช้ localStorage เป็นระบบสำรอง
-                let count = parseInt(localStorage.getItem('forlogic-visits') || '0');
-                count++;
-                localStorage.setItem('forlogic-visits', count.toString());
-                
-                // เพิ่มจำนวนสุ่มเพื่อให้ดูเหมือนมีผู้เข้าชมจริง
-                const randomBoost = Math.floor(Math.random() * 50) + 100;
-                const displayCount = count + randomBoost;
-                
-                animateVisitorCount(displayCount);
-                console.log('ใช้ระบบนับท้องถิ่น:', displayCount);
-            } catch (error) {
-                console.log('ระบบสำรองล้มเหลว:', error);
-                document.getElementById('visitorCount').textContent = '---';
-            }
-        }
-
-        async function logVisitToGitHub() {
-            try {
-                // สร้างข้อมูลการเข้าชม
+                // บันทึกข้อมูลการเข้าชมแบบง่าย ๆ
                 const visitData = {
                     timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent,
-                    language: navigator.language,
+                    date: new Date().toDateString(),
+                    language: navigator.language || 'unknown',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
                     screen: `${screen.width}x${screen.height}`,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    referrer: document.referrer || 'direct',
-                    url: window.location.href,
-                    sessionId: generateSessionId()
+                    userAgent: navigator.userAgent.substring(0, 100), // เก็บแค่ 100 ตัวอักษรแรก
+                    referrer: document.referrer || 'direct'
                 };
 
-                // ส่งข้อมูลไป GitHub Gist (ใช้เป็น simple database)
-                await sendToGitHubGist(visitData);
+                // เก็บข้อมูลการเข้าชมล่าสุด (เก็บแค่ 50 records)
+                let visitHistory = JSON.parse(localStorage.getItem('forlogic-visit-history') || '[]');
+                visitHistory.push(visitData);
+                
+                // เก็บเฉพาะ 50 records ล่าสุด
+                if (visitHistory.length > 50) {
+                    visitHistory = visitHistory.slice(-50);
+                }
+                
+                localStorage.setItem('forlogic-visit-history', JSON.stringify(visitHistory));
+                
+                // อัพเดทสถิติรายวัน
+                updateDailyStats();
                 
             } catch (error) {
-                console.log('ไม่สามารถบันทึกข้อมูลลง GitHub ได้:', error);
-                // ไม่ต้อง throw error เพราะไม่ใช่ฟีเจอร์หลัก
+                console.log('ไม่สามารถบันทึกข้อมูลการเข้าชมได้:', error);
             }
         }
 
-        function generateSessionId() {
-            // สร้าง session ID แบบง่าย
-            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        async function sendToGitHubGist(visitData) {
-            // ใช้ GitHub Gist เป็น simple logging system
-            // ⚠️ แทนที่ข้อมูลด้านล่างด้วยข้อมูลจริงของคุณ
-            const GITHUB_TOKEN = 'ghp_1234567890abcdef...'; // ใส่ Personal Access Token ของคุณ
-            const GIST_ID = 'a1b2c3d4e5f6g7h8i9j0...';     // ใส่ Gist ID ของคุณ
-            
-            if (GITHUB_TOKEN === 'ghp_1234567890abcdef...' || GIST_ID === 'a1b2c3d4e5f6g7h8i9j0...') {
-                console.log('GitHub credentials ไม่ได้ตั้งค่า, ข้ามการบันทึก');
-                return;
-            }
-
+        function updateDailyStats() {
             try {
-                // อ่านข้อมูลเก่าจาก Gist
-                const getResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                let existingData = [];
-                if (getResponse.ok) {
-                    const gistData = await getResponse.json();
-                    const content = gistData.files['forlogic-visits.json']?.content;
-                    if (content) {
-                        try {
-                            existingData = JSON.parse(content);
-                        } catch (e) {
-                            console.log('ไม่สามารถ parse ข้อมูลเก่าได้');
-                        }
-                    }
+                const today = new Date().toDateString();
+                let dailyStats = JSON.parse(localStorage.getItem('forlogic-daily-stats') || '{}');
+                
+                if (!dailyStats[today]) {
+                    dailyStats[today] = 0;
                 }
-
-                // เพิ่มข้อมูลใหม่
-                existingData.push(visitData);
-
-                // เก็บเฉพาะ 1000 records ล่าสุด
-                if (existingData.length > 1000) {
-                    existingData = existingData.slice(-1000);
+                dailyStats[today]++;
+                
+                // เก็บข้อมูลเฉพาะ 30 วันล่าสุด
+                const dates = Object.keys(dailyStats).sort();
+                if (dates.length > 30) {
+                    const recentDates = dates.slice(-30);
+                    const newDailyStats = {};
+                    recentDates.forEach(date => {
+                        newDailyStats[date] = dailyStats[date];
+                    });
+                    dailyStats = newDailyStats;
                 }
-
-                // อัพเดท Gist
-                const updateResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        files: {
-                            'forlogic-visits.json': {
-                                content: JSON.stringify(existingData, null, 2)
-                            }
-                        }
-                    })
-                });
-
-                if (updateResponse.ok) {
-                    console.log('บันทึกข้อมูลลง GitHub สำเร็จ');
-                } else {
-                    console.log('ไม่สามารถอัพเดท GitHub Gist ได้');
-                }
-
+                
+                localStorage.setItem('forlogic-daily-stats', JSON.stringify(dailyStats));
+                
             } catch (error) {
-                console.log('เกิดข้อผิดพลาดในการบันทึกลง GitHub:', error);
+                console.log('ไม่สามารถอัพเดทสถิติรายวันได้:', error);
             }
         }
 
@@ -1842,60 +1780,53 @@
             }, 30);
         }
 
-        // ฟังก์ชันสำหรับดูจำนวนผู้เข้าชมปัจจุบันโดยไม่เพิ่ม
-        async function getVisitorCount() {
+        // ฟังก์ชันสำหรับดูจำนวนผู้เข้าชมปัจจุบัน
+        function getVisitorCount() {
             try {
-                const response = await fetch('https://api.countapi.xyz/get/forlogic-tool-v2/visits');
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.value || 0;
-                }
+                const totalVisits = parseInt(localStorage.getItem('forlogic-total-visits') || '0');
+                return totalVisits;
             } catch (error) {
                 console.log('ไม่สามารถดึงข้อมูลผู้เข้าชมได้:', error);
+                return 0; // คืนค่า 0
             }
-            
-            // Fallback ใช้ localStorage
-            return parseInt(localStorage.getItem('forlogic-visits') || '0') + 100;
         }
 
-        // ฟังก์ชันสำหรับดูสถิติจาก GitHub
-        async function getGitHubStats() {
-            const GITHUB_TOKEN = 'ghp_1234567890abcdef...';
-            const GIST_ID = 'a1b2c3d4e5f6g7h8i9j0...';
-            
-            if (GITHUB_TOKEN === 'ghp_1234567890abcdef...' || GIST_ID === 'a1b2c3d4e5f6g7h8i9j0...') {
-                return null;
-            }
-
+        // ฟังก์ชันสำหรับดูสถิติการเข้าชม
+        function getVisitStats() {
             try {
-                const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (response.ok) {
-                    const gistData = await response.json();
-                    const content = gistData.files['forlogic-visits.json']?.content;
-                    if (content) {
-                        const visits = JSON.parse(content);
-                        return {
-                            totalVisits: visits.length,
-                            todayVisits: visits.filter(v => {
-                                const visitDate = new Date(v.timestamp).toDateString();
-                                const today = new Date().toDateString();
-                                return visitDate === today;
-                            }).length,
-                            uniqueCountries: [...new Set(visits.map(v => v.timezone))].length
-                        };
-                    }
-                }
+                const visitHistory = JSON.parse(localStorage.getItem('forlogic-visit-history') || '[]');
+                const dailyStats = JSON.parse(localStorage.getItem('forlogic-daily-stats') || '{}');
+                const today = new Date().toDateString();
+                
+                return {
+                    totalVisits: getVisitorCount(),
+                    todayVisits: dailyStats[today] || 0,
+                    totalDays: Object.keys(dailyStats).length,
+                    recentVisits: visitHistory.slice(-10), // 10 การเข้าชมล่าสุด
+                    dailyStats: dailyStats
+                };
             } catch (error) {
-                console.log('ไม่สามารถดึงสถิติจาก GitHub ได้:', error);
+                console.log('ไม่สามารถดึงสถิติได้:', error);
+                return {
+                    totalVisits: 0,
+                    todayVisits: 0,
+                    totalDays: 0,
+                    recentVisits: [],
+                    dailyStats: {}
+                };
             }
-            
-            return null;
+        }
+
+        // ฟังก์ชันสำหรับรีเซ็ตสถิติ (สำหรับการทดสอบ)
+        function resetVisitorStats() {
+            if (confirm('คุณต้องการรีเซ็ตสถิติการเข้าชมทั้งหมดหรือไม่?')) {
+                localStorage.removeItem('forlogic-total-visits');
+                localStorage.removeItem('forlogic-visit-history');
+                localStorage.removeItem('forlogic-daily-stats');
+                sessionStorage.removeItem('forlogic-visited');
+                console.log('รีเซ็ตสถิติเรียบร้อยแล้ว');
+                location.reload();
+            }
         }
 
         // Initialize on page load
@@ -4967,5 +4898,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ddafa1b68650cb',t:'MTc1NDk3NzczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ddcd8d343a4b65',t:'MTc1NDk3ODk1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
