@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOR LOGIC</title>
+    <title>FOR LOGIC - เครื่องมือทางตรรกศาสตร์</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -1256,19 +1256,23 @@
                 <h3 class="text-2xl font-semibold text-white mb-6 text-center" id="tipMeTitle">💰 TIP ME</h3>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <!-- QR Code Section -->
+                    <!-- Website Preview Section -->
                     <div class="text-center">
-                        <div class="bg-white rounded-xl p-4 inline-block mb-4">
-                            <img src="https://lh3.googleusercontent.com/d/1mjOzNjhAKJJEesSUtrzE8wuiro0Gv7-6" 
-                                 alt="QR Code สำหรับ Tip" 
-                                 class="w-full max-w-[250px] mx-auto rounded-lg"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="text-center text-gray-600 hidden">
-                                <div class="text-4xl mb-2">💳</div>
-                                <p class="text-sm">QR Code ไม่สามารถโหลดได้</p>
+                        <div class="bg-gray-700 rounded-xl p-6 inline-block mb-4 border-2 border-blue-500">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🌐</div>
+                                <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-lg mb-2">
+                                    FOR LOGIC
+                                </div>
+                                <div class="text-gray-300 text-sm mb-3">เครื่องมือทางตรรกศาสตร์</div>
+                                <div class="flex justify-center gap-2 mb-3">
+                                    <div class="bg-indigo-500 text-white px-2 py-1 rounded text-xs">📊 Truth Table</div>
+                                    <div class="bg-green-500 text-white px-2 py-1 rounded text-xs">⚡ Tautology</div>
+                                </div>
+                                <div class="text-blue-400 text-xs font-mono">forlogic.canva.site</div>
                             </div>
                         </div>
-                        <p class="text-gray-300 text-sm">สแกน QR Code เพื่อ Tip</p>
+                        <p class="text-gray-300 text-sm">เว็บไซต์ FOR LOGIC - เครื่องมือทางตรรกศาสตร์</p>
                     </div>
 
                     <!-- Payment Details Section -->
@@ -1754,11 +1758,11 @@
 
         async function sendToGitHubGist(visitData) {
             // ใช้ GitHub Gist เป็น simple logging system
-            // คุณต้องสร้าง Personal Access Token และ Gist ID
-            const GITHUB_TOKEN = 'ghp_your_token_here'; // แทนที่ด้วย token จริง
-            const GIST_ID = 'your_gist_id_here'; // แทนที่ด้วย gist ID จริง
+            // ⚠️ แทนที่ข้อมูลด้านล่างด้วยข้อมูลจริงของคุณ
+            const GITHUB_TOKEN = 'ghp_1234567890abcdef...'; // ใส่ Personal Access Token ของคุณ
+            const GIST_ID = 'a1b2c3d4e5f6g7h8i9j0...';     // ใส่ Gist ID ของคุณ
             
-            if (GITHUB_TOKEN === 'ghp_your_token_here' || GIST_ID === 'your_gist_id_here') {
+            if (GITHUB_TOKEN === 'ghp_1234567890abcdef...' || GIST_ID === 'a1b2c3d4e5f6g7h8i9j0...') {
                 console.log('GitHub credentials ไม่ได้ตั้งค่า, ข้ามการบันทึก');
                 return;
             }
@@ -1856,10 +1860,10 @@
 
         // ฟังก์ชันสำหรับดูสถิติจาก GitHub
         async function getGitHubStats() {
-            const GITHUB_TOKEN = 'ghp_your_token_here';
-            const GIST_ID = 'your_gist_id_here';
+            const GITHUB_TOKEN = 'ghp_1234567890abcdef...';
+            const GIST_ID = 'a1b2c3d4e5f6g7h8i9j0...';
             
-            if (GITHUB_TOKEN === 'ghp_your_token_here' || GIST_ID === 'your_gist_id_here') {
+            if (GITHUB_TOKEN === 'ghp_1234567890abcdef...' || GIST_ID === 'a1b2c3d4e5f6g7h8i9j0...') {
                 return null;
             }
 
@@ -4963,6 +4967,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d68e35850345ac',t:'MTc1NDkwMjk2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ddafa1b68650cb',t:'MTc1NDk3NzczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
