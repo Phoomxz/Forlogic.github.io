@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOR LOGIC</title>
+    <title>FOR LOGIC - เครื่องมือทางตรรกศาสตร์</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -4776,35 +4776,7 @@
             const steps = [];
             const processed = new Set();
             
-            // Find all sub-expressions in order of evaluation (innermost first)
-            function findSubExpressions(expr) {
-                const subExprs = [];
-                
-                // Handle parentheses and braces - find innermost first
-                const parenRegex = /\([^(){}]+\)/g;
-                const braceRegex = /\{[^(){}]+\}/g;
-                
-                let match;
-                while ((match = parenRegex.exec(expr)) !== null) {
-                    const inner = match[0].slice(1, -1); // Remove parentheses
-                    if (!processed.has(inner) && inner.match(/[A-Z]/)) {
-                        subExprs.push(inner);
-                        processed.add(inner);
-                    }
-                }
-                
-                while ((match = braceRegex.exec(expr)) !== null) {
-                    const inner = match[0].slice(1, -1); // Remove braces
-                    if (!processed.has(inner) && inner.match(/[A-Z]/)) {
-                        subExprs.push(inner);
-                        processed.add(inner);
-                    }
-                }
-                
-                return subExprs;
-            }
-            
-            // Find simple negations first
+            // Find simple negations first (¬P, ¬Q, etc.)
             const negationRegex = /¬[A-Z]/g;
             let match;
             while ((match = negationRegex.exec(formula)) !== null) {
@@ -4814,90 +4786,123 @@
                 }
             }
             
-            // Find sub-expressions in parentheses/braces
-            const subExprs = findSubExpressions(formula);
-            steps.push(...subExprs);
-            
-            // Find binary operations at each level
-            function findBinaryOps(expr, depth = 0) {
-                const ops = [];
-                let parenDepth = 0;
-                let braceDepth = 0;
+            // Find expressions in parentheses and braces (innermost first)
+            function findParenthesizedExpressions(expr) {
+                const found = [];
+                let depth = 0;
+                let start = -1;
                 
                 for (let i = 0; i < expr.length; i++) {
                     const char = expr[i];
+                    
                     if (char === '(' || char === '{') {
-                        if (char === '(') parenDepth++;
-                        else braceDepth++;
+                        if (depth === 0) {
+                            start = i;
+                        }
+                        depth++;
                     } else if (char === ')' || char === '}') {
-                        if (char === ')') parenDepth--;
-                        else braceDepth--;
-                    } else if (parenDepth === 0 && braceDepth === 0) {
-                        // Look for main operators at this level
-                        if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
-                            // Find the complete sub-expression around this operator
-                            let left = '';
-                            let right = '';
+                        depth--;
+                        if (depth === 0 && start !== -1) {
+                            const fullExpr = expr.substring(start, i + 1);
+                            const innerExpr = expr.substring(start + 1, i);
                             
-                            // Get left operand
-                            let j = i - 1;
-                            let tempParenDepth = 0;
-                            let tempBraceDepth = 0;
-                            
-                            while (j >= 0) {
-                                const c = expr[j];
-                                if (c === ')') tempParenDepth++;
-                                else if (c === '}') tempBraceDepth++;
-                                else if (c === '(') tempParenDepth--;
-                                else if (c === '{') tempBraceDepth--;
-                                
-                                left = c + left;
-                                
-                                if (tempParenDepth === 0 && tempBraceDepth === 0) {
-                                    if (j === 0 || (expr[j-1] === '∧' || expr[j-1] === '∨' || expr[j-1] === '→' || expr[j-1] === '↔')) {
-                                        break;
-                                    }
-                                }
-                                j--;
+                            if (innerExpr.match(/[A-Z]/) && !processed.has(innerExpr)) {
+                                found.push(innerExpr);
+                                processed.add(innerExpr);
                             }
                             
-                            // Get right operand
-                            j = i + 1;
-                            tempParenDepth = 0;
-                            tempBraceDepth = 0;
-                            
-                            while (j < expr.length) {
-                                const c = expr[j];
-                                if (c === '(') tempParenDepth++;
-                                else if (c === '{') tempBraceDepth++;
-                                else if (c === ')') tempParenDepth--;
-                                else if (c === '}') tempBraceDepth--;
-                                
-                                right += c;
-                                
-                                if (tempParenDepth === 0 && tempBraceDepth === 0) {
-                                    if (j === expr.length - 1 || (expr[j+1] === '∧' || expr[j+1] === '∨' || expr[j+1] === '→' || expr[j+1] === '↔')) {
-                                        break;
-                                    }
-                                }
-                                j++;
-                            }
-                            
-                            const fullExpr = left + char + right;
-                            if (!processed.has(fullExpr) && fullExpr.match(/[A-Z]/)) {
-                                ops.push(fullExpr);
+                            // Also add the full expression with parentheses if it's different
+                            if (!processed.has(fullExpr) && fullExpr !== innerExpr) {
+                                found.push(fullExpr);
                                 processed.add(fullExpr);
                             }
                         }
                     }
                 }
                 
-                return ops;
+                return found;
             }
             
-            // Add binary operations
-            const binaryOps = findBinaryOps(formula);
-            steps.push(...binaryOps);
+            // Add parenthesized expressions
+            const parenExprs = findParenthesizedExpressions(formula);
+            steps.push(...parenExprs);
+            
+            // Find binary operations at the top level (not inside parentheses)
+            function findTopLevelOperations(expr) {
+                const operations = [];
+                let depth = 0;
+                
+                for (let i = 0; i < expr.length; i++) {
+                    const char = expr[i];
+                    
+                    if (char === '(' || char === '{') {
+                        depth++;
+                    } else if (char === ')' || char === '}') {
+                        depth--;
+                    } else if (depth === 0 && (char === '∧' || char === '∨' || char === '→' || char === '↔')) {
+                        // This is a top-level operator
+                        // Find the complete expression around this operator
+                        let left = '';
+                        let right = '';
+                        
+                        // Get left operand
+                        let j = i - 1;
+                        let tempDepth = 0;
+                        
+                        while (j >= 0) {
+                            const c = expr[j];
+                            if (c === ')' || c === '}') tempDepth++;
+                            else if (c === '(' || c === '{') tempDepth--;
+                            
+                            left = c + left;
+                            
+                            if (tempDepth === 0) {
+                                // Check if we've reached the start or another operator at the same level
+                                if (j === 0) break;
+                                const prevChar = expr[j - 1];
+                                if (prevChar === '∧' || prevChar === '∨' || prevChar === '→' || prevChar === '↔') {
+                                    break;
+                                }
+                            }
+                            j--;
+                        }
+                        
+                        // Get right operand
+                        j = i + 1;
+                        tempDepth = 0;
+                        
+                        while (j < expr.length) {
+                            const c = expr[j];
+                            if (c === '(' || c === '{') tempDepth++;
+                            else if (c === ')' || c === '}') tempDepth--;
+                            
+                            right += c;
+                            
+                            if (tempDepth === 0) {
+                                // Check if we've reached the end or another operator at the same level
+                                if (j === expr.length - 1) break;
+                                const nextChar = expr[j + 1];
+                                if (nextChar === '∧' || nextChar === '∨' || nextChar === '→' || nextChar === '↔') {
+                                    break;
+                                }
+                            }
+                            j++;
+                        }
+                        
+                        const fullOperation = left.trim() + char + right.trim();
+                        if (!processed.has(fullOperation) && fullOperation.match(/[A-Z]/)) {
+                            operations.push(fullOperation);
+                            processed.add(fullOperation);
+                        }
+                    }
+                }
+                
+                return operations;
+            }
+            
+            // Add top-level operations
+            const topLevelOps = findTopLevelOperations(formula);
+            steps.push(...topLevelOps);
             
             // Add the complete formula if it's not already included
             if (!processed.has(formula)) {
@@ -5103,6 +5108,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e6872e4579d02f',t:'MTc1NTA3MDQ0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
