@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOR LOGIC</title>
+    <title>FOR LOGIC - เครื่องมือทางตรรกศาสตร์</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -4290,6 +4290,9 @@
                     return;
                 }
 
+                // Parse formula to get all sub-expressions in order
+                const subExpressions = parseFormulaSteps(formula);
+                
                 const numRows = Math.pow(2, formulaVariables.length);
                 const table = document.getElementById('truthTable');
                 const thead = document.getElementById('tableHead');
@@ -4299,19 +4302,26 @@
                 tbody.innerHTML = '';
 
                 const headerRow = document.createElement('tr');
+                
+                // Add variable columns
                 formulaVariables.forEach(variable => {
                     const th = document.createElement('th');
                     th.textContent = variable;
-                    th.className = 'px-4 py-3 text-center border-r border-gray-600';
+                    th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
                     headerRow.appendChild(th);
                 });
 
-                const formulaTh = document.createElement('th');
-                formulaTh.textContent = formula;
-                formulaTh.className = 'px-4 py-3 text-center bg-indigo-700';
-                headerRow.appendChild(formulaTh);
+                // Add sub-expression columns
+                subExpressions.forEach((expr, index) => {
+                    const th = document.createElement('th');
+                    th.textContent = expr;
+                    th.className = `px-4 py-3 text-center border-r border-gray-600 ${index === subExpressions.length - 1 ? 'bg-indigo-700' : 'bg-blue-600'}`;
+                    headerRow.appendChild(th);
+                });
+
                 thead.appendChild(headerRow);
 
+                // Generate rows
                 for (let i = 0; i < numRows; i++) {
                     const row = document.createElement('tr');
                     row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
@@ -4322,6 +4332,7 @@
                         assignments[formulaVariables[j]] = value === 1;
                     }
 
+                    // Add variable value columns
                     formulaVariables.forEach(variable => {
                         const td = document.createElement('td');
                         const value = assignments[variable];
@@ -4330,11 +4341,17 @@
                         row.appendChild(td);
                     });
 
-                    const resultTd = document.createElement('td');
-                    const result = evaluateLogicalFormula(formula, assignments);
-                    resultTd.textContent = result ? 'T' : 'F';
-                    resultTd.className = `px-4 py-3 text-center font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(resultTd);
+                    // Add sub-expression result columns
+                    subExpressions.forEach((expr, index) => {
+                        const td = document.createElement('td');
+                        const result = evaluateLogicalFormula(expr, assignments);
+                        td.textContent = result ? 'T' : 'F';
+                        td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                        if (index === subExpressions.length - 1) {
+                            td.className = `px-4 py-3 text-center font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                        }
+                        row.appendChild(td);
+                    });
 
                     tbody.appendChild(row);
                 }
@@ -4436,6 +4453,9 @@
                     return;
                 }
 
+                // Parse formula to get all sub-expressions in order
+                const subExpressions = parseFormulaSteps(formula);
+                
                 const numRows = Math.pow(2, formulaVariables.length);
                 const table = document.getElementById('tautologyTable');
                 const thead = document.getElementById('tautologyTableHead');
@@ -4445,17 +4465,23 @@
                 tbody.innerHTML = '';
 
                 const headerRow = document.createElement('tr');
+                
+                // Add variable columns
                 formulaVariables.forEach(variable => {
                     const th = document.createElement('th');
                     th.textContent = variable;
-                    th.className = 'px-4 py-3 text-center border-r border-gray-600';
+                    th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
                     headerRow.appendChild(th);
                 });
 
-                const formulaTh = document.createElement('th');
-                formulaTh.textContent = formula;
-                formulaTh.className = 'px-4 py-3 text-center bg-indigo-700';
-                headerRow.appendChild(formulaTh);
+                // Add sub-expression columns
+                subExpressions.forEach((expr, index) => {
+                    const th = document.createElement('th');
+                    th.textContent = expr;
+                    th.className = `px-4 py-3 text-center border-r border-gray-600 ${index === subExpressions.length - 1 ? 'bg-indigo-700' : 'bg-blue-600'}`;
+                    headerRow.appendChild(th);
+                });
+
                 thead.appendChild(headerRow);
 
                 let results = [];
@@ -4469,6 +4495,7 @@
                         assignments[formulaVariables[j]] = value === 1;
                     }
 
+                    // Add variable value columns
                     formulaVariables.forEach(variable => {
                         const td = document.createElement('td');
                         const value = assignments[variable];
@@ -4477,12 +4504,18 @@
                         row.appendChild(td);
                     });
 
-                    const resultTd = document.createElement('td');
-                    const result = evaluateLogicalFormula(formula, assignments);
-                    results.push(result);
-                    resultTd.textContent = result ? 'T' : 'F';
-                    resultTd.className = `px-4 py-3 text-center font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(resultTd);
+                    // Add sub-expression result columns
+                    subExpressions.forEach((expr, index) => {
+                        const td = document.createElement('td');
+                        const result = evaluateLogicalFormula(expr, assignments);
+                        td.textContent = result ? 'T' : 'F';
+                        td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                        if (index === subExpressions.length - 1) {
+                            td.className = `px-4 py-3 text-center font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                            results.push(result);
+                        }
+                        row.appendChild(td);
+                    });
 
                     tbody.appendChild(row);
                 }
@@ -4624,6 +4657,10 @@
                     return;
                 }
 
+                // Parse both formulas to get all sub-expressions
+                const subExpressions1 = parseFormulaSteps(formula1);
+                const subExpressions2 = parseFormulaSteps(formula2);
+                
                 const numRows = Math.pow(2, allVariables.length);
                 const table = document.getElementById('equivalenceTable');
                 const thead = document.getElementById('equivalenceTableHead');
@@ -4633,22 +4670,30 @@
                 tbody.innerHTML = '';
 
                 const headerRow = document.createElement('tr');
+                
+                // Add variable columns
                 allVariables.forEach(variable => {
                     const th = document.createElement('th');
                     th.textContent = variable;
-                    th.className = 'px-4 py-3 text-center border-r border-gray-600';
+                    th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-gray-700';
                     headerRow.appendChild(th);
                 });
 
-                const formula1Th = document.createElement('th');
-                formula1Th.textContent = `ประพจน์ที่1: ${formula1}`;
-                formula1Th.className = 'px-4 py-3 text-center border-r border-gray-600 bg-blue-700';
-                headerRow.appendChild(formula1Th);
+                // Add formula 1 sub-expression columns
+                subExpressions1.forEach((expr, index) => {
+                    const th = document.createElement('th');
+                    th.textContent = expr;
+                    th.className = `px-4 py-3 text-center border-r border-gray-600 ${index === subExpressions1.length - 1 ? 'bg-blue-700' : 'bg-blue-600'}`;
+                    headerRow.appendChild(th);
+                });
 
-                const formula2Th = document.createElement('th');
-                formula2Th.textContent = `ประพจน์ที่2: ${formula2}`;
-                formula2Th.className = 'px-4 py-3 text-center bg-green-700';
-                headerRow.appendChild(formula2Th);
+                // Add formula 2 sub-expression columns
+                subExpressions2.forEach((expr, index) => {
+                    const th = document.createElement('th');
+                    th.textContent = expr;
+                    th.className = `px-4 py-3 text-center border-r border-gray-600 ${index === subExpressions2.length - 1 ? 'bg-green-700' : 'bg-green-600'}`;
+                    headerRow.appendChild(th);
+                });
 
                 thead.appendChild(headerRow);
 
@@ -4665,6 +4710,7 @@
                         assignments[allVariables[j]] = value === 1;
                     }
 
+                    // Add variable value columns
                     allVariables.forEach(variable => {
                         const td = document.createElement('td');
                         const value = assignments[variable];
@@ -4673,20 +4719,30 @@
                         row.appendChild(td);
                     });
 
-                    const result1 = evaluateLogicalFormula(formula1, assignments);
-                    const result2 = evaluateLogicalFormula(formula2, assignments);
-                    results1.push(result1);
-                    results2.push(result2);
+                    // Add formula 1 sub-expression result columns
+                    subExpressions1.forEach((expr, index) => {
+                        const td = document.createElement('td');
+                        const result = evaluateLogicalFormula(expr, assignments);
+                        td.textContent = result ? 'T' : 'F';
+                        td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                        if (index === subExpressions1.length - 1) {
+                            results1.push(result);
+                        }
+                        row.appendChild(td);
+                    });
 
-                    const result1Td = document.createElement('td');
-                    result1Td.textContent = result1 ? 'T' : 'F';
-                    result1Td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result1 ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(result1Td);
-
-                    const result2Td = document.createElement('td');
-                    result2Td.textContent = result2 ? 'T' : 'F';
-                    result2Td.className = `px-4 py-3 text-center font-bold ${result2 ? 'text-green-400' : 'text-red-400'}`;
-                    row.appendChild(result2Td);
+                    // Add formula 2 sub-expression result columns
+                    subExpressions2.forEach((expr, index) => {
+                        const td = document.createElement('td');
+                        const result = evaluateLogicalFormula(expr, assignments);
+                        td.textContent = result ? 'T' : 'F';
+                        td.className = `px-4 py-3 text-center border-r border-gray-500 font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                        if (index === subExpressions2.length - 1) {
+                            td.className = `px-4 py-3 text-center font-bold ${result ? 'text-green-400' : 'text-red-400'}`;
+                            results2.push(result);
+                        }
+                        row.appendChild(td);
+                    });
 
                     tbody.appendChild(row);
                 }
@@ -4713,6 +4769,155 @@
             } catch (error) {
                 alert('เกิดข้อผิดพลาดในการตรวจสอบ: ' + error.message);
             }
+        }
+
+        // Function to parse formula into step-by-step sub-expressions
+        function parseFormulaSteps(formula) {
+            const steps = [];
+            const processed = new Set();
+            
+            // Find all sub-expressions in order of evaluation (innermost first)
+            function findSubExpressions(expr) {
+                const subExprs = [];
+                
+                // Handle parentheses and braces - find innermost first
+                const parenRegex = /\([^(){}]+\)/g;
+                const braceRegex = /\{[^(){}]+\}/g;
+                
+                let match;
+                while ((match = parenRegex.exec(expr)) !== null) {
+                    const inner = match[0].slice(1, -1); // Remove parentheses
+                    if (!processed.has(inner) && inner.match(/[A-Z]/)) {
+                        subExprs.push(inner);
+                        processed.add(inner);
+                    }
+                }
+                
+                while ((match = braceRegex.exec(expr)) !== null) {
+                    const inner = match[0].slice(1, -1); // Remove braces
+                    if (!processed.has(inner) && inner.match(/[A-Z]/)) {
+                        subExprs.push(inner);
+                        processed.add(inner);
+                    }
+                }
+                
+                return subExprs;
+            }
+            
+            // Find simple negations first
+            const negationRegex = /¬[A-Z]/g;
+            let match;
+            while ((match = negationRegex.exec(formula)) !== null) {
+                if (!processed.has(match[0])) {
+                    steps.push(match[0]);
+                    processed.add(match[0]);
+                }
+            }
+            
+            // Find sub-expressions in parentheses/braces
+            const subExprs = findSubExpressions(formula);
+            steps.push(...subExprs);
+            
+            // Find binary operations at each level
+            function findBinaryOps(expr, depth = 0) {
+                const ops = [];
+                let parenDepth = 0;
+                let braceDepth = 0;
+                
+                for (let i = 0; i < expr.length; i++) {
+                    const char = expr[i];
+                    if (char === '(' || char === '{') {
+                        if (char === '(') parenDepth++;
+                        else braceDepth++;
+                    } else if (char === ')' || char === '}') {
+                        if (char === ')') parenDepth--;
+                        else braceDepth--;
+                    } else if (parenDepth === 0 && braceDepth === 0) {
+                        // Look for main operators at this level
+                        if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
+                            // Find the complete sub-expression around this operator
+                            let left = '';
+                            let right = '';
+                            
+                            // Get left operand
+                            let j = i - 1;
+                            let tempParenDepth = 0;
+                            let tempBraceDepth = 0;
+                            
+                            while (j >= 0) {
+                                const c = expr[j];
+                                if (c === ')') tempParenDepth++;
+                                else if (c === '}') tempBraceDepth++;
+                                else if (c === '(') tempParenDepth--;
+                                else if (c === '{') tempBraceDepth--;
+                                
+                                left = c + left;
+                                
+                                if (tempParenDepth === 0 && tempBraceDepth === 0) {
+                                    if (j === 0 || (expr[j-1] === '∧' || expr[j-1] === '∨' || expr[j-1] === '→' || expr[j-1] === '↔')) {
+                                        break;
+                                    }
+                                }
+                                j--;
+                            }
+                            
+                            // Get right operand
+                            j = i + 1;
+                            tempParenDepth = 0;
+                            tempBraceDepth = 0;
+                            
+                            while (j < expr.length) {
+                                const c = expr[j];
+                                if (c === '(') tempParenDepth++;
+                                else if (c === '{') tempBraceDepth++;
+                                else if (c === ')') tempParenDepth--;
+                                else if (c === '}') tempBraceDepth--;
+                                
+                                right += c;
+                                
+                                if (tempParenDepth === 0 && tempBraceDepth === 0) {
+                                    if (j === expr.length - 1 || (expr[j+1] === '∧' || expr[j+1] === '∨' || expr[j+1] === '→' || expr[j+1] === '↔')) {
+                                        break;
+                                    }
+                                }
+                                j++;
+                            }
+                            
+                            const fullExpr = left + char + right;
+                            if (!processed.has(fullExpr) && fullExpr.match(/[A-Z]/)) {
+                                ops.push(fullExpr);
+                                processed.add(fullExpr);
+                            }
+                        }
+                    }
+                }
+                
+                return ops;
+            }
+            
+            // Add binary operations
+            const binaryOps = findBinaryOps(formula);
+            steps.push(...binaryOps);
+            
+            // Add the complete formula if it's not already included
+            if (!processed.has(formula)) {
+                steps.push(formula);
+            }
+            
+            // Remove duplicates and sort by complexity (simpler first)
+            const uniqueSteps = [...new Set(steps)];
+            uniqueSteps.sort((a, b) => {
+                // Sort by length first (simpler expressions first)
+                if (a.length !== b.length) {
+                    return a.length - b.length;
+                }
+                // Then by number of operators
+                const aOps = (a.match(/[∧∨→↔¬]/g) || []).length;
+                const bOps = (b.match(/[∧∨→↔¬]/g) || []).length;
+                return aOps - bOps;
+            });
+            
+            return uniqueSteps;
         }
 
         // Utility function to evaluate logical formulas
@@ -4898,6 +5103,5 @@
 
 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96df2f50a6934b7d',t:'MTc1NDk5MzQ0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e6872e4579d02f',t:'MTc1NTA3MDQ0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
