@@ -2609,6 +2609,7 @@
             let reasoningResults = [];
             
             for (let i = 0; i < numRows; i++) {
+                const rowIndex = numRows - 1 - i;
                 const row = document.createElement('tr');
                 row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
                 
@@ -4326,14 +4327,15 @@
 
                 // Generate rows
                 for (let i = 0; i < numRows; i++) {
+                    const rowIndex = numRows - 1 - i;
                     const row = document.createElement('tr');
                     row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
 
                     const assignments = {};
                     for (let j = 0; j < formulaVariables.length; j++) {
-                        const value = (i >> (formulaVariables.length - 1 - j)) & 1;
-                        assignments[formulaVariables[j]] = value === 1;
-                    }
+        const value = (rowIndex >> (formulaVariables.length - 1 - j)) & 1;
+        assignments[formulaVariables[j]] = value === 1;
+    }
 
                     // Add variable value columns
                     formulaVariables.forEach(variable => {
@@ -4489,14 +4491,15 @@
 
                 let results = [];
                 for (let i = 0; i < numRows; i++) {
+                    const rowIndex = numRows - 1 - i;
                     const row = document.createElement('tr');
                     row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
 
                     const assignments = {};
-                    for (let j = 0; j < formulaVariables.length; j++) {
-                        const value = (i >> (formulaVariables.length - 1 - j)) & 1;
-                        assignments[formulaVariables[j]] = value === 1;
-                    }
+                   for (let j = 0; j < formulaVariables.length; j++) {
+        const value = (rowIndex >> (formulaVariables.length - 1 - j)) & 1;
+        assignments[formulaVariables[j]] = value === 1;
+    }
 
                     // Add variable value columns
                     formulaVariables.forEach(variable => {
@@ -4704,14 +4707,15 @@
                 let results2 = [];
 
                 for (let i = 0; i < numRows; i++) {
+                   const rowIndex = numRows - 1 - i;
                     const row = document.createElement('tr');
                     row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
 
                     const assignments = {};
-                    for (let j = 0; j < allVariables.length; j++) {
-                        const value = (i >> (allVariables.length - 1 - j)) & 1;
-                        assignments[allVariables[j]] = value === 1;
-                    }
+                   for (let j = 0; j < formulaVariables.length; j++) {
+        const value = (rowIndex >> (formulaVariables.length - 1 - j)) & 1;
+        assignments[formulaVariables[j]] = value === 1;
+    }
 
                     // Add variable value columns
                     allVariables.forEach(variable => {
@@ -4930,37 +4934,38 @@
 
         // Utility function to evaluate logical formulas
         function evaluateLogicalFormula(formula, assignments) {
-            let expression = formula;
-            
-            // Replace variables with their truth values
-            for (let variable in assignments) {
-                const value = assignments[variable];
-                expression = expression.replace(new RegExp(variable, 'g'), value ? 'true' : 'false');
-            }
-            
-            // Replace logical operators with JavaScript equivalents
-            expression = expression.replace(/¬/g, '!');
-            expression = expression.replace(/∧/g, '&&');
-            expression = expression.replace(/∨/g, '||');
-            
-            // Handle implication (→) and biconditional (↔)
-            while (expression.includes('→')) {
-                expression = expression.replace(/([^→]+)→([^→]+)/, '(!($1) || ($2))');
-            }
-            while (expression.includes('↔')) {
-                expression = expression.replace(/([^↔]+)↔([^↔]+)/, '(($1) === ($2))');
-            }
-            
-            // Replace braces with parentheses
-            expression = expression.replace(/{/g, '(');
-            expression = expression.replace(/}/g, ')');
-            
-            try {
-                return eval(expression);
-            } catch (error) {
-                throw new Error('ไม่สามารถประเมินสูตรได้: ' + formula);
-            }
-        }
+    let expression = formula;
+
+    // Replace variables with their truth values
+    for (let variable in assignments) {
+        const value = assignments[variable];
+        expression = expression.replace(new RegExp(variable, 'g'), value ? 'true' : 'false');
+    }
+
+    // Replace logical operators with JavaScript equivalents
+    expression = expression.replace(/¬/g, '!');
+    expression = expression.replace(/∧/g, '&&');
+    expression = expression.replace(/∨/g, '||');
+
+    // Replace braces with parentheses
+    expression = expression.replace(/{/g, '(');
+    expression = expression.replace(/}/g, ')');
+
+    // Robustly replace implication (→) and biconditional (↔) using regex
+    // Handles nested and parenthesized expressions
+    while (expression.match(/([^\s()]+|\([^\(\)]+\))\s*→\s*([^\s()]+|\([^\(\)]+\))/)) {
+        expression = expression.replace(/([^\s()]+|\([^\(\)]+\))\s*→\s*([^\s()]+|\([^\(\)]+\))/g, '(!$1 || $2)');
+    }
+    while (expression.match(/([^\s()]+|\([^\(\)]+\))\s*↔\s*([^\s()]+|\([^\(\)]+\))/)) {
+        expression = expression.replace(/([^\s()]+|\([^\(\)]+\))\s*↔\s*([^\s()]+|\([^\(\)]+\))/g, '($1 === $2)');
+    }
+
+    try {
+        return eval(expression);
+    } catch (error) {
+        throw new Error('ไม่สามารถประเมินสูตรได้: ' + formula);
+    }
+}
 
         // Add Enter key support for all inputs
         document.addEventListener('DOMContentLoaded', function() {
@@ -5113,4 +5118,5 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
