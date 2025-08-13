@@ -2701,34 +2701,37 @@
         }
 
         // Utility function to evaluate logical formula
-        function evaluateFormula(formula, assignments) {
-            // Replace variables with their truth values
-            let expression = formula;
-            for (let variable in assignments) {
-                const value = assignments[variable];
-                expression = expression.replace(new RegExp(variable, 'g'), value ? 'true' : 'false');
-            }
-            
-            // Replace logical operators with JavaScript equivalents
-            expression = expression.replace(/¬/g, '!');
-            expression = expression.replace(/∧/g, '&&');
-            expression = expression.replace(/∨/g, '||');
-            
-            // Handle implication (→) and biconditional (↔)
-            expression = expression.replace(/([^→]+)→([^→]+)/g, '(!($1) || ($2))');
-            expression = expression.replace(/([^↔]+)↔([^↔]+)/g, '(($1) === ($2))');
-            
-            // Replace braces with parentheses
-            expression = expression.replace(/{/g, '(');
-            expression = expression.replace(/}/g, ')');
-            
-            try {
-                return eval(expression);
-            } catch (error) {
-                throw new Error('ไม่สามารถประเมินสูตรได้: ' + formula);
-            }
+        function evaluateFormula(formula, values) {
+    try {
+        // Replace variables with their values first
+        for (const [variable, value] of Object.entries(values)) {
+            const regex = new RegExp(`\\b${variable}\\b`, 'g');
+            formula = formula.replace(regex, value ? 'true' : 'false');
         }
 
+        // Replace logical symbols with JavaScript equivalents
+        let jsFormula = formula
+            .replace(/¬/g, '!')
+            .replace(/∧/g, '&&')
+            .replace(/∨/g, '||');
+
+        // Replace implication: A→B => (!A || B)
+        // Handles nested and parenthesized expressions
+        while (jsFormula.match(/([^\s()]+|\([^\(\)]+\))\s*→\s*([^\s()]+|\([^\(\)]+\))/)) {
+            jsFormula = jsFormula.replace(/([^\s()]+|\([^\(\)]+\))\s*→\s*([^\s()]+|\([^\(\)]+\))/g, '(!$1 || $2)');
+        }
+
+        // Replace biconditional: A↔B => ($1 === $2)
+        while (jsFormula.match(/([^\s()]+|\([^\(\)]+\))\s*↔\s*([^\s()]+|\([^\(\)]+\))/)) {
+            jsFormula = jsFormula.replace(/([^\s()]+|\([^\(\)]+\))\s*↔\s*([^\s()]+|\([^\(\)]+\))/g, '($1 === $2)');
+        }
+
+        // Evaluate the formula
+        return eval(jsFormula);
+    } catch (error) {
+        throw new Error('สูตรไม่ถูกต้อง: ' + error.message);
+    }
+}
         // Add Enter key support for premise input
         document.addEventListener('DOMContentLoaded', function() {
             const premiseInput = document.getElementById('newPremise');
@@ -5110,3 +5113,4 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
