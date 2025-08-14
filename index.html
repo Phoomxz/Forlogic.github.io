@@ -3093,43 +3093,131 @@
         }
 
         function negateQuantifierStatement(formula) {
-            // Remove outer spaces
-            formula = formula.trim();
-            
-            // Handle negation of the entire formula
-            if (formula.startsWith('¬')) {
-                // Double negation elimination
-                return formula.substring(1).trim();
-            }
-            
-            // Apply De Morgan's laws for quantifiers and logical operators
-            let result = applyQuantifierNegation(formula);
-            return result;
-        }
+    formula = formula.trim();
 
-        function applyQuantifierNegation(formula) {
-            // Handle ∀x P(x) -> ∃x ¬P(x)
-            const universalMatch = formula.match(/^∀([a-z])\s*(.+)$/);
-            if (universalMatch) {
-                const variable = universalMatch[1];
-                const predicate = universalMatch[2].trim();
-                const negatedPredicate = distributeNegation(predicate);
-                return `∃${variable} ${negatedPredicate}`;
-            }
-            
-            // Handle ∃x P(x) -> ∀x ¬P(x)
-            const existentialMatch = formula.match(/^∃([a-z])\s*(.+)$/);
-            if (existentialMatch) {
-                const variable = existentialMatch[1];
-                const predicate = existentialMatch[2].trim();
-                const negatedPredicate = distributeNegation(predicate);
-                return `∀${variable} ${negatedPredicate}`;
-            }
-            
-            // For complex formulas without quantifiers, distribute negation
-            return distributeNegation(formula);
-        }
+    // ¬∃x ... → ∀x ¬(...)
+    const negExistentialMatch = formula.match(/^¬∃([a-z])\s*(.+)$/);
+    if (negExistentialMatch) {
+        const variable = negExistentialMatch[1];
+        const predicate = negExistentialMatch[2].trim();
+        // กระจายเสธเข้า predicate
+        const distributed = distributeNegation(predicate);
+        return `∀${variable} ${distributed.startsWith('¬') ? distributed : '¬(' + predicate + ')'}`;
+    }
 
+    // ¬∀x ... → ∃x ¬(...)
+    const negUniversalMatch = formula.match(/^¬∀([a-z])\s*(.+)$/);
+    if (negUniversalMatch) {
+        const variable = negUniversalMatch[1];
+        const predicate = negUniversalMatch[2].trim();
+        // กระจายเสธเข้า predicate
+        const distributed = distributeNegation(predicate);
+        return `∃${variable} ${distributed.startsWith('¬') ? distributed : '¬(' + predicate + ')'}`;
+    }
+
+    // ∀x ... → ∃x ¬(...)
+    const universalMatch = formula.match(/^∀([a-z])\s*(.+)$/);
+    if (universalMatch) {
+        const variable = universalMatch[1];
+        const predicate = universalMatch[2].trim();
+        const distributed = distributeNegation(predicate);
+        return `∃${variable} ${distributed.startsWith('¬') ? distributed : '¬(' + predicate + ')'}`;
+    }
+
+    // ∃x ... → ∀x ¬(...)
+    const existentialMatch = formula.match(/^∃([a-z])\s*(.+)$/);
+    if (existentialMatch) {
+        const variable = existentialMatch[1];
+        const predicate = existentialMatch[2].trim();
+        const distributed = distributeNegation(predicate);
+        return `∀${variable} ${distributed.startsWith('¬') ? distributed : '¬(' + predicate + ')'}`;
+    }
+
+    // ถ้าเริ่มต้นด้วย ¬(สูตร) ให้กระจายเสธเข้าไป
+    if (formula.startsWith('¬')) {
+        const inner = formula.substring(1).trim();
+        return distributeNegation(inner);
+    }
+
+    // กรณีอื่น ๆ กระจายเสธตามปกติ
+    return distributeNegation(formula);
+}
+
+     function distributeNegation(formula) {
+    formula = formula.trim();
+
+    // Handle double negation
+    if (formula.startsWith('¬')) {
+        return formula.substring(1).trim();
+    }
+
+    // Handle parentheses - find the main connective
+    if (formula.startsWith('(') && formula.endsWith(')')) {
+        const inner = formula.slice(1, -1);
+        return `(${distributeNegation(inner)})`;
+    }
+
+    // Handle braces
+    if (formula.startsWith('{') && formula.endsWith('}')) {
+        const inner = formula.slice(1, -1);
+        // กระจายเสธในวงเล็บก่อน แล้ว simplify
+        const negated = distributeNegation(inner);
+        return `{${simplifyNegatedPredicate(negated)}}`;
+    }
+
+    // Find main connective (∧, ∨, →, ↔)
+    let depth = 0;
+    let mainConnective = null;
+    let mainIndex = -1;
+    for (let i = 0; i < formula.length; i++) {
+        const char = formula[i];
+        if (char === '(' || char === '{') depth++;
+        else if (char === ')' || char === '}') depth--;
+        else if (depth === 0) {
+            if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
+                mainConnective = char;
+                mainIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (mainConnective && mainIndex !== -1) {
+        const left = formula.substring(0, mainIndex).trim();
+        const right = formula.substring(mainIndex + 1).trim();
+
+        switch (mainConnective) {
+            case '∧':
+                // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
+                return `${applyQuantifierNegation(left)} ∨ ${applyQuantifierNegation(right)}`;
+            case '∨':
+                // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
+                return `${applyQuantifierNegation(left)} ∧ ${applyQuantifierNegation(right)}`;
+            case '→':
+                // ¬(P → Q) ≡ P ∧ ¬Q
+                return `${left} ∧ ${applyQuantifierNegation(right)}`;
+            case '↔':
+                // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
+                return `(${left} ∧ ${applyQuantifierNegation(right)}) ∨ (${applyQuantifierNegation(left)} ∧ ${right})`;
+        }
+    }
+
+    // For simple predicates or complex expressions, just add negation
+    return `¬${formula}`;
+}
+
+// ฟังก์ชัน simplifyNegatedPredicate สำหรับแปลง ¬P(x)∨Q(x) เป็น P(x)→Q(x)
+function simplifyNegatedPredicate(predicate) {
+    // จับรูปแบบ ¬P(x)∨Q(x) แล้วแปลงเป็น P(x)→Q(x)
+    const regex = /^¬\s*([A-Z]\([a-z]\))\s*∨\s*([A-Z]\([a-z]\))$/;
+    const match = predicate.match(regex);
+    if (match) {
+        return `${match[1]}→${match[2]}`;
+    }
+    // ถ้าไม่ตรงรูปแบบก็คืนค่าเดิม
+    return predicate;
+}
+        
         function distributeNegation(formula) {
             formula = formula.trim();
             
@@ -3829,19 +3917,110 @@
         }
 
         function negateQuantifierStatement(formula) {
-            // Remove outer spaces
-            formula = formula.trim();
-            
-            // Handle negation of the entire formula
-            if (formula.startsWith('¬')) {
-                // Double negation elimination
-                return formula.substring(1).trim();
+    formula = formula.trim();
+
+    // ¬∃x{...} → ∀x{...} โดยกระจายเสธเข้าไปใน predicate
+    const negExistentialMatch = formula.match(/^¬∃([a-z])\s*{(.+)}$/);
+    if (negExistentialMatch) {
+        const variable = negExistentialMatch[1];
+        const predicate = negExistentialMatch[2].trim();
+        // กระจายเสธใน predicate
+        const distributed = distributeNegation(predicate);
+        // ถ้าเป็น ¬P(x)∨Q(x) ให้แปลงเป็น P(x)→Q(x)
+        const simplified = simplifyNegatedPredicate(distributed);
+        return `∀${variable}{${simplified}}`;
+    }
+
+    // ¬∀x{...} → ∃x{...} โดยกระจายเสธเข้าไปใน predicate
+    const negUniversalMatch = formula.match(/^¬∀([a-z])\s*{(.+)}$/);
+    if (negUniversalMatch) {
+        const variable = negUniversalMatch[1];
+        const predicate = negUniversalMatch[2].trim();
+        const distributed = distributeNegation(predicate);
+        const simplified = simplifyNegatedPredicate(distributed);
+        return `∃${variable}{${simplified}}`;
+    }
+
+    // กรณีอื่น ๆ ใช้ของเดิม
+    if (formula.startsWith('¬')) {
+        const inner = formula.substring(1).trim();
+        return distributeNegation(inner);
+    }
+
+    return distributeNegation(formula);
+}
+
+function distributeNegation(formula) {
+    formula = formula.trim();
+
+    // Handle double negation
+    if (formula.startsWith('¬')) {
+        return formula.substring(1).trim();
+    }
+
+    // Handle braces
+    if (formula.startsWith('{') && formula.endsWith('}')) {
+        const inner = formula.slice(1, -1);
+        const negated = distributeNegation(inner);
+        return `{${simplifyNegatedPredicate(negated)}}`;
+    }
+
+    // Handle parentheses
+    if (formula.startsWith('(') && formula.endsWith(')')) {
+        const inner = formula.slice(1, -1);
+        return `(${distributeNegation(inner)})`;
+    }
+
+    // Find main connective (∧, ∨, →, ↔)
+    let depth = 0;
+    let mainConnective = null;
+    let mainIndex = -1;
+    for (let i = 0; i < formula.length; i++) {
+        const char = formula[i];
+        if (char === '(' || char === '{') depth++;
+        else if (char === ')' || char === '}') depth--;
+        else if (depth === 0) {
+            if (char === '∧' || char === '∨' || char === '→' || char === '↔') {
+                mainConnective = char;
+                mainIndex = i;
+                break;
             }
-            
-            // Apply De Morgan's laws for quantifiers and logical operators
-            let result = applyQuantifierNegation(formula);
-            return result;
         }
+    }
+
+    if (mainConnective && mainIndex !== -1) {
+        const left = formula.substring(0, mainIndex).trim();
+        const right = formula.substring(mainIndex + 1).trim();
+
+        switch (mainConnective) {
+            case '∧':
+                // ¬(P ∧ Q) ≡ ¬P ∨ ¬Q
+                return `${distributeNegation('¬' + left)}∨${distributeNegation('¬' + right)}`;
+            case '∨':
+                // ¬(P ∨ Q) ≡ ¬P ∧ ¬Q
+                return `${distributeNegation('¬' + left)}∧${distributeNegation('¬' + right)}`;
+            case '→':
+                // ¬(P → Q) ≡ P ∧ ¬Q
+                return `${left}∧${distributeNegation('¬' + right)}`;
+            case '↔':
+                // ¬(P ↔ Q) ≡ (P ∧ ¬Q) ∨ (¬P ∧ Q)
+                return `(${left}∧${distributeNegation('¬' + right)})∨(${distributeNegation('¬' + left)}∧${right})`;
+        }
+    }
+
+    // For simple predicates, just add negation
+    return `¬${formula}`;
+}
+
+// ฟังก์ชัน simplifyNegatedPredicate สำหรับแปลง ¬P(x)∨Q(x) เป็น P(x)→Q(x)
+function simplifyNegatedPredicate(predicate) {
+    const regex = /^¬\s*([A-Z]\([a-z]\))\s*∨\s*([A-Z]\([a-z]\))$/;
+    const match = predicate.match(regex);
+    if (match) {
+        return `${match[1]}→${match[2]}`;
+    }
+    return predicate;
+}
 
         function applyQuantifierNegation(formula) {
             // Handle ∀x P(x) -> ∃x ¬P(x)
@@ -5118,7 +5297,6 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
 
 
 
