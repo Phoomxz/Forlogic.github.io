@@ -4891,10 +4891,10 @@ function simplifyNegatedPredicate(predicate) {
                     row.className = i % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600';
 
                     const assignments = {};
-                   for (let j = 0; j < formulaVariables.length; j++) {
-        const value = (rowIndex >> (formulaVariables.length - 1 - j)) & 1;
-        assignments[formulaVariables[j]] = value === 1;
-    }
+                for (let j = 0; j < allVariables.length; j++) {
+    const value = (rowIndex >> (allVariables.length - 1 - j)) & 1;
+    assignments[allVariables[j]] = value === 1;
+}
 
                     // Add variable value columns
                     allVariables.forEach(variable => {
@@ -5297,6 +5297,5 @@ function simplifyNegatedPredicate(predicate) {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
 
 
