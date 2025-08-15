@@ -4971,7 +4971,8 @@ function simplifyNegatedPredicate(predicate) {
                     processed.add(match[0]);
                 }
             }
-            
+          
+            // Find all variables (A, B, C, etc.)
             // Find expressions in parentheses and braces (innermost first)
             function findParenthesizedExpressions(expr) {
                 const found = [];
@@ -5107,7 +5108,21 @@ function simplifyNegatedPredicate(predicate) {
                 const bOps = (b.match(/[∧∨→↔¬]/g) || []).length;
                 return aOps - bOps;
             });
-            
+       
+            const chainOps = ['∧', '∨', '→', '↔'];
+chainOps.forEach(op => {
+    // จับกลุ่มที่มีตัวดำเนินการเดียวกันมากกว่า 2 ตัว เช่น P∧Q∧R
+    const chainRegex = new RegExp(`([A-Z](?:\\${op}[A-Z]){2,})`, 'g');
+    let chainMatch;
+    while ((chainMatch = chainRegex.exec(formula)) !== null) {
+        let chain = chainMatch[0];
+        if (!processed.has(chain)) {
+            steps.push(chain);
+            processed.add(chain);
+        }
+    }
+});
+
             return uniqueSteps;
         }
 
@@ -5297,5 +5312,4 @@ function simplifyNegatedPredicate(predicate) {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
 
