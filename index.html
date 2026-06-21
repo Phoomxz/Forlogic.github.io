@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOR LOGIC</title>
+    <title>ForLogic | โปรแกรมคำนวณตรรกศาสตร์ออนไลน์</title>
+    <meta name="description" content="เครื่องมือสร้างตารางค่าความจริง ตรวจสอบสัจนิรันดร์ และตัวเชื่อมตรรกศาสตร์ ใช้ง่าย แม่นยำ สำหรับนักเรียนนักศึกษา">
+    <meta name="keywords" content="ตรรกศาสตร์, ตารางค่าความจริง, โปรแกรมคำนวณ, Truth Table, ForLogic">
+    
+    <!-- โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- เรียก script.js แบบ module (สำคัญมาก) -->
+    <script src="script.js" type="module" defer></script>
 </head>
 <body class="bg-gray-900 min-h-screen p-2 lg:p-4">
     <!-- Mobile Header -->
@@ -1653,187 +1660,6 @@
             // Update mobile menu state
             updateMobileMenuState(sectionName);
         }
-
-        // Global Visitor Counter System using GitHub Gist
-        const GITHUB_TOKEN = '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';
-        const GIST_ID = '7c11e73f11050b1c4468675f6e7ec9d1';
-
-        async function initializeVisitorCounter() {
-            try {
-                await initializeGlobalCounter();
-            } catch (error) {
-                console.log('เกิดข้อผิดพลาดในระบบนับผู้เข้าชม:', error);
-                // Fallback to local counter
-                await initializeLocalCounter();
-            }
-        }
-
-        async function initializeGlobalCounter() {
-            try {
-                // Check if this is a new visit (using sessionStorage)
-                const isNewVisit = !sessionStorage.getItem('forlogic-visited-global');
-                
-                if (isNewVisit) {
-                    // Mark as visited in this session
-                    sessionStorage.setItem('forlogic-visited-global', 'true');
-                    
-                    // Increment global counter
-                    await incrementGlobalCounter();
-                }
-                
-                // Get and display current count
-                const currentCount = await getGlobalCounter();
-                animateVisitorCount(currentCount);
-                console.log('Global visitor count:', currentCount);
-                
-            } catch (error) {
-                console.log('Global counter failed, using local fallback:', error);
-                throw error;
-            }
-        }
-
-        async function incrementGlobalCounter() {
-            try {
-                // Get current gist data
-                const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`GitHub API error: ${response.status}`);
-                }
-
-                const gistData = await response.json();
-                const currentData = JSON.parse(gistData.files['visitor-count.json'].content);
-                
-                // Increment counter
-                currentData.count = (currentData.count || 0) + 1;
-                currentData.lastUpdated = new Date().toISOString();
-                
-                // Add visit log
-                if (!currentData.visits) currentData.visits = [];
-                currentData.visits.push({
-                    timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent.substring(0, 100),
-                    referrer: document.referrer || 'direct',
-                    language: navigator.language || 'unknown'
-                });
-                
-                // Keep only last 100 visits
-                if (currentData.visits.length > 100) {
-                    currentData.visits = currentData.visits.slice(-100);
-                }
-
-                // Update gist
-                const updateResponse = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        files: {
-                            'visitor-count.json': {
-                                content: JSON.stringify(currentData, null, 2)
-                            }
-                        }
-                    })
-                });
-
-                if (!updateResponse.ok) {
-                    throw new Error(`Failed to update counter: ${updateResponse.status}`);
-                }
-
-                return currentData.count;
-            } catch (error) {
-                console.log('Failed to increment global counter:', error);
-                throw error;
-            }
-        }
-
-        async function getGlobalCounter() {
-            try {
-                const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`GitHub API error: ${response.status}`);
-                }
-
-                const gistData = await response.json();
-                const currentData = JSON.parse(gistData.files['visitor-count.json'].content);
-                
-                return currentData.count || 0;
-            } catch (error) {
-                console.log('Failed to get global counter:', error);
-                throw error;
-            }
-        }
-
-        async function initializeLocalCounter() {
-            try {
-                // Fallback to local storage if global counter fails
-                const isNewVisit = !sessionStorage.getItem('forlogic-visited-local');
-                
-                if (isNewVisit) {
-                    sessionStorage.setItem('forlogic-visited-local', 'true');
-                    
-                    let totalVisits = parseInt(localStorage.getItem('forlogic-total-visits') || '0');
-                    totalVisits++;
-                    localStorage.setItem('forlogic-total-visits', totalVisits.toString());
-                }
-                
-                const totalVisits = parseInt(localStorage.getItem('forlogic-total-visits') || '0');
-                animateVisitorCount(totalVisits);
-                console.log('Local visitor count:', totalVisits);
-                
-            } catch (error) {
-                console.log('Local counter also failed:', error);
-                animateVisitorCount(0);
-            }
-        }
-
-        function animateVisitorCount(targetCount) {
-            const counterElement = document.getElementById('visitorCount');
-            if (!counterElement) return;
-            
-            let currentCount = 0;
-            const increment = Math.max(1, Math.ceil(targetCount / 50));
-            
-            const timer = setInterval(() => {
-                currentCount += increment;
-                if (currentCount >= targetCount) {
-                    currentCount = targetCount;
-                    clearInterval(timer);
-                }
-                counterElement.textContent = currentCount.toLocaleString();
-            }, 30);
-        }
-
-        // Function to get current visitor count
-        async function getVisitorCount() {
-            try {
-                return await getGlobalCounter();
-            } catch (error) {
-                return parseInt(localStorage.getItem('forlogic-total-visits') || '0');
-            }
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            showSection('truthTable');
-            initializeLanguage();
-            initializeVisitorCounter();
-        });
-
         // Language System
         let currentLanguage = 'th'; // Default to Thai
 
@@ -2185,7 +2011,7 @@
 
 
 
-        function toggleLanguageMenu() {
+        window.toggleLanguageMenu = function() {
             const menu = document.getElementById('languageMenuMobile');
             menu.classList.toggle('hidden');
         }
@@ -5308,8 +5134,8 @@ chainOps.forEach(op => {
             input.value = input.value.slice(0, -1);
         }
 
-
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e69ad4b291d339',t:'MTc1NTA3MTI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 
+                                
