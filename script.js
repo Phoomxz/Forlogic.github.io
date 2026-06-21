@@ -1096,6 +1096,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize
     showSection('truthTable'); // Show truth table section by default
 });
+// ==========================================
+// 1. ส่วนเชื่อมต่อ Firebase (Visitor Counter)
+// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAxIgf1_ttc1IMUvEPTkAwa09KkReHxd4M",
+  authDomain: "forlogic-d98b1.firebaseapp.com",
+  databaseURL: "https://forlogic-d98b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "forlogic-d98b1",
+  storageBucket: "forlogic-d98b1.firebasestorage.app",
+  messagingSenderId: "299599436273",
+  appId: "1:299599436273:web:93b19bedd1535c6e27cc50",
+  measurementId: "G-DDVQG8SYLC"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const visitorRef = ref(db, 'stats/visitorCount');
+
+function setupVisitorCounter() {
+    if (!sessionStorage.getItem('v_counted')) {
+        runTransaction(visitorRef, (current) => (current || 0) + 1)
+        .then(() => sessionStorage.setItem('v_counted', 'true'))
+        .catch(err => console.error("Firebase Error:", err));
+    }
+
+    onValue(visitorRef, (snapshot) => {
+        const count = snapshot.val() || 0;
+        const display = document.getElementById('visitorCount');
+        if (display) display.innerText = count.toLocaleString();
+    });
+}
+
+// รันตัวนับทันที
+setupVisitorCounter();
+
+// ==========================================
+// 2. ส่วนแก้ปัญหาปุ่มกดไม่ได้ (ทำให้เรียกผ่าน HTML ได้)
+// ==========================================
+// ก๊อปชื่อฟังก์ชันที่คุณมีในไฟล์มาผูกกับ window ตรงนี้
+// (ตัวอย่างเบื้องต้นที่เห็นจากโค้ดที่คุณส่งมาก่อนหน้า)
+if (typeof toggleLanguageMenu === 'function') window.toggleLanguageMenu = toggleLanguageMenu;
+if (typeof changeLanguage === 'function') window.changeLanguage = changeLanguage;
+if (typeof toggleMobileMenu === 'function') window.toggleMobileMenu = toggleMobileMenu;
+
+// ถ้ามีฟังก์ชันอื่นๆ ที่กดจากปุ่มแล้วไม่ได้ ให้เพิ่มแบบบรรทัดด้านบนครับ
 
 
